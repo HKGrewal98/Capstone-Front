@@ -3,7 +3,7 @@ import React from "react";
 export const UserDetailsContainer = () => {
   return (
     <table className="table table-striped">
-      <table class="table">
+     
         <thead>
           <tr>
             <th scope="col">UserName</th>
@@ -41,6 +41,5 @@ export const UserDetailsContainer = () => {
           </tr>
         </tbody>
       </table>
-    </table>
   );
 };
