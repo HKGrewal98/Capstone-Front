@@ -8,9 +8,7 @@ ul {
     width: 100%;
   }
   
- .navbar{
-    display: flex;
- }
+
   #itemCompliance{
    width: 350px;
   }
@@ -33,3 +31,40 @@ ul {
     text-decoration: none;
   }
   
+  .navbarLogout > button{
+    background-color: black;
+  }
+
+  /* Here new */
+
+.nav-item{
+  padding: 0 !important;
+}
+.navbarHomePage{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 3rem;
+}
+.leftSideCh{
+  display: flex;
+  /* align-items: center; */
+}
+.RightSideCh{
+  display: flex;
+  align-items: center;
+
+}
+.EngReviewer{
+  display: flex;
+  align-items: center;
+}
+
+.fileLogo{
+  display: flex;
+    align-items: center;
+}
+
+.dropdown-toggle::after {
+  display: none;
+}

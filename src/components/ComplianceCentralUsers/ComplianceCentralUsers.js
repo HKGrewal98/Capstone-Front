@@ -1,6 +1,6 @@
 import React from "react";
-import { Header } from "../Header/Header";
-import { Navbar } from "../Navbar/Navbar";
+import { Header } from "../Common/Header/Header";
+import { Navbar } from "../Common/Navbar/Navbar"
 import "./ComplianceCentralUsers";
 import { LoadMore } from "./LoadMore";
 import { StatusContainer } from "./StatusContainer";

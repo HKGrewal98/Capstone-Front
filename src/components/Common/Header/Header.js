@@ -1,5 +1,5 @@
 import React from 'react'
-import dailyComplianceLogo from '../../images/dailyComplianceLogo.png'
+import dailyComplianceLogo from '../../../images/dailyComplianceLogo.png'
 import './Header.css'
 
 export const Header = () => {

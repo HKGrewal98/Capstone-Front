@@ -1,14 +1,18 @@
 import logo from "./logo.svg";
 import "./App.css";
 import { Form } from "./components/Form";
-import { Header } from "./components/Header/Header";
-import { Navbar } from "./components/Navbar/Navbar";
+import { Header } from "./components/Common/Header/Header";
+import { Navbar } from "./components/Common/Navbar/Navbar";
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Login } from "./components/Login/Login";
-import { Footer } from "./components/Footer/Footer";
+import { Footer } from "./components/Common/Footer/Footer";
 import { ComplianceCentralUsers } from "./components/ComplianceCentralUsers/ComplianceCentralUsers";
-import { LandingPage } from "./components/LandingPage/LandingPage";
+import { LandingPage } from "./components/EngineerView/LandingPage/LandingPage";
+import CreateProjectFolder from "./components/EngineerView/CreateProjectFolder/CreateProjectFolder";
+import Reviewreports from "./components/ReviewerView/Reviewreports/Reviewreports";
+import { NewReport } from "./components/Reports/NewReport";
+import { ReportsMainTab } from "./components/EngineerView/Reports/ReportsMainTab";
 function App() {
   return (
     <>
@@ -16,8 +20,14 @@ function App() {
       <Navbar />
       <Routes>
         <Route path="/" element={<Login />} />
-        <Route path="/landingPage" element={<LandingPage />} />
+        {/* Engineer routes */}
+        <Route path="engineerView/landingPage" element={<LandingPage />} />
         <Route path="/complianceCentralUsers" element={<ComplianceCentralUsers />} />
+        <Route path="engineerView/createProjectFolder" element={<CreateProjectFolder />} />
+        <Route path="engineerView/reportsMain" element={<ReportsMainTab />} />
+        <Route path="engineerView/newReport" element={<NewReport />} />
+        {/* Reviewer Eroutes */}
+        <Route path="reviewerView/reviewReports" element={<Reviewreports />} />
       </Routes>
       <Footer />
     </>

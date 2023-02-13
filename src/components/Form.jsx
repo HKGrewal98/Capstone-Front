@@ -5,6 +5,7 @@ import axios from 'axios'
 export const Form = () => {
     const { register, handleSubmit, watch, formState: { errors } } = useForm();
     const onSubmit = data => {
+      
         console.log(data)
         axios({
       
