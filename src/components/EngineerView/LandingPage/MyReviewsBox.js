@@ -1,6 +1,6 @@
 import React from "react";
 
-export const MyReviewsTab = () => {
+export const MyReviewsBox = () => {
   return (
     <div className="py-3 px-2">
       <div className="myContainer ">

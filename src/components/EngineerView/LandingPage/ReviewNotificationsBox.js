@@ -1,6 +1,6 @@
 import React from "react";
 
-export const ReviewNotificationsTab = () => {
+export const ReviewNotificationsBox = () => {
   return (
     <div className="py-3 px-2">
       <div className="myContainer">

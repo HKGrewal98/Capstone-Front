@@ -1,7 +1,9 @@
 import React from "react";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 
-export const AssignedProjectsTab = () => {
+export const AssignedProjectsBox = () => {
+  let navigate = useNavigate()
   const {
     register,
     handleSubmit,
@@ -19,7 +21,7 @@ export const AssignedProjectsTab = () => {
             Assigned Projects
           </div>
           <div>
-            <a href="#">View All</a>
+          <div className="btn text-primary pt-0" onClick={()=>navigate('/engineerView/assignedProjects')}>View All</div>
           </div>
         </div>
         <div className="customBody">

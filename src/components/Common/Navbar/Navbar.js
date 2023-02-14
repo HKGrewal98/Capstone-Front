@@ -41,32 +41,32 @@ export const Navbar = () => {
         console.log(err);
       });
   };
-  const ULogged = useSelector((state) => state.Login.value);
+  const ULogged = useSelector((state) => state.Login.value.data);
   useEffect(() => {
     console.log("ULogged val:", ULogged);
-    if (ULogged?.accessToken && ULogged?.is_engineer === true) {
+    if (ULogged?.isLoggedIn && ULogged?.is_engineer === true) {
       setEngLogged(ULogged);
-    } else if (ULogged?.accessToken && ULogged?.is_reviewer === true) {
+    } else if (ULogged?.isLoggedIn && ULogged?.is_reviewer === true) {
       setRevLogged(ULogged);
     } else {
       setEngLogged({});
       setRevLogged({});
     }
   }, [ULogged]);
-  useEffect(()=>{
-    let cookieCheck = cookie?.accessToken
-    console.log("cookie check lnding page", cookieCheck)
-    if(cookieCheck){
-      setIsLoggedInState(true)
-    }
-    else{
-      setIsLoggedInState(false)
-    }
-  },[])
+  // useEffect(()=>{
+  //   let cookieCheck = cookie?.accessToken
+  //   console.log("cookie check lnding page", cookieCheck)
+  //   if(cookieCheck){
+  //     setIsLoggedInState(true)
+  //   }
+  //   else{
+  //     setIsLoggedInState(false)
+  //   }
+  // },[])
   return (
     <>
-      {(ULogged?.accessToken && ULogged?.is_engineer === true) ||
-      (ULogged?.accessToken && ULogged?.is_reviewer === true) ||(isLoggedInState) ? (
+      {(ULogged?.isLoggedIn && ULogged?.is_engineer === true) ||
+      (ULogged?.isLoggedIn && ULogged?.is_reviewer === true) ||(isLoggedInState) ? (
         <>
           <div className="navbarHomePage">
             <div className="leftSideCh">
@@ -88,9 +88,9 @@ export const Navbar = () => {
             </div>
             <div className="RightSideCh">
               <div className="FileLogo mx-2">
-                <div class="dropdown">
+                <div className="dropdown">
                   <button
-                    class="btn btn-secondary dropdown-toggle"
+                    className="btn btn-secondary dropdown-toggle"
                     type="button"
                     id="dropdownMenuButton1"
                     data-bs-toggle="dropdown"
@@ -133,22 +133,22 @@ export const Navbar = () => {
                 </svg>
                   </button>
                   <ul
-                    class="dropdown-menu"
+                    className="dropdown-menu"
                     aria-labelledby="dropdownMenuButton1"
                     style={{width:"auto",border:"0"}}
                   >
                     <li>
-                      <Link class="dropdown-item" to="engineerView/createProjectFolder">
+                      <Link className="dropdown-item" to="engineerView/createProjectFolder">
                         Create a Project Folder
                       </Link>
                     </li>
                     <li>
-                      <Link class="dropdown-item"  to="engineerView/reportsMain">
+                     <a  className="dropdown-item" >
                         Revise Report
-                      </Link>
+                      </a>    
                     </li>
                     <li>
-                      <a class="dropdown-item" href="#">
+                      <a className="dropdown-item" href="#">
                         Add me to a Project
                       </a>
                     </li>

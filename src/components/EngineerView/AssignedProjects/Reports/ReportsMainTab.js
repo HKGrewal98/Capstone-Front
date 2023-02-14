@@ -5,7 +5,7 @@ export const ReportsMainTab = () => {
   return (
     <>
     <h1>ReportsMainTab</h1>
-    <Link to="/engineerView/newReport">New Report</Link>
+   
     </>
   )
 }

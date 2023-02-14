@@ -1,6 +1,6 @@
 import React from 'react'
 
-export const MyNotificationsTab = () => {
+export const MyNotificationsBox = () => {
   return (
     <div className="py-3 px-2 customHeight">
     <div className="myContainer">

@@ -9,10 +9,11 @@ import { Login } from "./components/Login/Login";
 import { Footer } from "./components/Common/Footer/Footer";
 import { ComplianceCentralUsers } from "./components/ComplianceCentralUsers/ComplianceCentralUsers";
 import { LandingPage } from "./components/EngineerView/LandingPage/LandingPage";
-import CreateProjectFolder from "./components/EngineerView/CreateProjectFolder/CreateProjectFolder";
+import CreateProjectFolder from "./components/EngineerView/AssignedProjects/CreateProjectFolder";
 import Reviewreports from "./components/ReviewerView/Reviewreports/Reviewreports";
-import { NewReport } from "./components/Reports/NewReport";
-import { ReportsMainTab } from "./components/EngineerView/Reports/ReportsMainTab";
+import { NewReport } from "./components//EngineerView/AssignedProjects/Reports/NewReport";
+import { ReportsMainTab } from "./components/EngineerView/AssignedProjects/Reports/ReportsMainTab";
+import { AssignedProjectMain } from "./components/EngineerView/AssignedProjects/AssignedProjectMain";
 function App() {
   return (
     <>
@@ -24,7 +25,7 @@ function App() {
         <Route path="engineerView/landingPage" element={<LandingPage />} />
         <Route path="/complianceCentralUsers" element={<ComplianceCentralUsers />} />
         <Route path="engineerView/createProjectFolder" element={<CreateProjectFolder />} />
-        <Route path="engineerView/reportsMain" element={<ReportsMainTab />} />
+        <Route path="engineerView/assignedProjects" element={<AssignedProjectMain />} />
         <Route path="engineerView/newReport" element={<NewReport />} />
         {/* Reviewer Eroutes */}
         <Route path="reviewerView/reviewReports" element={<Reviewreports />} />

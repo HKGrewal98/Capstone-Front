@@ -20,8 +20,13 @@ export const Login = () => {
 
   const onSubmit = data => {
     console.log("Login clicked")
+    var myHeaders = new Headers();
+  myHeaders.append("Content-Type", "application/json");
+  myHeaders.append('Access-Control-Allow-Origin', 'http://localhost:8081/')
+  myHeaders.append('Access-Control-Allow-Credentials', true)
+ 
     
-    console.log(data)
+    // console.log(data)
     
     axios({
   
@@ -30,21 +35,19 @@ export const Login = () => {
         url: `http://localhost:8081/user/login`,
         
         data:data, 
-        headers: {
-          'content-type': 'application/json',
-         
-        },
+        credentials: "include", 
+         headers: myHeaders,
         
         
         
       }).then(res=>{
         let cookieCheck = cookie?.accessToken
-      // console.log("Cookie check:",cookieCheck)
-      if(res?.data?.accessToken){
+      // console.log("res check:",res)
+      if(res?.data?.data?.isLoggedIn){
 
         dispatch(LoginDetails(res.data))
         navigate('/engineerView/landingPage')
-        console.log("login respose :", res.data)
+        // console.log("login respose :", res.data)
         setCookie("accessToken",res?.data?.accessToken,{path:'/'})
       }
       
@@ -52,6 +55,8 @@ export const Login = () => {
         ).catch(err=>{console.log(err)})
       
 };
+
+ 
 
   return (
     <div className="MainLoginHeader">

@@ -252,3 +252,26 @@ border-radius: 6px;
     background: #69c7d4;
       color: #ffffff;
   }
+
+  .assProjectContainer{
+    display: grid;
+    grid-template-columns: 1fr 5fr;
+  }
+  .leftNavAssigned{
+    height: 70vh;
+    background: #FFFFFF;
+border: 1px solid #C3C3C3;
+  }
+  .sideNavContainer{
+    display: flex;
+    align-items: start;
+  }
+
+  .navbarAssignedRight{
+    display: flex;
+    justify-content: space-around;
+    
+    background-color:  
+    #F8F8F8;
+    padding-top: 18px;
+  }

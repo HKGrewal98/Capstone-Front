@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { AssignedProjectsTab } from "./AssignedProjectsTab";
-import { MainSearchTab } from "./MainSearchTab";
-import { MyNotificationsTab } from "./MyNotificationsTab";
-import { MyReviewsTab } from "./MyReviewsTab";
-import { ReviewNotificationsTab } from "./ReviewNotificationsTab";
+import { AssignedProjectsBox } from "./AssignedProjectsBox";
+import { MainSearchBox } from "./MainSearchBox";
+import { MyNotificationsBox } from "./MyNotificationsBox";
+import { MyReviewsBox } from "./MyReviewsBox";
+import { ReviewNotificationsBox, ReviewNotificationsTab } from "./ReviewNotificationsBox";
 import "./LandingPage.css";
 import { NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -111,13 +111,13 @@ export const LandingPage = () => {
    </div>
    <div className="customLandingPage">
      <div className="customLeftNav">
-       <MyReviewsTab />
-       <MyNotificationsTab />
+       <MyReviewsBox />
+       <MyNotificationsBox />
      </div>
-     <MainSearchTab />
+     <MainSearchBox />
      <div className="customRightNav">
-       <AssignedProjectsTab />
-       <ReviewNotificationsTab />
+       <AssignedProjectsBox />
+       <ReviewNotificationsBox />
      </div>
    </div>
     </>:<>Reviewer</>
