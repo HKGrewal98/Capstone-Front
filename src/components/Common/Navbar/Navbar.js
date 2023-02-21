@@ -5,12 +5,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { LoginDetails } from "../../Login/LoginReducer/LoginSlice";
 import "./Navbar.css";
-
+import { userLoginCheck } from "../../../helpers/userLoginCheck";
 export const Navbar = () => {
   // const [login, setLogin] = useState(false)
   let dispatch = useDispatch();
-  const [EngLogged, setEngLogged] = useState();
-  const [RevLogged, setRevLogged] = useState();
+  
   const [isLoggedInState,setIsLoggedInState] = useState(false)
 
   const navigate = useNavigate();
@@ -31,42 +30,37 @@ export const Navbar = () => {
     })
       .then((res) => {
         console.log("logout respose:", res.data);
-        if (res?.data?.status === "SUCCESS") {
+        if (res?.data?.isLoggedIn===false) {
           dispatch(LoginDetails(res.data));
           removeCookie("accessToken");
+          localStorage.clear()
           navigate("/");
         }
       })
       .catch((err) => {
         console.log(err);
+
       });
   };
-  const ULogged = useSelector((state) => state.Login.value.data);
-  useEffect(() => {
-    console.log("ULogged val:", ULogged);
-    if (ULogged?.isLoggedIn && ULogged?.is_engineer === true) {
-      setEngLogged(ULogged);
-    } else if (ULogged?.isLoggedIn && ULogged?.is_reviewer === true) {
-      setRevLogged(ULogged);
-    } else {
-      setEngLogged({});
-      setRevLogged({});
+  const ULogged = useSelector((state) => state.Login.value);
+ 
+  useEffect(()=>{
+   userLoginCheck().then(res=>{
+    console.log(res)
+    if(res?.userId?.user?.is_engineer===true || res?.userId?.user?.is_reviewer===true){
+      dispatch(LoginDetails(res.userId.user))
     }
-  }, [ULogged]);
-  // useEffect(()=>{
-  //   let cookieCheck = cookie?.accessToken
-  //   console.log("cookie check lnding page", cookieCheck)
-  //   if(cookieCheck){
-  //     setIsLoggedInState(true)
-  //   }
-  //   else{
-  //     setIsLoggedInState(false)
-  //   }
-  // },[])
+    if(res.isLoggedIn === false){
+      alert(res?.message)
+      navigate('/')
+    }
+  }).catch(err=>{console.log(err)})
+  },[])
+ useEffect(()=>{console.log("Ulogged check", ULogged)},[ULogged])
+  
   return (
     <>
-      {(ULogged?.isLoggedIn && ULogged?.is_engineer === true) ||
-      (ULogged?.isLoggedIn && ULogged?.is_reviewer === true) ||(isLoggedInState) ? (
+      {ULogged?.is_engineer===true || ULogged?.is_reviewer===true ? 
         <>
           <div className="navbarHomePage">
             <div className="leftSideCh">
@@ -185,7 +179,7 @@ export const Navbar = () => {
                 </svg>
               </div>
               <div className="EngReviewer mx-2">
-                {ULogged?.is_engineer === true || isLoggedInState ? (
+                {ULogged?.is_engineer === true  ? (
                   <>
                     <div className="mx-1 pt-2">
                       <svg
@@ -348,7 +342,7 @@ export const Navbar = () => {
             </div>
           </div>
         </>
-      ) : (
+       : 
         <>
           <div className="navbar">
             <div id="itemCompliance">
@@ -375,7 +369,7 @@ export const Navbar = () => {
             </div>
           </div>
         </>
-      )}
+      }
     </>
   );
 };

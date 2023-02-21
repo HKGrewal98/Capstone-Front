@@ -5,7 +5,9 @@ import './NewReport.css'
 export const NewReport=()=>{
 
 return(
+  <div className='custom-nrep-container'>
 <div className="custom">
+<div className='"leftSideNRep'>
 <form className='custom_form'>
 
 <div className="mb-3 customColor">
@@ -39,7 +41,8 @@ return(
   <textarea className="form-control custom_txtbox" id="exampleFormControlTextarea1" placeholder="Review Comments" rows="3"></textarea>
 </div>
 </form>
- 
+ </div>
+ <div className='rightsifeNrep'>
 <form className='custom_form'>
 <div className="mb-3 customColor">
   <label for="productsCovered" className="form-label"> *Products Covered</label> 
@@ -71,12 +74,15 @@ return(
         <p className="drag_text">Max File Size: 25MB: Max Files: 1/Type: .doc,.docx,.xls,.xlsx,.xlsm,.xlsb</p>
     </label>
 </div>
-<button className="btn btn-primary btn_custom" type="submit">SAVE AS DRAFTS</button>
-<button className="btn btn-primary btn_custom1" type="submit">SUBMIT REVIEW</button>
+<div className='custom3btn'>
+<button className="btn btn-primary btn_custom " type="submit">SAVE AS DRAFTS</button>
+<button className="btn btn-primary btn_custom1 mx-2" type="submit">SUBMIT REVIEW</button>
 <button className="btn btn-primary btn_custom2" type="submit">CANCEL</button>
+</div>
 </form>
 </div>
-
+</div>
+</div>
 
     )
 }

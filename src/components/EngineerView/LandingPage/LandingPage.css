@@ -82,3 +82,6 @@
     padding: 0.15rem;
     border: 0;
 }
+.resultCs:hover{
+    text-decoration: underline;
+}

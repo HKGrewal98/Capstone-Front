@@ -27,6 +27,13 @@ export const Login = () => {
  
     
     // console.log(data)
+    var myHeaders = new Headers();
+  myHeaders.append("Content-Type", "application/json");
+  myHeaders.append('Access-Control-Allow-Origin', 'http://localhost:8081')
+  myHeaders.append('Access-Control-Allow-Credentials', true)
+ 
+    
+    // console.log(data)
     
     axios({
   
@@ -36,19 +43,22 @@ export const Login = () => {
         
         data:data, 
         credentials: "include", 
+        withCredentials:true,
          headers: myHeaders,
         
         
         
       }).then(res=>{
         let cookieCheck = cookie?.accessToken
+        console.log(res.headers)
+        console.log(res.config)
       // console.log("res check:",res)
       if(res?.data?.data?.isLoggedIn){
 
-        dispatch(LoginDetails(res.data))
+        dispatch(LoginDetails(res.data?.data))
         navigate('/engineerView/landingPage')
         // console.log("login respose :", res.data)
-        setCookie("accessToken",res?.data?.accessToken,{path:'/'})
+      
       }
       
       }

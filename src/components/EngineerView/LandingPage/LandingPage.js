@@ -5,35 +5,43 @@ import { MyNotificationsBox } from "./MyNotificationsBox";
 import { MyReviewsBox } from "./MyReviewsBox";
 import { ReviewNotificationsBox, ReviewNotificationsTab } from "./ReviewNotificationsBox";
 import "./LandingPage.css";
-import { NavLink } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { useCookies } from "react-cookie";
+import { userLoginCheck } from "../../../helpers/userLoginCheck";
+import { LoginDetails } from "../../Login/LoginReducer/LoginSlice";
 
 export const LandingPage = () => {
   const ULogged = useSelector((state)=>state.Login.value)
-  const [cookie, setCookie, removeCookie] = useCookies(['accessToken']);
-  const [isLoggedInState,setIsLoggedInState] = useState(false)
-
+  const navigate = useNavigate()
+  
+  window.history.pushState(null, null, window.location.href);
+  window.onpopstate = function () {
+      window.history.go(1);
+  }
+  let dispatch = useDispatch()
   useEffect(()=>{
-    let cookieCheck = cookie?.accessToken
-    console.log("cookie check lnding page", cookieCheck)
-    if(cookieCheck){
-      setIsLoggedInState(true)
-    }
-    else{
-      setIsLoggedInState(false)
-    }
-  },[])
+    userLoginCheck().then(res=>{
+     console.log(res)
+     if(res?.userId?.user?.is_engineer===true || res?.userId?.user?.is_reviewer===true){
+       dispatch(LoginDetails(res.userId.user))
+     }
+     if(res.isLoggedIn === false){
+       alert(res?.message)
+       navigate('/')
+     }
+   }).catch(err=>{console.log(err)})
+   },[])
+ 
   return (
     <>
-    {ULogged?.accessToken || isLoggedInState ?
-    <>
-    {ULogged?.is_engineer===true || isLoggedInState ?
+    {ULogged?.is_engineer===true ?
+   
     <>
     <div className="homeBar">
        
-       <NavLink className="leftHBar" to="/landingPage">
+       <NavLink className="leftHBar" to="/engineerView/landingPage">
          <svg
            width="25"
            height="23"
@@ -120,10 +128,10 @@ export const LandingPage = () => {
        <ReviewNotificationsBox />
      </div>
    </div>
-    </>:<>Reviewer</>
+    </>:<>Logged out</>
   }
       
-      </>:"Logged Out / Login Again"}
+     
     </>
   );
 };

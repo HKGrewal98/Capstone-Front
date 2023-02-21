@@ -1,8 +1,18 @@
 import axios from "axios";
 import React from "react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
+import { useState } from "react";
+import { Link } from "react-router-dom";
 
 export const MainSearchBox = () => {
+  const [show, setShow] = useState(false);
+  const [searchResult, setSearchResult] = useState()
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+  
   const {
     register,
     handleSubmit,
@@ -12,24 +22,79 @@ export const MainSearchBox = () => {
   const onSubmit = (data) => {
     console.log(data);
 
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append('Access-Control-Allow-Origin', 'http://localhost:8081')
+    myHeaders.append('Access-Control-Allow-Credentials', true)
+    
+   
+    
     axios({
-      method: "post",
-
-      url: "http://our api",
-
-      data: data,
-      headers: {
-        "content-type": "application/x-www-form-urlencoded;charset=utf-8",
-      },
+      method: 'get',
+      maxBodyLength: Infinity,
+        url: 'http://localhost:8081/project/search',
+        params : {
+          // name:data.name,
+          // id: data.id,
+          projectId: data.projectId,
+          // reportId: data.reportId
+        },
+        headers:myHeaders,
+        credentials: "include", 
+        withCredentials:true,
     })
-      .then((res) => {
-        console.log("hostsignup respose:", res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    .then(function (response) {
+      console.log(response.data);
+      setShow(true)
+      setSearchResult(response.data?.data)
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
   };
+  
+ useEffect(()=>{console.log("search result check", searchResult)},[searchResult])
   return (
+    <>
+    {show?<>
+      <div
+      className="modal show "
+      style={{ display: 'block', position: 'absolute' }}
+    >
+      <Modal show={show} onHide={handleClose} backdrop="static">
+        <Modal.Header>
+          <Modal.Title>Search Results</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {searchResult?.length>0? searchResult.map((data)=>{
+            return(<div key={data?.id}>
+            <div className="d-flex ">
+            <h5 className="mr-3"><b>Company Name</b> : {data?.company_name}</h5>
+            <h5><b>Name</b> : {data?.name}</h5>
+            </div>
+            <div className="text-center" style={{fontSize:"20px"}}><b>Projects</b></div>
+            {data?.projects_fk?.length>0 ? data?.projects_fk.map((project)=>{
+              return(
+              <div className="text-primary my-2 resultCs" style={{cursor:"pointer"}} onClick={()=>{console.log("clicked")}}>
+              <span className="mr-3">Project Number :   {project.project_number}</span>
+              <span>Project Name :  {project.project_name}</span>
+              
+              </div>)
+            }):<p className="text-center">No Projects Yet</p>}
+            </div>
+            )
+          }):"No results"}
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Close
+          </Button>
+        
+        </Modal.Footer>
+      </Modal>
+      </div>
+    </>:""}
+    
     <div className="MainSearchContainer">
       <div>
         <div className="searchHeader mx-4 mt-1 p-3">
@@ -125,7 +190,7 @@ export const MainSearchBox = () => {
                   className="form-control"
                   placeholder="Customer Name"
                   aria-describedby="emailHelp"
-                  {...register("CustomerName")}
+                  {...register("name")}
                 />
               </div>
               <div className="mb-3">
@@ -133,7 +198,7 @@ export const MainSearchBox = () => {
                   type="text"
                   className="form-control"
                   placeholder="Customer Code"
-                  {...register("CustomerCode")}
+                  {...register("id")}
                 />
               </div>
               <div className="mb-3">
@@ -141,7 +206,7 @@ export const MainSearchBox = () => {
                   type="number"
                   className="form-control"
                   placeholder="Report Number"
-                  {...register("ReportNumber", {
+                  {...register("reportId", {
                     valueAsNumber: true,
                   })}
                 />
@@ -154,7 +219,7 @@ export const MainSearchBox = () => {
                   type="number"
                   className="form-control"
                   placeholder="Project Number"
-                  {...register("ProjectNumber", {
+                  {...register("projectId", {
                     valueAsNumber: true,
                   })}
                 />
@@ -173,5 +238,6 @@ export const MainSearchBox = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
