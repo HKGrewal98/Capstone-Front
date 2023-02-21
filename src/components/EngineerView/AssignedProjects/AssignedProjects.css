@@ -1,0 +1,276 @@
+.FormDetails{
+    display: flex;
+    justify-content:space-evenly;
+    
+    border:  solid #afafb1;
+    /* width: 0px; */
+    border-width: 3px;
+    
+    height: 580px; 
+}
+
+
+.CustomFormComtainer
+{padding-left: 10PX; 
+    PADDING-RIGHT: 10px;
+    padding-top: 60px;
+    padding-bottom: 10px;
+    
+}
+
+
+.FormLeft{
+    
+    color:rgba(0, 125, 153, 1);
+  padding-left: 5px;
+  padding-top: 10px;
+  
+}
+
+
+
+
+.w1>input{
+    border-radius: 6px;
+    width: 450px;
+    border-color:
+    rgba(0, 125, 153, 1);
+    
+}
+
+
+
+.w3{  
+ display: flex; 
+}
+
+.w3>input{
+    border-radius: 6px;
+    border-color: 
+    rgba(0, 125, 153, 1);
+    width: 210px; 
+}
+
+
+.w4{
+   
+    padding-left: 30px;
+    
+}
+
+.w4>input{
+    width: 210px;
+    border-radius: 6px;
+    border-color: 
+    rgba(0, 125, 153, 1);
+}
+
+
+
+.lefttb2{
+    display: flex;
+    padding-top: 5px;
+    
+}
+
+.moveright{
+    
+    display: flex;
+    padding-left: 147px;
+}
+
+
+.lefttb3{
+    padding-top: 5px;
+}
+
+.w5>input{
+    border-radius: 6px;
+    width: 330px;
+    border-color: 
+    rgba(0, 125, 153, 1);
+    
+    
+}
+
+.Btnm1{
+    
+    background: rgba(38, 38, 38, 1);
+    color: rgb(252, 249, 247);
+
+}
+
+.w5>.Btnm1{
+    width: 120px;
+}
+
+.lefttb4{
+    padding-top: 5px;
+}
+
+.w6>input{
+    border-radius: 6px;
+    width: 330px;
+    border-color:rgba(0, 125, 153, 1);
+    }
+
+.w6>.Btnm1{
+    width: 120px;
+}
+
+.lefttb5{
+    
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+
+
+
+
+
+
+
+.sam>input{
+   margin-left: -575px; 
+height: 90px; 
+width: 450px;
+border-radius: 6px;
+border-color: rgba(0, 125, 153, 1); 
+margin-bottom: 12px; 
+}
+
+
+
+
+
+.FormRight{
+    color: rgba(0, 125, 153, 1);
+  padding-left: 110px;
+  
+  padding-right: 10px;
+    
+}
+
+
+    
+    
+
+
+.righttb1>section {
+    padding-top: 5px;
+   
+}
+
+.productcovered>input{
+    border-radius: 6px;
+    width: 450px;
+    height: 90px;
+    border-color: rgba(0, 125, 153, 1);
+}
+
+.righttb2{
+  
+    padding-top: 5px;
+}
+
+.models>input{
+    border-radius: 6px;
+    width: 450px;
+   
+    border-color:rgba(0, 125, 153, 1);
+    height: 90px;
+}
+
+
+
+.righttb3{
+    padding-top: 5px;
+    color: rgba(0, 125, 153, 1);
+    display: flex;
+}
+
+.moveright1{
+    padding-left: 143px;
+}
+
+.righttb4>section{
+    padding-top: 5px;
+}
+
+.righttb4{
+    color: rgba(0, 125, 153, 1);
+    display: flex;
+}
+
+.moveright2{
+    padding-top: 5px;
+    padding-left: 109px;
+}
+
+
+
+.moveright3{
+    display: flex;
+}
+
+
+.righttb5{
+    padding-top: 5px;
+    color:rgba(0, 125, 153, 1);
+    display: flex;
+}
+
+
+
+.moveright3{
+    padding-left: 109px;
+}
+
+
+
+
+.finalbuttons{
+  padding-bottom: 100px;
+  padding-right: 20px;
+   display: flex;
+    
+    justify-content: end;
+}
+.finalbuttons>input{
+    border-color: rgba(96, 205, 138, 1);
+  background: rgba(96, 205, 138, 1);  
+    color: rgba(255, 255, 255, 1);
+    margin-right: 1%;
+}
+
+
+.cancel>input{
+    border-color: rgba(38, 38, 38, 1) ;
+    background: rgba(38, 38, 38, 1);
+      color:
+      rgba(187, 186, 168, 1);
+  }
+
+  .assProjectContainer{
+    display: grid;
+    grid-template-columns: 1fr 5fr;
+  }
+  .leftNavAssigned{
+    height: 70vh;
+    background: #FFFFFF;
+border: 1px solid #C3C3C3;
+  }
+  .sideNavContainer{
+    display: flex;
+    align-items: start;
+  }
+
+  .navbarAssignedRight{
+    display: flex;
+    justify-content: space-around;
+    
+    background-color:  
+    #F8F8F8;
+    padding-top: 18px;
+  }
