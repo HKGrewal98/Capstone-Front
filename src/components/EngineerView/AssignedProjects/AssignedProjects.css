@@ -281,3 +281,16 @@ border: 1px solid #C3C3C3;
     border: 0 !important;
     border: 1px solid #007D99 !important;
   }
+
+  .customTableMArgin{
+    margin: 0 !important    ;
+    margin-left: 0.6rem !important;
+    
+  }
+  .custom-debounce-container{
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+  }
+  .createProjectFolderBoxBorder{
+    width: 100%;
+  }

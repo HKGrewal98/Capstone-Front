@@ -8,7 +8,11 @@ return(
   <div className='custom-nrep-container'>
 <div className="custom">
 <div className='"leftSideNRep'>
-<form className='custom_form'>
+<form className='custom_form' style={{
+  display: "flex",
+  flexDirection: "column"
+}}
+    >
 
 <div className="mb-3 customColor">
   <label for="reportNumber" className="form-label"> *Report Number</label>
@@ -66,14 +70,7 @@ return(
     </label>
 
 </div>
-<div className="container">
-    <input type="file" className ="upload_hide" id="uploadCertificate"/>
-    <label for="uploadCertificate" className="upload_label">
-        <button className="choose_file">Drag n' Drop or Browse</button>
-        <i className="fas fa-cloud-upload-alt"/>
-        <p className="drag_text">Max File Size: 25MB: Max Files: 1/Type: .doc,.docx,.xls,.xlsx,.xlsm,.xlsb</p>
-    </label>
-</div>
+
 <div className='custom3btn'>
 <button className="btn btn-primary btn_custom " type="submit">SAVE AS DRAFTS</button>
 <button className="btn btn-primary btn_custom1 mx-2" type="submit">SUBMIT REVIEW</button>

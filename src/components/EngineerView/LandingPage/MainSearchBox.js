@@ -5,23 +5,30 @@ import { useForm } from "react-hook-form";
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export const MainSearchBox = () => {
   const [show, setShow] = useState(false);
   const [searchResult, setSearchResult] = useState()
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-  
+  const navigate = useNavigate()
   const {
     register,
     handleSubmit,
     watch,
     formState: { errors },
   } = useForm();
+  function removeEmptyFields(data) {
+    Object.keys(data).forEach(key => {
+      if (data[key] === '' || data[key] == null || data[key]== NaN) {
+        delete data[key];
+      }
+    });
+  }
   const onSubmit = (data) => {
+    removeEmptyFields(data);
     console.log(data);
-
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
     myHeaders.append('Access-Control-Allow-Origin', 'http://localhost:8081')
@@ -33,12 +40,7 @@ export const MainSearchBox = () => {
       method: 'get',
       maxBodyLength: Infinity,
         url: 'http://localhost:8081/project/search',
-        params : {
-          // name:data.name,
-          // id: data.id,
-          projectId: data.projectId,
-          // reportId: data.reportId
-        },
+        params : data,
         headers:myHeaders,
         credentials: "include", 
         withCredentials:true,
@@ -47,13 +49,26 @@ export const MainSearchBox = () => {
       console.log(response.data);
       setShow(true)
       setSearchResult(response.data?.data)
+      if(response.data?.isLoggedIn == false){
+        alert(response.data?.message)
+        navigate('/')
+      }
     })
     .catch(function (error) {
-      console.log(error);
+      console.log("Error block", error);
+      if(error?.response?.data?.isLoggedIn == false){
+        alert(error?.responsp.data?.message)
+        navigate('/')
+      }
+     
     });
   };
   
  useEffect(()=>{console.log("search result check", searchResult)},[searchResult])
+ const showProject=(project_name)=>{
+  localStorage.setItem("ProjectName",JSON.stringify(project_name))
+  navigate('/engineerView/assignedProjects')
+ }
   return (
     <>
     {show?<>
@@ -66,21 +81,16 @@ export const MainSearchBox = () => {
           <Modal.Title>Search Results</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          {searchResult?.length>0? searchResult.map((data)=>{
-            return(<div key={data?.id}>
-            <div className="d-flex ">
-            <h5 className="mr-3"><b>Company Name</b> : {data?.company_name}</h5>
-            <h5><b>Name</b> : {data?.name}</h5>
+          {searchResult?.length>0? searchResult.map((data, index)=>{
+            return(
+            <div key={index}>
+            <div className="d-flex resultCs" onClick={()=>{
+              showProject(data?.project_name)
+            }}>
+            <p className="mr-3"><b>Project Name</b> : {data?.project_name}</p>
+            <p><b>Project Number</b> : {data?.project_number}</p>
             </div>
-            <div className="text-center" style={{fontSize:"20px"}}><b>Projects</b></div>
-            {data?.projects_fk?.length>0 ? data?.projects_fk.map((project)=>{
-              return(
-              <div className="text-primary my-2 resultCs" style={{cursor:"pointer"}} onClick={()=>{console.log("clicked")}}>
-              <span className="mr-3">Project Number :   {project.project_number}</span>
-              <span>Project Name :  {project.project_name}</span>
-              
-              </div>)
-            }):<p className="text-center">No Projects Yet</p>}
+            
             </div>
             )
           }):"No results"}
@@ -203,29 +213,21 @@ export const MainSearchBox = () => {
               </div>
               <div className="mb-3">
                 <input
-                  type="number"
+                  type="text"
                   className="form-control"
                   placeholder="Report Number"
-                  {...register("reportId", {
-                    valueAsNumber: true,
-                  })}
+                  {...register("reportId")}
                 />
-                {errors.ReportNumber && (
-                  <p style={{ color: "red" }}>Must be a valid number</p>
-                )}
+              
               </div>
               <div className="mb-3">
                 <input
-                  type="number"
+                  type="text"
                   className="form-control"
                   placeholder="Project Number"
-                  {...register("projectId", {
-                    valueAsNumber: true,
-                  })}
+                  {...register("projectId")}
                 />
-                {errors.ProjectNumber && (
-                  <p style={{ color: "red" }}>Must be a valid number</p>
-                )}
+                
               </div>
 
               <div className="LoginForgot text-center pb-3">

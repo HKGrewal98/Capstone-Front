@@ -15,23 +15,19 @@ import { LoginDetails } from "../../Login/LoginReducer/LoginSlice";
 export const LandingPage = () => {
   const ULogged = useSelector((state)=>state.Login.value)
   const navigate = useNavigate()
-  
-  window.history.pushState(null, null, window.location.href);
-  window.onpopstate = function () {
-      window.history.go(1);
-  }
+  const [cookies, setCookie, removeCookie] = useCookies(['connect.sid']);
+ 
   let dispatch = useDispatch()
   useEffect(()=>{
-    userLoginCheck().then(res=>{
-     console.log(res)
-     if(res?.userId?.user?.is_engineer===true || res?.userId?.user?.is_reviewer===true){
-       dispatch(LoginDetails(res.userId.user))
-     }
-     if(res.isLoggedIn === false){
-       alert(res?.message)
-       navigate('/')
-     }
-   }).catch(err=>{console.log(err)})
+   userLoginCheck().then(res=>{console.log("landing page ulog check",res)
+    if(res?.response?.data?.isLoggedIn===false){
+      alert("Login again")
+      navigate('/')
+    }
+  }).catch(err=>{
+    console.log("landing page err ",err)
+    navigate('/')
+   })
    },[])
  
   return (

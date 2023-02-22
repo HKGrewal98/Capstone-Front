@@ -84,4 +84,6 @@
 }
 .resultCs:hover{
     text-decoration: underline;
+    cursor: pointer;
+    color: rgb(50, 50, 249);
 }

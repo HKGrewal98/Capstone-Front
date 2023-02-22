@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Header } from "../Common/Header/Header";
 import ComplianceLogos from "../../images/complianceLogosImage.png";
 import './Login.css'
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { LoginDetails } from "./LoginReducer/LoginSlice";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
@@ -17,6 +17,7 @@ export const Login = () => {
   const [cookie, setCookie, removeCookie] = useCookies(['accessToken']);
   const { register, handleSubmit, watch, formState: { errors } } = useForm();
   
+  const ULogged = useSelector((state)=>state.Login.value)
 
   const onSubmit = data => {
     console.log("Login clicked")
@@ -45,9 +46,7 @@ export const Login = () => {
         credentials: "include", 
         withCredentials:true,
          headers: myHeaders,
-        
-        
-        
+       
       }).then(res=>{
         let cookieCheck = cookie?.accessToken
         console.log(res.headers)
@@ -66,7 +65,9 @@ export const Login = () => {
       
 };
 
- 
+ useEffect(()=>{
+  
+ },[])
 
   return (
     <div className="MainLoginHeader">

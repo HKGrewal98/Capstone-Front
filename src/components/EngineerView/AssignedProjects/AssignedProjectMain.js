@@ -1,22 +1,42 @@
 import React, { useState } from 'react'
-import { Link, NavLink, Outlet } from 'react-router-dom'
+import { Link, NavLink, Outlet, useNavigate } from 'react-router-dom'
 import FolderClosedIcon from '../../../images/folderClosed.gif.png'
 import FolderOpenIcon from '../../../images/folderOpen.gif.png'
 import PlusIcon from '../../../images/plus3.gif.png'
 import MinusIcon from '../../../images/minus5.gif.png'
+import { LoginDetails } from "../../Login/LoginReducer/LoginSlice";
+import { useDispatch } from 'react-redux'
+import { userLoginCheck } from '../../../helpers/userLoginCheck'
+import { useEffect } from 'react'
+
 
 export const AssignedProjectMain = () => {
     const [folderOpen, setFolderOpen] = useState(false)
+  
     let activeStyle = {
       textDecoration: "underline",
     };
     let activeClassName = "underline";
     let passiveClassame = "text-dark"
+    let navigate = useNavigate()
+    let dispatch = useDispatch()
+    useEffect(()=>{
+      userLoginCheck().then(res=>{
+      //  console.log(res)
+       if(res?.userId?.user?.is_engineer===true || res?.userId?.user?.is_reviewer===true){
+         dispatch(LoginDetails(res.userId.user))
+       }
+       if(res.isLoggedIn === false){
+         alert(res?.message)
+         navigate('/')
+       }
+     }).catch(err=>{console.log(err)})
+     },[])
   return (
     <>
      <div className="homeBar">
        
-       <NavLink className="leftHBar" to="/landingPage">
+       <NavLink className="leftHBar" to="">
          <svg
            width="25"
            height="23"
@@ -76,6 +96,7 @@ export const AssignedProjectMain = () => {
             <NavLink to="sample"  className={({ isActive }) =>
               isActive ? activeClassName : passiveClassame
             }>Sample</NavLink>
+           
         </div>
        
    

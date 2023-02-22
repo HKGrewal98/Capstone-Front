@@ -29,7 +29,7 @@ export const Navbar = () => {
       },
     })
       .then((res) => {
-        console.log("logout respose:", res.data);
+        // console.log("logout respose:", res.data);
         if (res?.data?.isLoggedIn===false) {
           dispatch(LoginDetails(res.data));
           removeCookie("accessToken");
@@ -39,14 +39,17 @@ export const Navbar = () => {
       })
       .catch((err) => {
         console.log(err);
-
+        dispatch(LoginDetails({}));
+          removeCookie("accessToken");
+          localStorage.clear()
+        navigate('/')
       });
   };
   const ULogged = useSelector((state) => state.Login.value);
  
   useEffect(()=>{
    userLoginCheck().then(res=>{
-    console.log(res)
+    // console.log(res)
     if(res?.userId?.user?.is_engineer===true || res?.userId?.user?.is_reviewer===true){
       dispatch(LoginDetails(res.userId.user))
     }
@@ -56,7 +59,7 @@ export const Navbar = () => {
     }
   }).catch(err=>{console.log(err)})
   },[])
- useEffect(()=>{console.log("Ulogged check", ULogged)},[ULogged])
+//  useEffect(()=>{console.log("Ulogged check", ULogged)},[ULogged])
   
   return (
     <>

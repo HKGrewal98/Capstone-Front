@@ -4,9 +4,10 @@ import { useDispatch } from 'react-redux';
 import { useForm, SubmitHandler } from "react-hook-form";
 import "./AssignedProjects.css"
 import { NavLink, useNavigate } from 'react-router-dom';
+import debounce from 'debounce'
 
 const CreateProjectFolder = () => {
-  const { register, handleSubmit,getValues , formState: { errors }} = useForm();
+  const { register, handleSubmit,getValues , trigger, formState: { errors }} = useForm();
   const navigate = useNavigate()
   const dispatch = useDispatch()
   // const watchFields = watch(["showAge", "number"])
@@ -49,6 +50,7 @@ const CreateProjectFolder = () => {
   const handleClose = (e)=>{
     e.preventDefault()
     console.log("Close CLicked")
+    navigate('/engineerView/landingPage')
   }
   return (
 
@@ -106,9 +108,37 @@ const CreateProjectFolder = () => {
 
           <div className="lefttb3">
             <section>*Transacting Customer</section>
-            <div className="w5">
-            <input  className='createProjectFolderBoxBorder'type="Text" placeholder="Transacting Customer"  {...register("transacting_customer",{ minLength:2, maxLength: 20 })}></input>
-            <button className="btn btn-dark createProjectFolderBoxBorder" onClick={(e)=>{e.preventDefault()
+            <div className="w5 custom-debounce-container">
+              <div>
+            <input  className='createProjectFolderBoxBorder' type="Text" placeholder="Transacting Customer"  {...register("transacting_customer",{ minLength:2, maxLength: 20 })}
+            onChange={debounce(async (e) => {
+              let str = e.target.value
+              console.log("str check", str)
+              let data={
+                name: str
+              }
+              axios({
+                method: 'get',
+                maxBodyLength: Infinity,
+                  url: 'http://localhost:8081/user/merchant',
+                  params : data,
+                
+                  credentials: "include", 
+                  withCredentials:true,
+              })
+              .then(function (response) {
+                console.log(response.data);
+               
+              })
+              .catch(function (error) {
+                console.log("Error block", error);
+               
+              });
+            }, 800)}
+            ></input>
+            {/* <div className='createProjectFolderBoxBorder'>results</div> */}
+            </div>
+            <button className="btn btn-dark createProjectFolderBoxBorder align-self-start" onClick={(e)=>{e.preventDefault()
             console.log("Find custmer clcik")
             }}>Find Customer</button>
           </div></div>
@@ -116,8 +146,10 @@ const CreateProjectFolder = () => {
 
           <div className="lefttb4">
             <section>*Report Recieving Customer</section>
-            <div className="w6">
+            <div className="w6 custom-debounce-container">
+              <div>
             <input type="Text" className='createProjectFolderBoxBorder' placeholder="Report Receiving Customer"  {...register("receiving_customer",{ minLength:2, maxLength: 20 })} ></input>
+            </div>
             <button className="btn btn-dark createProjectFolderBoxBorder" onClick={(e)=>{e.preventDefault()
             console.log("Find custmer clcik")
             }}>Find Customer</button>
@@ -133,8 +165,8 @@ const CreateProjectFolder = () => {
 
           <div classsname="lefttb6">
             <section> *Description</section>
-           <div className='sam'>
-            <textarea type= "text"  {...register("description",{ minLength:2 })}/> 
+           <div >
+            <textarea className='w-100' type= "text"  {...register("description",{ minLength:2 })}/> 
           </div></div>
 
 
@@ -154,13 +186,13 @@ const CreateProjectFolder = () => {
           <div className="righttb1">
             <section>*Product Covered</section> </div>
             <div className='productcovered'>
-            <input className='createProjectFolderBoxBorder' type="Text"  {...register("product_covered",{ minLength:2 })}  ></input>
+            <textarea className='createProjectFolderBoxBorder' type="Text"  {...register("product_covered",{ minLength:2 })}  ></textarea>
           </div>
 
           <div className="righttb2">
             <section>*Models</section></div>
             <div className='models'>
-            <input className='createProjectFolderBoxBorder' type="Text"  {...register("modals",)}></input>
+            <textarea className='createProjectFolderBoxBorder' type="Text"  {...register("modals",)}></textarea>
           </div>
 
 
@@ -237,3 +269,4 @@ const CreateProjectFolder = () => {
 }
 
 export default CreateProjectFolder
+
