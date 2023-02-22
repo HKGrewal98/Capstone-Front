@@ -21,10 +21,7 @@ export const Login = () => {
 
   const onSubmit = data => {
     console.log("Login clicked")
-    var myHeaders = new Headers();
-  myHeaders.append("Content-Type", "application/json");
-  myHeaders.append('Access-Control-Allow-Origin', 'http://localhost:8081/')
-  myHeaders.append('Access-Control-Allow-Credentials', true)
+   
  
     
     // console.log(data)
@@ -67,6 +64,9 @@ export const Login = () => {
 
  useEffect(()=>{
   
+  if(ULogged?.is_engineer===true){
+    navigate('/engineerView/landingPage')
+  }
  },[])
 
   return (

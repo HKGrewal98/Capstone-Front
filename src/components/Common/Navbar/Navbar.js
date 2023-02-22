@@ -1,11 +1,12 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useCookies } from "react-cookie";
+// import { useCookies } from "react-cookie";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { LoginDetails } from "../../Login/LoginReducer/LoginSlice";
 import "./Navbar.css";
 import { userLoginCheck } from "../../../helpers/userLoginCheck";
+import Cookies from "universal-cookie";
 export const Navbar = () => {
   // const [login, setLogin] = useState(false)
   let dispatch = useDispatch();
@@ -14,33 +15,38 @@ export const Navbar = () => {
 
   const navigate = useNavigate();
 
-  const [cookie, setCookie, removeCookie] = useCookies(["accessToken"]);
+  const cookies = new Cookies()
 
   const Logout = () => {
     console.log("Logout clicked");
-
+     // console.log(data)
+     var myHeaders = new Headers();
+     myHeaders.append("Content-Type", "application/json");
+     myHeaders.append('Access-Control-Allow-Origin', 'http://localhost:8081')
+     myHeaders.append('Access-Control-Allow-Credentials', true)
     axios({
       method: "post",
+      maxBodyLength: Infinity,
 
       url: `http://localhost:8081/user/logout`,
+      credentials: "include", 
+      withCredentials:true,
 
-      headers: {
-        "content-type": "application/json",
-      },
+      headers: myHeaders,
+      
     })
       .then((res) => {
-        // console.log("logout respose:", res.data);
-        if (res?.data?.isLoggedIn===false) {
+       
           dispatch(LoginDetails(res.data));
-          removeCookie("accessToken");
+          cookies.remove('connect.sid');
           localStorage.clear()
           navigate("/");
-        }
+        
       })
       .catch((err) => {
         console.log(err);
         dispatch(LoginDetails({}));
-          removeCookie("accessToken");
+          cookies.remove('connect.sid');
           localStorage.clear()
         navigate('/')
       });
