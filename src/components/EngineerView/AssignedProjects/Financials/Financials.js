@@ -1,6 +1,63 @@
-import React from 'react'
+import axios from 'axios';
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { LoaderStatus } from '../../../Common/LoaderReducer/LoaderSlice';
+import { DeliverablesDetails } from '../Deliverables/DeliverablesReducer/Deliverables';
 
 export const Financials = () => {
+
+  const FinancialsData = useSelector((state) => state.Deliverables.value);
+  const dispatch = useDispatch()
+  const navigate= useNavigate()
+  useEffect(()=>{
+    dispatch(LoaderStatus(true))
+    
+    // let project_name = JSON.parse(localStorage.getItem("ProjectName"))
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append('Access-Control-Allow-Origin', 'http://localhost:8081')
+    myHeaders.append('Access-Control-Allow-Credentials', true)
+   
+      axios({
+        method: 'get',
+        maxBodyLength: Infinity,
+        url: 'http://localhost:8081/project/2897561PF2',
+        headers:myHeaders,
+        credentials: "include", 
+        withCredentials:true,
+          params : {
+            screenId: 2
+          },
+        
+      })
+      .then(function (response) {
+        console.log("Response in Finanacials",response.data);
+        if(response?.data?.data?.project){
+          dispatch(DeliverablesDetails(response?.data?.data))
+          dispatch(LoaderStatus(false))
+        }
+        else{console.log("no projects yet")
+        dispatch(LoaderStatus(false))
+      }
+        
+        if(response.data?.isLoggedIn == false){
+          alert(response.data?.message)
+          dispatch(LoaderStatus(false))
+          navigate('/')
+        }
+      })
+      .catch(function (error) {
+        console.log("Error block", error);
+        if(error?.response?.data?.isLoggedIn == false){
+          alert(error?.responsp.data?.message)
+          dispatch(LoaderStatus(false))
+          navigate('/')
+        }
+       
+      });
+    
+  },[])
   return (
 
     <div>
@@ -26,7 +83,11 @@ export const Financials = () => {
         </tr>
       </thead>
       <tbody>
-        <tr>
+        {FinancialsData?.project && FinancialsData?.report?.length>0 ? <>
+        {FinancialsData.report.map((data)=>{
+          return(
+            <>
+              <tr>
           <th scope="row"></th>
           <td>Quote</td>
           <td>Quote</td>
@@ -74,6 +135,11 @@ export const Financials = () => {
 
         </tr>
         
+            </>
+          )
+        })}
+        </>:""}
+      
       
       </tbody>
     </table>

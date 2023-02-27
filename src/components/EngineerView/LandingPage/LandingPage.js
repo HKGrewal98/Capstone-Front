@@ -11,27 +11,64 @@ import axios from "axios";
 import { useCookies } from "react-cookie";
 import { userLoginCheck } from "../../../helpers/userLoginCheck";
 import { LoginDetails } from "../../Login/LoginReducer/LoginSlice";
+import { LoaderStatus } from "../../Common/LoaderReducer/LoaderSlice";
+import Alert from 'react-bootstrap/Alert';
+import Button from 'react-bootstrap/Button';
 
 export const LandingPage = () => {
   const ULogged = useSelector((state)=>state.Login.value)
   const navigate = useNavigate()
   const [cookies, setCookie, removeCookie] = useCookies(['connect.sid']);
+  const [showGreen, setShowGreen] = useState(false);
+  const [showRed, setShowRed] = useState(false)
+  const [alertValue, setAlertValue] = useState()
  
   let dispatch = useDispatch()
   useEffect(()=>{
-   userLoginCheck().then(res=>{console.log("landing page ulog check",res)
-    if(res?.response?.data?.isLoggedIn===false){
-      alert("Login again")
-      navigate('/')
+    dispatch(LoaderStatus(true))
+   userLoginCheck().then(res=>{
+    console.log("landing page ulog check",res)
+    dispatch(LoaderStatus(false))
+    if(res?.data?.isLoggedIn===false){
+      setShowRed(true)
+      setAlertValue("Session Expire...Please Login Again")
+      // return navigate('/')
     }
   }).catch(err=>{
     console.log("landing page err ",err)
-    navigate('/')
+    return navigate('/')
    })
+ 
+
    },[])
  
   return (
     <>
+    <div className="d-flex justify-content-center">
+     {showGreen?<>
+      <Alert className="col-12 col-md-8 col-lg-6 p-1 d-flex align-items-center justify-content-between" show={showGreen} variant="success" >
+        <p style={{marginBottom:"0"}}>{alertValue}</p>
+        <Button style={{fontSize:"80%"}} onClick={() => 
+          navigate('/engineerView/assignedProjects')
+          } variant="outline-success">
+            Close
+            </Button>
+      </Alert>
+    </>:<>
+    <Alert className="col-12 col-md-8 col-lg-6 p-1 d-flex align-items-center justify-content-between mx-2" show={showRed} variant="danger" >
+        <p style={{marginBottom:"0"}}>{alertValue}</p>
+        <Button style={{fontSize:"80%"}} onClick={() => {
+          setShowRed(false)
+          navigate('/')
+          }} variant="outline-danger" >
+            Close
+            </Button>
+      </Alert>
+      
+      </>
+    
+    }
+    </div>
     {ULogged?.is_engineer===true ?
    
     <>

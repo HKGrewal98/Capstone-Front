@@ -7,14 +7,17 @@ import { LoginDetails } from "./LoginReducer/LoginSlice";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import axios from 'axios'
-import { useCookies } from 'react-cookie';
+
+import Cookies from "universal-cookie";
+
 
 // import {REACT_APP_URL_BACKEND} from process.env;
 
 export const Login = () => {
   let dispatch = useDispatch()
   let navigate = useNavigate()
-  const [cookie, setCookie, removeCookie] = useCookies(['accessToken']);
+  const cookies = new Cookies()
+  
   const { register, handleSubmit, watch, formState: { errors } } = useForm();
   
   const ULogged = useSelector((state)=>state.Login.value)
@@ -45,7 +48,7 @@ export const Login = () => {
          headers: myHeaders,
        
       }).then(res=>{
-        let cookieCheck = cookie?.accessToken
+        // let cookieCheck = cookie?.accessToken
         console.log(res.headers)
         console.log(res.config)
       // console.log("res check:",res)
@@ -63,8 +66,9 @@ export const Login = () => {
 };
 
  useEffect(()=>{
-  
-  if(ULogged?.is_engineer===true){
+  let cookieCheck = cookies.get('connect.sid');
+  console.log("Cookie Check", cookieCheck)
+  if(ULogged?.is_engineer===true || cookieCheck != undefined){
     navigate('/engineerView/landingPage')
   }
  },[])
