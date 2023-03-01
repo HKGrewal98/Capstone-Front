@@ -117,3 +117,45 @@
     margin-top: 0px;
     margin-bottom: 10px;
 }
+
+.custom_standard{
+    font-weight: lighter;
+    font-size: .75rem;
+}
+
+.custom_title{
+    font-weight:Bold;
+    background-color: grey;
+    color: white;
+}
+
+.report_navbar{
+    color: black;
+    font-size: .65rem;
+    font-family: Arial, Helvetica, sans-serif;
+    
+}
+
+.report_icon{
+   margin-left: -15px;
+}
+
+
+.report_td{
+    font-size:.75rem ;
+}
+
+.report_checkbox{
+    margin-right: 10px
+}
+
+.report_hr{
+    color:black;
+    border-top: 1px solid #bbb;
+    width: 1900%;
+}
+
+.modal_btn{
+    font-size: .700rem;
+    border-radius: 0%;
+}
