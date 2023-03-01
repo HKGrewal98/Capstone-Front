@@ -55,16 +55,18 @@ export const Navbar = () => {
  
   useEffect(()=>{
    userLoginCheck().then(res=>{
-    // console.log(res)
+    // console.log("res in navbar",res)
     if(res?.userId?.user?.is_engineer===true || res?.userId?.user?.is_reviewer===true){
       dispatch(LoginDetails(res.userId.user))
     }
-    if(res.isLoggedIn === false){
-      alert(res?.message)
+    if(res.status === 401){
+      cookies.remove('connect.sid')
+          dispatch(LoginDetails({}))
+         localStorage.setItem("AlertMessage", JSON.stringify("Session Expired...Please Login Again"))
       navigate('/')
     }
   }).catch(err=>{
-    console.log(err.response)
+    console.log("error in navbar",err.response)
     
   })
   },[])

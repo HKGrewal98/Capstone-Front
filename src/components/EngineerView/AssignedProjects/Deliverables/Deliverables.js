@@ -4,10 +4,13 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import { DeliverablesDetails } from './DeliverablesReducer/Deliverables'
 import {LoaderStatus} from '../../../Common/LoaderReducer/LoaderSlice'
-
+import Cookies from 'universal-cookie'
+import { LoginDetails } from '../../../Login/LoginReducer/LoginSlice'
 export const Deliverables = () => {
   let navigate = useNavigate()
   const dispatch = useDispatch()
+  const cookies = new Cookies()
+
   const DeliverableMain = useSelector((state) => state.Deliverables.value);
   
   useEffect(()=>{
@@ -40,26 +43,24 @@ export const Deliverables = () => {
         dispatch(LoaderStatus(false))
       }
         
-        if(response.data?.isLoggedIn == false){
-          alert(response.data?.message)
-          dispatch(LoaderStatus(false))
-          navigate('/')
-        }
+      
       })
       .catch(function (error) {
-        console.log("Error block", error);
-        if(error?.response?.data?.isLoggedIn == false){
-          alert(error?.responsp.data?.message)
-          dispatch(LoaderStatus(false))
-          navigate('/')
+        console.log("Error block deliverables", error);
+        if(error?.response?.status===401){
+          dispatch(LoginDetails({}));
+              cookies.remove('connect.sid');
+              localStorage.setItem("AlertMessage", JSON.stringify("Session Expired...Please Login Again"))
+            navigate('/')
         }
+        
        
       });
     
   },[])
-  useEffect(()=>{
-    console.log("Deliverables Data", DeliverableMain)
-  },[DeliverableMain])
+  // useEffect(()=>{
+  //   console.log("Deliverables Data", DeliverableMain)
+  // },[DeliverableMain])
   return (
     <div>
 

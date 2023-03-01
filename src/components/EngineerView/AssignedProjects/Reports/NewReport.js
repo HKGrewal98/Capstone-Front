@@ -8,14 +8,21 @@ import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { LoaderStatus } from '../../../Common/LoaderReducer/LoaderSlice';
 import { useEffect } from 'react';
+import { LoginDetails } from '../../../Login/LoginReducer/LoginSlice';
+import Cookies from "universal-cookie"
+import debounce from 'debounce'
+
 
 export const NewReport=()=>{
   const { register, handleSubmit , formState: { errors }} = useForm();
+  const[searchResults, setSearchResults] = useState([])
+  const[searchResults1, setSearchResults1] = useState([])
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [showGreen, setShowGreen] = useState(false);
   const [showRed, setShowRed] = useState(false)
   const [alertValue, setAlertValue] = useState()
+  const cookies = new Cookies()
   
   const onSubmit = ((data) => {
     let formData = new FormData()
@@ -67,11 +74,14 @@ export const NewReport=()=>{
       }
        
       })
-      .catch(err=>{
-        console.log("Error-",err)
-        dispatch(LoaderStatus(false))
-        setShowRed(true)
-        setAlertValue(err?.data?.message)
+      .catch(error=>{
+        console.log("Error block equipment log", error);
+        if(error?.response?.status===401){
+          dispatch(LoginDetails({}));
+              cookies.remove('connect.sid');
+              localStorage.setItem("AlertMessage", JSON.stringify("Session Expired...Please Login Again"))
+            navigate('/')
+        }
       })
     
   });
@@ -124,9 +134,60 @@ return(
 </div>
 <div className="mb-3 customColor">
   <label htmlFor="receivingContacts" className="form-label"> *Receiving Customer</label>
-  <input type="receivingContacts" className="form-control custom_txtbox" id="receivingContacts" placeholder="Choose a receiving contact" {...register("receiving_customer",{ required: true})}/>
-</div>
+  <div className='parentSearchResult'>
+  <input type="receivingContacts" className="form-control custom_txtbox" id="receiving_customer" placeholder="Choose a receiving contact" {...register("receiving_customer",{ required: true})} 
+  onChange={debounce(async (e) => {
+    let str = e.target.value
+    console.log("str check", str)
+    let data={
+      name: str
+    }
+    axios({
+      method: 'get',
+      maxBodyLength: Infinity,
+        url: 'http://localhost:8081/user/search',
+        params : data,
+      
+        credentials: "include", 
+        withCredentials:true,
+    })
+    .then(function (response) {
+      console.log(response.data);
+      if(response.data?.data.length>0){
 
+        setSearchResults1(response.data?.data)
+      }
+      else{
+        setSearchResults1([])
+      }
+     
+    })
+    .catch(function (error) {
+      console.log("Error block", error);
+     
+    });
+  }, 800)}
+  />
+  <div className='searchResultsContainer'>
+            {searchResults1?.length>0? 
+              <div className='searchResults'>
+            {searchResults1?.length>0? searchResults1.map((result)=>{
+             
+                
+                return <div key={result?.id} className='searchItem' onClick={()=>{
+                  document.getElementById("receiving_customer").value = result.id;
+                  document.getElementById("receiving_customer").focus();
+                  setSearchResults1([])
+                }}>{result?.id}- {result?.name}</div>
+                
+              
+            }):""
+          }</div>:""}
+          </div>
+
+</div>
+</div>
+ 
 <div>
     <label className="custom_label">Report Standards</label><br></br>
     <label className="custom_label1">*Click(+) to add some Standards</label>

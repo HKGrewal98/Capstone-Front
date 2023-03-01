@@ -17,7 +17,7 @@ export const MyNotificationsBox = () => {
     axios({
      method:'get',
      maxBodyLength: Infinity,
-     url: 'http://localhost:8081/project/notification/engineer',
+     url: 'http://localhost:8081/project/notifications',
      headers:myHeaders
     }).then(res=>{
     //  dispatch(LoaderStatus(false))
@@ -27,7 +27,7 @@ export const MyNotificationsBox = () => {
     }
    })
     .catch(err=>{
-     console.log("error mynotification box",err)
+     console.log("error mynotification box  ",err)
     })
   },[])
   return (
