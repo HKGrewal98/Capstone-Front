@@ -18,6 +18,8 @@ export const MyReviewsBox = () => {
      method:'get',
      maxBodyLength: Infinity,
      url: 'http://localhost:8081/report',
+     credentials: "include", 
+     withCredentials:true,
      headers:myHeaders
     }).then(res=>{
     //  dispatch(LoaderStatus(false))
