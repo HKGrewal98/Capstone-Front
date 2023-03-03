@@ -102,12 +102,11 @@ const CreateProjectFolder = () => {
           <div className="lefttb2"> 
           <section>*Project Type</section>
           <div className='moveright'>
-          <section > *Project Number</section></div></div>
+          </div></div>
           
           <div className="w3">
           <input className='createProjectFolderBoxBorder'  type="Text" placeholder="Enter Project Type" {...register("project_type")}></input>
-          <div className='w4'>
-          <input className='createProjectFolderBoxBorder' type="Text"  placeholder="Enter Project Number"  {...register("project_number",{ minLength:2, maxLength: 20 })}></input></div></div>
+         </div>
           
         
          
