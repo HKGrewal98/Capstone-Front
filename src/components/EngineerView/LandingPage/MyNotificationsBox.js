@@ -17,13 +17,13 @@ export const MyNotificationsBox = () => {
     axios({
      method:'get',
      maxBodyLength: Infinity,
-     url: 'http://localhost:8081/project/notification/engineer',
+     url: 'http://localhost:8081/project/notifications',
      credentials: "include", 
      withCredentials:true,
      headers:myHeaders
     }).then(res=>{
     //  dispatch(LoaderStatus(false))
-    //  console.log("response form MyNotifications Box", res.data)
+     console.log("response form MyNotifications Box", res.data)
     if(res?.data?.data?.length>0){
        setNotificationData(res?.data?.data)
     }
