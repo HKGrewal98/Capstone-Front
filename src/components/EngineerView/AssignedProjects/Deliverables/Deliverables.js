@@ -30,6 +30,7 @@ export const Deliverables = () => {
     }
   }
   useEffect(()=>{
+    if(!DeliverableMain?.project){
     dispatch(LoaderStatus(true))
     // let project_name = JSON.parse(localStorage.getItem("ProjectName"))
     var myHeaders = new Headers();
@@ -73,8 +74,11 @@ export const Deliverables = () => {
         
        
       });
-    
+    }
   },[])
+  // useEffect(()=>{
+  //   console.log("Del main", DeliverableMain)
+  // },[DeliverableMain])
 
   
   return (
@@ -108,10 +112,10 @@ export const Deliverables = () => {
 
   
   
-    {DeliverableMain?.project && DeliverableDataState?.length>0 ? <>
+    {DeliverableMain?.project && DeliverableMain?.reports.length>0 ? <>
       <tbody>
         
-    {DeliverableDataState.slice((arrayPageState-1)*4,arrayPageState* 4).map((report)=>{
+    {DeliverableMain.reports.slice((arrayPageState-1)*4,arrayPageState* 4).map((report)=>{
       return(
         <tr key={report?.file_id}>
       <td>{report?.report_created_at.slice(0,10)}</td>

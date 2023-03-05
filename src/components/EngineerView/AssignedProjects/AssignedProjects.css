@@ -263,10 +263,7 @@ border-radius: 6px;
     background: #FFFFFF;
 border: 1px solid #C3C3C3;
   }
-  .sideNavContainer{
-    display: flex;
-    align-items: start;
-  }
+ 
 
   .navbarAssignedRight{
     display: flex;
@@ -316,4 +313,23 @@ border: 1px solid #C3C3C3;
 
     color: blue;
     cursor:pointer
+  }
+  .projectListsParent{
+    display: flex   ;
+  }
+
+  .mainProjectsParent{
+    display: flex;
+  }
+  .projectListsParent{
+    cursor: pointer;
+    margin-left: 1rem;
+  }
+  .assignedProjectsParent ,.recentProjectsParent{
+    display: flex;
+    cursor: pointer;
+    margin-left: 2rem;
+  }
+  .recentprojectsinnermost, .assignedprojectsinnermost{
+    margin-left: 4.5rem;
   }

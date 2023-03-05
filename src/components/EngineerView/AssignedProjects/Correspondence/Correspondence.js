@@ -35,14 +35,16 @@ export const Correspondence = () => {
 
 
   useEffect(() => {
-    dispatch(LoaderStatus(true));
 
     // let project_name = JSON.parse(localStorage.getItem("ProjectName"))
-    var myHeaders = new Headers();
+    if(!CorrespondentsData?.project){
+    dispatch(LoaderStatus(true));
+
+        var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
     myHeaders.append("Access-Control-Allow-Origin", "http://localhost:8081");
     myHeaders.append("Access-Control-Allow-Credentials", true);
-
+  
     axios({
       method: "get",
       maxBodyLength: Infinity,
@@ -77,6 +79,8 @@ export const Correspondence = () => {
         }
       
       });
+    }
+  
   }, []);
   return (
     <div>

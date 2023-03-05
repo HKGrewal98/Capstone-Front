@@ -11,7 +11,10 @@ import { useEffect } from 'react'
 
 
 export const AssignedProjectMain = () => {
-    const [folderOpen, setFolderOpen] = useState(false)
+    const [projectsOpen, setProjectsOpen] = useState(false)
+    const [projectListsOpen, setProjectListsOpen] = useState(false)
+    const [recentProjectsOpen, setRecentProjectsOpen] = useState(false)
+    const [assignedProjectsOpen, setAssignedProjectsOpen] = useState(false)
   
     let activeStyle = {
       textDecoration: "underline",
@@ -32,6 +35,9 @@ export const AssignedProjectMain = () => {
        }
      }).catch(err=>{console.log(err)})
      },[])
+    //  useEffect(()=>{
+    //   console.log("States","projectListsOpen",projectListsOpen,"projectsOpen",projectsOpen)
+    //  },[projectListsOpen,projectsOpen])
   return (
     <>
      <div className="homeBar">
@@ -57,8 +63,9 @@ export const AssignedProjectMain = () => {
    </div>
    <div className='assProjectContainer'>
     <div className='leftNavAssigned'>
-        <div className='sideNavContainer' style={{cursor:"pointer"}} onClick={()=>{setFolderOpen(!folderOpen)}}>
-            {folderOpen?<>
+        <div className='sideNavContainer' >
+          <div className='mainProjectsParent' style={{cursor:"pointer"}} onClick={()=>{setProjectsOpen(!projectsOpen)}}>
+            {projectsOpen?<>
             <img src = {MinusIcon} />
             <img src={FolderOpenIcon}></img>
             </>:<>
@@ -66,12 +73,65 @@ export const AssignedProjectMain = () => {
             <img src={FolderClosedIcon} />
             </>}
            
-            <div className='Projects'><b>Projects</b>
+            <div className='Projects'><b>Projects</b></div>
+            </div>
+            {projectsOpen ? <>
+            <div className='projectListsParent' onClick={()=>{setProjectListsOpen(!projectListsOpen)}}>
+            {projectListsOpen?<>
+            <img src = {MinusIcon} />
+            <img src={FolderOpenIcon}></img>
+            </>:<>
+            <img src={PlusIcon} />
+            <img src={FolderClosedIcon} />
+            </>}
+             <div> Project Lists
+              </div>
+             </div>
+             {projectListsOpen ? <>
+              <div className='recentProjectsParent'  onClick={()=>{setRecentProjectsOpen(!recentProjectsOpen)}}>
+              {recentProjectsOpen?<>
+            <img style={{alignSelf:"start"}} src = {MinusIcon} />
+            <img style={{alignSelf:"start"}} src={FolderOpenIcon}></img>
+            </>:<>
+            <img style={{alignSelf:"start"}} src={PlusIcon} />
+            <img style={{alignSelf:"start"}} src={FolderClosedIcon} />
+            </>}
+              
+                  <div>Recent Projects
+               
+                </div>
+                </div>
+                {recentProjectsOpen? <div className='recentprojectsinnermost'>
+                  <div>Project 1</div>
+                  <div>Project 2</div>
+                  <div>Project 3</div>
+                </div>:""}
+              <div className='assignedProjectsParent'  onClick={()=>{setAssignedProjectsOpen(!assignedProjectsOpen)}}>
+              {assignedProjectsOpen?<>
+            <img src = {MinusIcon} />
+            <img src={FolderOpenIcon}></img>
+            </>:<>
+            <img src={PlusIcon} />
+            <img src={FolderClosedIcon} />
+            </>}
+                <div>Assigned Projects</div>
+                
+                </div>
+             </>:""}
+            
+
+
+            </>:""}
+            {assignedProjectsOpen? <div className='assignedprojectsinnermost'>
+                  <div>Project 1</div>
+                  <div>Project 2</div>
+                  <div>Project 3</div>
+                </div>:""}
 
             </div>
            
            
-        </div>
+        
     </div>
     <div className='rightAssigned'>
         <div className='navbarAssignedRight'>

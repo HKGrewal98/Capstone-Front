@@ -15,6 +15,9 @@ export const Details = () => {
     const DetailsMain = useSelector((state) => state.Deliverables.value);
     
     useEffect(()=>{
+      if(!DetailsMain?.project){
+
+      
       dispatch(LoaderStatus(true))
       // let project_name = JSON.parse(localStorage.getItem("ProjectName"))
       var myHeaders = new Headers();
@@ -60,7 +63,7 @@ export const Details = () => {
           }
          
         });
-      
+      }
     },[])
   
   return (

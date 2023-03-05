@@ -9,13 +9,32 @@ import axios from "axios";
 import { useEffect } from "react";
 import { LoginDetails } from "../../../Login/LoginReducer/LoginSlice";
 import Cookies from 'universal-cookie'
+import { useState } from "react";
 export const EquipmentLog = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const EquipmentLogData = useSelector((state) => state.Deliverables.value);
   const cookies = new Cookies()
+  const [arrayPageState, setArrayPageState] = useState(1)
 
+
+  const nextPage = ()=>{
+    let max = Math.ceil(EquipmentLogData?.reports?.length/4)
+    // console.log("Max", max)
+    if(arrayPageState<max){
+
+      setArrayPageState(arrayPageState+1)
+    }
+  }
+  const prevPage = ()=>{
+    if(arrayPageState>1){
+
+      setArrayPageState(arrayPageState-1)
+    }
+  }
   useEffect(() => {
+    if(!EquipmentLogData?.project){
+
     dispatch(LoaderStatus(true));
 
     // let project_name = JSON.parse(localStorage.getItem("ProjectName"))
@@ -56,6 +75,7 @@ export const EquipmentLog = () => {
             navigate('/')
         }
       });
+    }
   }, []);
 
   return (
@@ -64,7 +84,7 @@ export const EquipmentLog = () => {
         <button>ADD DOCUMENT</button>
       </div>
 
-      <table className="table customTableMArgin">
+      <table className="table customTableMArgin" style={{fontSize:"0.7rem"}}>
         <thead>
           <tr>
             <th scope="col" style={{width:"120px"}}>Date created</th>
@@ -82,7 +102,7 @@ export const EquipmentLog = () => {
         <tbody>
           {EquipmentLogData?.project && EquipmentLogData.reports?.length > 0 ? (
             <>
-              {EquipmentLogData?.reports.map((data) => {
+              {EquipmentLogData?.reports.slice((arrayPageState-1)*4,arrayPageState* 4).map((data) => {
                 return (
                   <tr key={data?.file_id}>
                     <th>{data?.report_created_at}</th>
@@ -248,6 +268,10 @@ export const EquipmentLog = () => {
           )}
         </tbody>
       </table>
+      {EquipmentLogData?.reports?.length>4 ? <div className='d-flex justify-content-center'>
+      <button className='btn customDC-color m-2' onClick={prevPage}>Previous Page</button>
+      <button className='btn customDC-color m-2' onClick={nextPage}>Next Page</button>
+      </div>:""}  
     </div>
   );
 };

@@ -34,6 +34,7 @@ export const Financials = () => {
 
 
   useEffect(()=>{
+    if(!FinancialsData?.project){
     dispatch(LoaderStatus(true))
     
     // let project_name = JSON.parse(localStorage.getItem("ProjectName"))
@@ -76,7 +77,7 @@ export const Financials = () => {
         }
        
       });
-    
+    }
   },[])
   return (
 

@@ -202,3 +202,14 @@
     font-size: .700rem;
     border-radius: 0%;
 }
+
+.reportStandardIcon{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    height: 1.5rem;
+    width: 1.5rem;
+    border-radius: 0.85rem;
+    background-color: #ececec;
+}

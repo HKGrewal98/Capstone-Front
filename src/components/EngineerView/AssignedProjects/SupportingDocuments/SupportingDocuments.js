@@ -8,15 +8,34 @@ import axios from 'axios';
 import { useEffect } from 'react';
 import { LoginDetails } from '../../../Login/LoginReducer/LoginSlice';
 import Cookies from 'universal-cookie'
+import { useState } from 'react';
+
 
 export const SupportingDocuments = () => {
   const cookies = new Cookies()
   const dispatch = useDispatch()
   const navigate= useNavigate()
+  const [arrayPageState, setArrayPageState] = useState(1)
+
   const SupportingDocumentsData = useSelector((state) => state.Deliverables.value);
-  
+  const nextPage = ()=>{
+    let max = Math.ceil(SupportingDocumentsData?.reports?.length/4)
+    // console.log("Max", max)
+    if(arrayPageState<max){
+
+      setArrayPageState(arrayPageState+1)
+    }
+  }
+  const prevPage = ()=>{
+    if(arrayPageState>1){
+
+      setArrayPageState(arrayPageState-1)
+    }
+  }
+
 
   useEffect(()=>{
+    if(!SupportingDocumentsData?.project){
     dispatch(LoaderStatus(true))
     
     // let project_name = JSON.parse(localStorage.getItem("ProjectName"))
@@ -59,7 +78,7 @@ export const SupportingDocuments = () => {
        
        
       });
-    
+    }
   },[])
 
   return (
@@ -89,7 +108,7 @@ export const SupportingDocuments = () => {
   <tbody>
    
       {SupportingDocumentsData?.project && SupportingDocumentsData?.reports.length>0 ? <>
-      {SupportingDocumentsData.reports.map(data=>{
+      {SupportingDocumentsData.reports.slice((arrayPageState-1)*4,arrayPageState* 4).map((data)=>{
         return(
           <tr key={data?.file_id}>
                 <td>{data?.report_created_at.slice(0,10)}</td>
@@ -155,6 +174,10 @@ export const SupportingDocuments = () => {
    
   </tbody>
 </table>
+{SupportingDocumentsData?.reports?.length>4 ? <div className='d-flex justify-content-center'>
+      <button className='btn customDC-color m-2' onClick={prevPage}>Previous Page</button>
+      <button className='btn customDC-color m-2' onClick={nextPage}>Next Page</button>
+      </div>:""}  
 
 
 
