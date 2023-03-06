@@ -12,7 +12,7 @@ export const Header = () => {
         <img
           style={{ width: "169px", height: "79px" ,cursor:"pointer"}}
           src={dailyComplianceLogo}
-          onClick={()=>navigate('/engineerView/landingPage')}
+          onClick={()=>navigate('/view/landingPage')}
         />
         </div>
         <div>

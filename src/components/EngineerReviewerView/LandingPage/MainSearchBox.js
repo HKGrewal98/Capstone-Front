@@ -9,6 +9,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Cookies from 'universal-cookie'
 import { useDispatch } from "react-redux";
 import { LoginDetails } from "../../Login/LoginReducer/LoginSlice";
+import {ProjectNumber} from "../AssignedProjects/Deliverables/DeliverablesReducer/ProjectNumber";
 
 export const MainSearchBox = () => {
   const [show, setShow] = useState(false);
@@ -74,9 +75,10 @@ export const MainSearchBox = () => {
   };
   
 //  useEffect(()=>{console.log("search result check", searchResult)},[searchResult])
- const showProject=(project_name)=>{
-  localStorage.setItem("ProjectName",JSON.stringify(project_name))
-  navigate('/engineerView/assignedProjects')
+ const showProject=(data)=>{
+  console.log("Project number check main search box" , data)
+  dispatch(ProjectNumber(data))
+  navigate('/view/assignedProjects')
  }
   return (
     <>
@@ -94,7 +96,7 @@ export const MainSearchBox = () => {
             return(
             <div key={index}>
             <div className="d-flex resultCs" onClick={()=>{
-              showProject(data?.project_name)
+              showProject(data)
             }}>
             <p className="mr-3"><b>Project Name</b> : {data?.project_name}</p>
             <p><b>Project Number</b> : {data?.project_number}</p>

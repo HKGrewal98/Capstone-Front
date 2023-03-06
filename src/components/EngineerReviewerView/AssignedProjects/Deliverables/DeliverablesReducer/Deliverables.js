@@ -10,8 +10,9 @@ export const DeliverablesSlice = createSlice({
     reducers:{
         DeliverablesDetails: (state,action)=>{
             state.value = action.payload
-        }
+        },
     }
+      
 })
 
 export const {DeliverablesDetails} = DeliverablesSlice.actions

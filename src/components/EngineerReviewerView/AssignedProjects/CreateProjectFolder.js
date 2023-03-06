@@ -36,7 +36,7 @@ const CreateProjectFolder = () => {
       console.log(JSON.stringify(response.data));
       if(response.data.statusCode===200){
         alert("success")
-        navigate('/engineerView/assignedProjects')
+        navigate('/view/assignedProjects')
       }
       else if (response.data.isLoggedIn==="false"){
         alert(response.data.message)
@@ -53,7 +53,7 @@ const CreateProjectFolder = () => {
   const handleClose = (e)=>{
     e.preventDefault()
     console.log("Close CLicked")
-    navigate('/engineerView/landingPage')
+    navigate('/view/landingPage')
   }
   useEffect(()=>{
     console.log("search results check", searchResults)

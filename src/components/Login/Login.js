@@ -59,7 +59,7 @@ export const Login = () => {
       if(res?.data?.data?.isLoggedIn){
 
         dispatch(LoginDetails(res.data?.data))
-        navigate('/engineerView/landingPage')
+        navigate('/view/landingPage')
         // console.log("login respose :", res.data)
       
       }
@@ -74,7 +74,7 @@ export const Login = () => {
   let cookieCheck = cookies.get('connect.sid');
   // console.log("Cookie Check", cookieCheck)
   if(ULogged?.is_engineer===true || cookieCheck != undefined){
-    navigate('/engineerView/landingPage')
+    navigate('/view/landingPage')
   }
   let AlertMessage = JSON.parse(localStorage.getItem("AlertMessage"))
   if(AlertMessage != undefined){

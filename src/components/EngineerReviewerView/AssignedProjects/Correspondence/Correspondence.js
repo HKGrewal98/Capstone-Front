@@ -1,25 +1,26 @@
 import React from "react";
-import "./EquipmentLog.css";
-
 import { LoaderStatus } from "../../../Common/LoaderReducer/LoaderSlice";
 import { DeliverablesDetails } from "../Deliverables/DeliverablesReducer/Deliverables";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useEffect } from "react";
-import { LoginDetails } from "../../../Login/LoginReducer/LoginSlice";
 import Cookies from 'universal-cookie'
+import LoginDetails from "../../../Login/LoginReducer/LoginSlice"
 import { useState } from "react";
-export const EquipmentLog = () => {
+
+export const Correspondence = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const EquipmentLogData = useSelector((state) => state.Deliverables.value);
-  const cookies = new Cookies()
   const [arrayPageState, setArrayPageState] = useState(1)
+
+  const cookies = new Cookies()
+  const CorrespondentsData = useSelector((state) => state.Deliverables.value);
+  const ProjectNumberRedux = useSelector((state) => state.ProjectNumberDetails.value.project_number);
 
 
   const nextPage = ()=>{
-    let max = Math.ceil(EquipmentLogData?.reports?.length/4)
+    let max = Math.ceil(CorrespondentsData?.reports?.length/4)
     // console.log("Max", max)
     if(arrayPageState<max){
 
@@ -32,88 +33,105 @@ export const EquipmentLog = () => {
       setArrayPageState(arrayPageState-1)
     }
   }
-  useEffect(() => {
-    if(!EquipmentLogData?.project){
+  var myHeaders = new Headers();
+  myHeaders.append("Content-Type", "application/json");
+  myHeaders.append("Access-Control-Allow-Origin", "http://localhost:8081");
+  myHeaders.append("Access-Control-Allow-Credentials", true);
 
-    dispatch(LoaderStatus(true));
+const getCorrespondence = ()=>{
+  if(ProjectNumberRedux !== undefined){
+    
+  dispatch(LoaderStatus(true));
+  axios({
+    method: "get",
+    maxBodyLength: Infinity,
+    url: `http://localhost:8081/project/${ProjectNumberRedux}`,
+    headers: myHeaders,
+    credentials: "include",
+    withCredentials: true,
+    params: {
+      screenId: 12,
+    },
+  })
+    .then(function (response) {
+      // console.log("Response in Correspondents", response.data);
+      if (response?.data?.data?.project) {
+        dispatch(DeliverablesDetails(response?.data?.data));
+        localStorage.setItem("PrevProjectNumber", JSON.stringify(response?.data?.data?.project?.project_number))
+        dispatch(LoaderStatus(false));
+      } else {
+        console.log("no projects yet");
+        dispatch(LoaderStatus(false));
+      }
+
+    })
+    .catch(function (error) {
+      console.log("Error block correspondence", error);
+      // dispatch(LoaderStatus(false))
+      if(error?.response?.status===401){
+        console.log("inside 401 correspondence")
+        cookies.remove('connect.sid');
+        localStorage.setItem("AlertMessage", JSON.stringify("Session Expired...Please Login Again"))
+        // dispatch(LoginDetails({}));
+          navigate('/')
+      }
+    
+    });
+  }
+  
+}
+useEffect(()=>{
+  let prevProjectNumber = JSON.parse(localStorage.getItem("PrevProjectNumber"))
+  if(prevProjectNumber != ProjectNumberRedux){
+  getCorrespondence()
+  }
+},[ProjectNumberRedux])
+
+
+  useEffect(() => {
 
     // let project_name = JSON.parse(localStorage.getItem("ProjectName"))
-    var myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
-    myHeaders.append("Access-Control-Allow-Origin", "http://localhost:8081");
-    myHeaders.append("Access-Control-Allow-Credentials", true);
-
-    axios({
-      method: "get",
-      maxBodyLength: Infinity,
-      url: "http://localhost:8081/project/2897561PF2",
-      headers: myHeaders,
-      credentials: "include",
-      withCredentials: true,
-      params: {
-        screenId: 4,
-      },
-    })
-      .then(function (response) {
-        // console.log("Response in Equipment Log", response.data);
-        if (response?.data?.data?.project) {
-          dispatch(DeliverablesDetails(response?.data?.data));
-          dispatch(LoaderStatus(false));
-        } else {
-          console.log("no projects yet");
-          dispatch(LoaderStatus(false));
-        }
-
-      
-      })
-      .catch(function (error) {
-        console.log("Error block equipment log", error);
-        if(error?.response?.status===401){
-          dispatch(LoginDetails({}));
-              cookies.remove('connect.sid');
-              localStorage.setItem("AlertMessage", JSON.stringify("Session Expired...Please Login Again"))
-            navigate('/')
-        }
-      });
+    if(!CorrespondentsData?.project){
+   
+      getCorrespondence()
     }
+  
   }, []);
-
   return (
     <div>
       <div className="Adddocument">
         <button>ADD DOCUMENT</button>
       </div>
 
-      <table className="table customTableMArgin" style={{fontSize:"0.7rem"}}>
+      <table className="table customTableMArgin">
         <thead>
           <tr>
-            <th scope="col" style={{width:"120px"}}>Date created</th>
-            <th scope="col" style={{width:"120px"}}>Record Name</th>
-            <th scope="col" style={{width:"120px"}}>Record Type</th>
-            <th scope="col" style={{width:"120px"}}>Project Number</th>
-            <th scope="col" style={{width:"120px"}}>Project Name</th>
-            <th scope="col" style={{width:"120px"}}>Description</th>
-            <th scope="col" style={{width:"120px"}}>Responsibility</th>
-            <th scope="col" style={{width:"120px"}}>Work Order</th>
+            <th scope="col" style={{width:"125px"}}>Date created</th>
+            <th scope="col" style={{width:"125px"}}>Record Name</th>
+            <th scope="col" style={{width:"125px"}}>Record Type</th>
+            <th scope="col" style={{width:"125px"}}>Project Number</th>
+            <th scope="col" style={{width:"125px"}}>Project Name</th>
+            <th scope="col" style={{width:"125px"}}>Description</th>
+            <th scope="col" style={{width:"125px"}}>Responsibility</th>
+            <th scope="col" style={{width:"125px"}}>Work Order</th>
             <th scope="col"></th>
           </tr>
         </thead>
 
         <tbody>
-          {EquipmentLogData?.project && EquipmentLogData.reports?.length > 0 ? (
+          {CorrespondentsData?.project && CorrespondentsData?.reports ? (
             <>
-              {EquipmentLogData?.reports.slice((arrayPageState-1)*4,arrayPageState* 4).map((data) => {
+              {CorrespondentsData?.reports.slice((arrayPageState-1)*4,arrayPageState*4).map((data) => {
                 return (
                   <tr key={data?.file_id}>
-                    <th>{data?.report_created_at}</th>
+                    <th><b>{data?.report_created_at.slice(0,10)}</b></th>
                     <td>{data?.original_file_name}</td>
-                    <td>{data?.file_sub_type}</td>
-                    <td>{EquipmentLogData?.project?.project_number}</td>
-                    <td>{EquipmentLogData?.project?.project_name}</td>
-                    <td>{EquipmentLogData?.project?.description}</td>
+                    <td>{data?.file_type}</td>
+                    <td>{CorrespondentsData?.project?.project_number}</td>
+                    <td>{CorrespondentsData?.project?.project_name}</td>
+                    <td>{CorrespondentsData?.project?.description}</td>
                     <td>{data?.reviewer_id}</td>
                     <td>{data?.tags}</td>
-                    
                     <td>
                       <svg
                         className="m-1"
@@ -122,13 +140,15 @@ export const EquipmentLog = () => {
                         viewBox="0 0 20 17"
                         fill="none"
                         xmlns="http://www.w3.org/2000/svg"
-                       style={{cursor:"pointer"}} 
-                       onClick={()=>{
+                      style={{cursor:"pointer"}}
+                      onClick={()=>{
+                        
                         window.open(
                           `http://localhost:8081/report/download/${data?.file_id}`
                         )
+                         
                     }}
-                       >
+                      >
                         <path
                           d="M19 11V14.3333C19 14.7754 18.7893 15.1993 18.4142 15.5118C18.0391 15.8244 17.5304 16 17 16H3C2.46957 16 1.96086 15.8244 1.58579 15.5118C1.21071 15.1993 1 14.7754 1 14.3333V11"
                           stroke="#007D99"
@@ -190,6 +210,43 @@ export const EquipmentLog = () => {
                         viewBox="0 0 20 20"
                         fill="none"
                         xmlns="http://www.w3.org/2000/svg"
+                        style={{ cursor: "pointer" }}
+                        onClick={() => {
+                          var myHeaders = new Headers();
+                          myHeaders.append("Content-Type", "application/json");
+                          myHeaders.append("Access-Control-Allow-Origin", "http://localhost:8081");
+                          myHeaders.append("Access-Control-Allow-Credentials", true);
+                        
+                          axios({
+                            method: 'put',
+                            maxBodyLength: Infinity,
+                            url: 'http://localhost:8081/report/delete',
+                            headers:myHeaders,
+                            credentials: "include", 
+                            withCredentials:true,
+                              data : {
+                                doc_id:data?.file_id,
+                                report_id: data?.report_number
+                              },
+                            
+                          })
+                          .then(function (response) {
+                            // console.log("Response From Delete in correspondence",response.data)  
+                            getCorrespondence()  
+                          
+                          })
+                          .catch(function (error) {
+                            console.log("Error block delete teport", error);
+                            if(error?.response?.status===401){
+                              dispatch(LoginDetails({}));
+                                  cookies.remove('connect.sid');
+                                  localStorage.setItem("AlertMessage", JSON.stringify("Session Expired...Please Login Again"))
+                                navigate('/')
+                            }
+                            
+                           
+                          });
+                        }}
                       >
                         <path
                           d="M2.5 5H17.5"
@@ -235,7 +292,8 @@ export const EquipmentLog = () => {
                         viewBox="0 0 21 21"
                         fill="none"
                         xmlns="http://www.w3.org/2000/svg"
-                      >
+                        style={{cursor:"pointer"}}
+                        onClick={()=>navigate('/view/viewReport')}>
                         <path
                           d="M15.25 10.9583V15.9583C15.25 16.4004 15.0744 16.8243 14.7618 17.1368C14.4493 17.4494 14.0254 17.625 13.5833 17.625H4.41667C3.97464 17.625 3.55072 17.4494 3.23816 17.1368C2.92559 16.8243 2.75 16.4004 2.75 15.9583V6.79167C2.75 6.34964 2.92559 5.92572 3.23816 5.61316C3.55072 5.30059 3.97464 5.125 4.41667 5.125H9.41667"
                           stroke="#007D99"
@@ -268,9 +326,9 @@ export const EquipmentLog = () => {
           )}
         </tbody>
       </table>
-      {EquipmentLogData?.reports?.length>4 ? <div className='d-flex justify-content-center'>
-      <button className='btn customDC-color m-2' onClick={prevPage}>Previous Page</button>
-      <button className='btn customDC-color m-2' onClick={nextPage}>Next Page</button>
+      {CorrespondentsData?.reports?.length>4 ? <div className='d-flex justify-content-center'>
+      <button className='btn m-2 customDC-color' onClick={prevPage}>Previous Page</button>
+      <button className='btn m-2 customDC-color' onClick={nextPage}>Next Page</button>
       </div>:""}  
     </div>
   );

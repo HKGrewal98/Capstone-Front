@@ -146,7 +146,7 @@ export const Navbar = () => {
                     style={{width:"auto",border:"0"}}
                   >
                     <li>
-                      <Link className="dropdown-item" to="engineerView/createProjectFolder">
+                      <Link className="dropdown-item" to="view/createProjectFolder">
                         Create a Project Folder
                       </Link>
                     </li>

@@ -333,3 +333,10 @@ border: 1px solid #C3C3C3;
   .recentprojectsinnermost, .assignedprojectsinnermost{
     margin-left: 4.5rem;
   }
+  .projectListItems:hover{
+    text-decoration: underline;
+    cursor: pointer;
+  }
+  .activeProjectItem {
+    font-weight: 600;
+  }

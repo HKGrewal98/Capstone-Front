@@ -28,7 +28,7 @@ export const LandingPage = () => {
   const [searchResult, setSearchResult] = useState()
   const showProject=(project_name)=>{
     localStorage.setItem("ProjectName",JSON.stringify(project_name))
-    navigate('/engineerView/assignedProjects')
+    navigate('/view/assignedProjects')
    }
   const {
     register,
@@ -150,7 +150,7 @@ export const LandingPage = () => {
     </>:""}
     <div className="homeBar">
        
-       <NavLink className="leftHBar" to="/engineerView/landingPage">
+       <NavLink className="leftHBar" to="/view/landingPage">
          <svg
            width="25"
            height="23"

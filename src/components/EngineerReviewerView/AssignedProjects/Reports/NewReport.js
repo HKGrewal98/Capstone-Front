@@ -166,7 +166,7 @@ return(
       <Alert className="col-12 col-md-8 col-lg-6 p-1 d-flex align-items-center justify-content-between" show={showGreen} variant="success" >
         <p style={{marginBottom:"0"}}>{alertValue}</p>
         <Button style={{fontSize:"80%"}} onClick={() => 
-          navigate('/engineerView/assignedProjects')
+          navigate('/view/assignedProjects')
           } variant="outline-success">
             Close
             </Button>
@@ -527,7 +527,7 @@ return(
 <button className="btn btn-primary btn_custom " type="submit">SAVE AS DRAFTS</button>
 <button className="btn btn-primary btn_custom1 mx-2" type="submit" onClick={
         handleSubmit(onSubmit)}>SUBMIT REVIEW</button>
-<button className="btn btn-primary btn_custom2" onClick={()=>{navigate('/engineerView/assignedProjects')}}>CANCEL</button>
+<button className="btn btn-primary btn_custom2" onClick={()=>{navigate('/view/assignedProjects')}}>CANCEL</button>
 </div>
 </form>
 </div>

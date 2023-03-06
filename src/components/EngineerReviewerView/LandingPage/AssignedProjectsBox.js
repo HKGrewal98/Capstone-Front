@@ -5,11 +5,14 @@ import { useNavigate } from "react-router-dom";
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import {ProjectNumber} from "../AssignedProjects/Deliverables/DeliverablesReducer/ProjectNumber";
 
 export const AssignedProjectsBox = () => {
   const [show, setShow] = useState(false);
   const [searchResult, setSearchResult] = useState()
   const handleClose = () => setShow(false);
+  const dispatch = useDispatch()
   const handleShow = () => setShow(true);
   let navigate = useNavigate()
   const {
@@ -45,9 +48,9 @@ export const AssignedProjectsBox = () => {
      console.log("error assigned project box  ",err)
     })
   };
-  const showProject=(project_name)=>{
-    localStorage.setItem("ProjectName",JSON.stringify(project_name))
-    navigate('/engineerView/assignedProjects')
+  const showProject=(data)=>{
+    dispatch(ProjectNumber(data))
+    navigate('/view/assignedProjects')
    }
   return (
     <>
@@ -65,7 +68,7 @@ export const AssignedProjectsBox = () => {
             return(
             <div key={index}>
             <div className="d-flex resultCs" onClick={()=>{
-              showProject(data?.project_name)
+              showProject(data)
             }}>
             <p className="mr-3"><b>Project Name</b> : {data?.project_name}</p>
             <p><b>Project Number</b> : {data?.project_number}</p>
@@ -92,7 +95,7 @@ export const AssignedProjectsBox = () => {
             Assigned Projects
           </div>
           <div>
-          <div className="btn text-primary pt-0" onClick={()=>navigate('/engineerView/assignedProjects')}>View All</div>
+          <div className="btn text-primary pt-0" onClick={()=>navigate('/view/assignedProjects')}>View All</div>
           </div>
         </div>
         <div className="customBody">

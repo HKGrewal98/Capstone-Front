@@ -5,16 +5,26 @@ import FolderOpenIcon from '../../../images/folderOpen.gif.png'
 import PlusIcon from '../../../images/plus3.gif.png'
 import MinusIcon from '../../../images/minus5.gif.png'
 import { LoginDetails } from "../../Login/LoginReducer/LoginSlice";
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { userLoginCheck } from '../../../helpers/userLoginCheck'
 import { useEffect } from 'react'
+import { AllProjectsDetails } from './Deliverables/DeliverablesReducer/AllProjects'
+import {ProjectNumber} from '../AssignedProjects/Deliverables/DeliverablesReducer/ProjectNumber'
+import axios from 'axios'
+import Cookies from 'universal-cookie'
+
 
 
 export const AssignedProjectMain = () => {
-    const [projectsOpen, setProjectsOpen] = useState(false)
-    const [projectListsOpen, setProjectListsOpen] = useState(false)
-    const [recentProjectsOpen, setRecentProjectsOpen] = useState(false)
+  const cookies = new Cookies()
+
+    const [projectsOpen, setProjectsOpen] = useState(true)
+    const [projectListsOpen, setProjectListsOpen] = useState(true)
+    const [recentProjectsOpen, setRecentProjectsOpen] = useState(true)
     const [assignedProjectsOpen, setAssignedProjectsOpen] = useState(false)
+    const [active, setActive] = useState(false)
+  const AllProjects = useSelector((state) => state.AllProjectsDetails.value);
+
   
     let activeStyle = {
       textDecoration: "underline",
@@ -24,6 +34,10 @@ export const AssignedProjectMain = () => {
     let navigate = useNavigate()
     let dispatch = useDispatch()
     useEffect(()=>{
+      var myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
+      myHeaders.append('Access-Control-Allow-Origin', 'http://localhost:8081')
+      myHeaders.append('Access-Control-Allow-Credentials', true)
       userLoginCheck().then(res=>{
       //  console.log(res)
        if(res?.userId?.user?.is_engineer===true || res?.userId?.user?.is_reviewer===true){
@@ -34,10 +48,42 @@ export const AssignedProjectMain = () => {
          navigate('/')
        }
      }).catch(err=>{console.log(err)})
+
+     axios({
+      method: 'get',
+      maxBodyLength: Infinity,
+      url: 'http://localhost:8081/project/all',
+      headers:myHeaders,
+      credentials: "include", 
+      withCredentials:true,
+      
+      
+    })
+    .then(function (response) {
+      console.log("Response all projects api",response.data);
+      if(response?.data?.data?.length>0){
+        dispatch(AllProjectsDetails(response?.data?.data))
+       
+      }
+     
+      
+    
+    })
+    .catch(function (error) {
+      console.log("Error block all projects api", error);
+      if(error?.response?.status===401){
+        dispatch(LoginDetails({}));
+            cookies.remove('connect.sid');
+            localStorage.setItem("AlertMessage", JSON.stringify("Session Expired...Please Login Again"))
+          navigate('/')
+      }
+      
+     
+    });
+
      },[])
-    //  useEffect(()=>{
-    //   console.log("States","projectListsOpen",projectListsOpen,"projectsOpen",projectsOpen)
-    //  },[projectListsOpen,projectsOpen])
+     useEffect(()=>{console.log("active statys", active)},[active])
+
   return (
     <>
      <div className="homeBar">
@@ -96,15 +142,26 @@ export const AssignedProjectMain = () => {
             <img style={{alignSelf:"start"}} src={PlusIcon} />
             <img style={{alignSelf:"start"}} src={FolderClosedIcon} />
             </>}
-              
+         
                   <div>Recent Projects
                
                 </div>
                 </div>
                 {recentProjectsOpen? <div className='recentprojectsinnermost'>
-                  <div>Project 1</div>
-                  <div>Project 2</div>
-                  <div>Project 3</div>
+                  {AllProjects?.length>0 ? 
+                  AllProjects.map((data,index)=>{
+                    return( <>
+                    <div key={data?.project_number} 
+                      onClick={() => { 
+                        setActive(data)
+                       dispatch(ProjectNumber(data))
+                      }
+                    }
+                      className={`projectListItems ${active == data && 'activeProjectItem'}`}
+                    >{data?.project_number}</div></>)
+                  })
+                  :""}
+                
                 </div>:""}
               <div className='assignedProjectsParent'  onClick={()=>{setAssignedProjectsOpen(!assignedProjectsOpen)}}>
               {assignedProjectsOpen?<>
@@ -159,7 +216,7 @@ export const AssignedProjectMain = () => {
            
         </div>
        
-   
+            
     <Outlet />
     </div>
    </div>
