@@ -4,8 +4,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { LoaderStatus } from "../../../Common/LoaderReducer/LoaderSlice";
 import { LoginDetails } from "../../../Login/LoginReducer/LoginSlice";
-import { DeliverablesDetails } from "../Deliverables/DeliverablesReducer/Deliverables";
+import { DeliverablesDetails } from "../AssignedProjectsReducer/Deliverables";
 import Cookies from "universal-cookie";
+import { Reports } from "../AssignedProjectsReducer/ReportDetails";
 
 export const Financials = () => {
   const cookies = new Cookies();
@@ -85,7 +86,7 @@ export const Financials = () => {
   }
   useEffect(()=>{
     let prevProjectNumber = JSON.parse(localStorage.getItem("PrevProjectNumber"))
-    if(prevProjectNumber != ProjectNumberRedux){
+    if(prevProjectNumber != ProjectNumberRedux ||  !FinancialsData?.project){
     getFinancialsData()
     }
   },[ProjectNumberRedux])
@@ -194,6 +195,11 @@ export const Financials = () => {
                             viewBox="0 0 20 20"
                             fill="none"
                             xmlns="http://www.w3.org/2000/svg"
+                            style={{cursor:"pointer"}}
+                            onClick={() => 
+                              {
+                                dispatch(Reports({"report":data,"project":FinancialsData.project}))
+                                navigate("/view/editReport")}}
                           >
                             <g clipPath="url(#clip0_106_9042)">
                               <path
@@ -308,7 +314,9 @@ export const Financials = () => {
                             fill="none"
                             xmlns="http://www.w3.org/2000/svg"
                             style={{ cursor: "pointer" }}
-                            onClick={() => navigate("/view/viewReport")}
+                            onClick={() => {
+                              dispatch(Reports({"report":data,"project":FinancialsData.project}))
+                              navigate("/view/viewReport")}}
                           >
                             <path
                               d="M15.25 10.9583V15.9583C15.25 16.4004 15.0744 16.8243 14.7618 17.1368C14.4493 17.4494 14.0254 17.625 13.5833 17.625H4.41667C3.97464 17.625 3.55072 17.4494 3.23816 17.1368C2.92559 16.8243 2.75 16.4004 2.75 15.9583V6.79167C2.75 6.34964 2.92559 5.92572 3.23816 5.61316C3.55072 5.30059 3.97464 5.125 4.41667 5.125H9.41667"

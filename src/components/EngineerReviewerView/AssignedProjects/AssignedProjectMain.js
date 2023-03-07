@@ -8,8 +8,8 @@ import { LoginDetails } from "../../Login/LoginReducer/LoginSlice";
 import { useDispatch, useSelector } from 'react-redux'
 import { userLoginCheck } from '../../../helpers/userLoginCheck'
 import { useEffect } from 'react'
-import { AllProjectsDetails } from './Deliverables/DeliverablesReducer/AllProjects'
-import {ProjectNumber} from '../AssignedProjects/Deliverables/DeliverablesReducer/ProjectNumber'
+import { AllProjectsDetails } from './AssignedProjectsReducer/AllProjects'
+import {ProjectNumber} from '../AssignedProjects/AssignedProjectsReducer/ProjectNumber'
 import axios from 'axios'
 import Cookies from 'universal-cookie'
 
@@ -23,6 +23,8 @@ export const AssignedProjectMain = () => {
     const [recentProjectsOpen, setRecentProjectsOpen] = useState(true)
     const [assignedProjectsOpen, setAssignedProjectsOpen] = useState(false)
     const [active, setActive] = useState(false)
+  const DeliverableMain = useSelector((state) => state.Deliverables.value);
+
   const AllProjects = useSelector((state) => state.AllProjectsDetails.value);
 
   
@@ -82,7 +84,7 @@ export const AssignedProjectMain = () => {
     });
 
      },[])
-     useEffect(()=>{console.log("active statys", active)},[active])
+    //  useEffect(()=>{console.log("active statys", active)},[active])
 
   return (
     <>
@@ -151,6 +153,7 @@ export const AssignedProjectMain = () => {
                   {AllProjects?.length>0 ? 
                   AllProjects.map((data,index)=>{
                     return( <>
+                    {DeliverableMain?.project?.project_number === data?.project_number ? <></>:""}
                     <div key={data?.project_number} 
                       onClick={() => { 
                         setActive(data)

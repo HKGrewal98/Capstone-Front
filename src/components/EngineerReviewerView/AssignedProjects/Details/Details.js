@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { LoaderStatus } from '../../../Common/LoaderReducer/LoaderSlice';
 import { LoginDetails } from '../../../Login/LoginReducer/LoginSlice';
-import { DeliverablesDetails } from '../Deliverables/DeliverablesReducer/Deliverables';
+import { DeliverablesDetails } from '../AssignedProjectsReducer/Deliverables';
 import Cookies from 'universal-cookie'
 
 export const Details = () => {
@@ -18,7 +18,7 @@ export const Details = () => {
     
     useEffect(()=>{
       let prevProjectNumber = JSON.parse(localStorage.getItem("PrevProjectNumber"))
-      if(prevProjectNumber != ProjectNumberRedux){
+      if(prevProjectNumber != ProjectNumberRedux ||  !DetailsMain?.project){
       getDetails()
       }
     },[ProjectNumberRedux])
@@ -32,7 +32,7 @@ export const Details = () => {
         myHeaders.append("Content-Type", "application/json");
         myHeaders.append('Access-Control-Allow-Origin', 'http://localhost:8081')
         myHeaders.append('Access-Control-Allow-Credentials', true)
-       
+     
           axios({
             method: 'get',
             maxBodyLength: Infinity,
@@ -160,7 +160,7 @@ export const Details = () => {
         
     
     </form>
- </>:"No projects right now"}
+ </>:""}
     
     
     </div>

@@ -1,6 +1,6 @@
 import React from "react";
 import { LoaderStatus } from "../../../Common/LoaderReducer/LoaderSlice";
-import { DeliverablesDetails } from "../Deliverables/DeliverablesReducer/Deliverables";
+import { DeliverablesDetails } from "../AssignedProjectsReducer/Deliverables";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -8,6 +8,7 @@ import { useEffect } from "react";
 import Cookies from 'universal-cookie'
 import LoginDetails from "../../../Login/LoginReducer/LoginSlice"
 import { useState } from "react";
+import { Reports } from "../AssignedProjectsReducer/ReportDetails";
 
 export const Correspondence = () => {
   const dispatch = useDispatch();
@@ -82,7 +83,7 @@ const getCorrespondence = ()=>{
 }
 useEffect(()=>{
   let prevProjectNumber = JSON.parse(localStorage.getItem("PrevProjectNumber"))
-  if(prevProjectNumber != ProjectNumberRedux){
+  if(prevProjectNumber != ProjectNumberRedux ||  !CorrespondentsData?.project){
   getCorrespondence()
   }
 },[ProjectNumberRedux])
@@ -179,6 +180,11 @@ useEffect(()=>{
                         viewBox="0 0 20 20"
                         fill="none"
                         xmlns="http://www.w3.org/2000/svg"
+                        style={{ cursor: "pointer" }}
+                        onClick={() => 
+                          {
+                            dispatch(Reports({"report":data,"project":CorrespondentsData.project}))
+                            navigate("/view/editReport")}}
                       >
                         <g clipPath="url(#clip0_106_9042)">
                           <path
@@ -293,7 +299,9 @@ useEffect(()=>{
                         fill="none"
                         xmlns="http://www.w3.org/2000/svg"
                         style={{cursor:"pointer"}}
-                        onClick={()=>navigate('/view/viewReport')}>
+                        onClick={()=>{
+                          dispatch(Reports({"report":data,"project":CorrespondentsData.project}))
+                          navigate('/view/viewReport')}}>
                         <path
                           d="M15.25 10.9583V15.9583C15.25 16.4004 15.0744 16.8243 14.7618 17.1368C14.4493 17.4494 14.0254 17.625 13.5833 17.625H4.41667C3.97464 17.625 3.55072 17.4494 3.23816 17.1368C2.92559 16.8243 2.75 16.4004 2.75 15.9583V6.79167C2.75 6.34964 2.92559 5.92572 3.23816 5.61316C3.55072 5.30059 3.97464 5.125 4.41667 5.125H9.41667"
                           stroke="#007D99"

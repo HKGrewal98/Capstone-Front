@@ -67,7 +67,9 @@ export const Navbar = () => {
     }
   }).catch(err=>{
     console.log("error in navbar",err.response)
-    
+    cookies.remove('connect.sid')
+    dispatch(LoginDetails({}))
+    navigate('/')
   })
   },[])
 //  useEffect(()=>{console.log("Ulogged check", ULogged)},[ULogged])
@@ -256,14 +258,10 @@ export const Navbar = () => {
                         </li>
                         <li>
                           <a className="dropdown-item" href="#">
-                            Another action
+                            Some other action
                           </a>
                         </li>
-                        <li>
-                          <a className="dropdown-item" href="#">
-                            Something else here
-                          </a>
-                        </li>
+                    
                       </ul>
                     </div>
                   </>

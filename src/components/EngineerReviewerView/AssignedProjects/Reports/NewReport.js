@@ -195,10 +195,12 @@ return(
 <div className="mb-3 customColor">
   <label htmlFor="reportNumber" className="form-label"> *Report Name</label>
   <input type="reportNumber" className="form-control custom_txtbox" id="reportNumber" {...register("name",{ required: true})}/>
+  {errors.name && <span style={{color:"red"}}>This field is required</span>}
 </div>
 <div className="mb-3 customColor">
   <label htmlFor="dateIssued" className="form-label"> *Date Issued</label>
   <input type="date" className="form-control custom_txtbox" id="dateIssued" placeholder="MM/YY/XXXX"  {...register("issued_at",{ required: true})} />
+  {errors.issued_at && <span style={{color:"red"}}>This field is required</span>}
 </div>
 <div className="mb-3 customColor">
   <label htmlFor="tags" className="form-label">Tags</label>
@@ -208,6 +210,7 @@ return(
   <label htmlFor="receivingContacts" className="form-label"> *Receiving Customer</label>
   <div className='parentSearchResult'>
   <input type="receivingContacts" className="form-control custom_txtbox" id="receiving_customer" placeholder="Choose a receiving contact" {...register("receiving_customer",{ required: true})} 
+  
   onChange={debounce(async (e) => {
     let str = e.target.value
     console.log("str check", str)
@@ -240,6 +243,7 @@ return(
     });
   }, 800)}
   />
+   {errors.receiving_customer && <span style={{color:"red"}}>This field is required</span>}
   <div className='searchResultsContainer'>
             {searchResults?.length>0? 
               <div className='searchResults'>
@@ -375,6 +379,7 @@ return(
     });
   }, 800)}
   />
+   {errors.reviewer_id && <span style={{color:"red"}}>This field is required</span>}
    <div className='searchResultsContainer'>
             {searchResults1?.length>0? 
               <div className='searchResults'>
@@ -436,6 +441,7 @@ return(
     });
   }, 800)}
   />
+   {errors.project_number && <span style={{color:"red"}}>This field is required</span>}
    <div className='searchResultsContainer'>
             {searchResults2?.length>0? 
               <div className='searchResults'>
@@ -457,6 +463,7 @@ return(
 <div className="mb-3 customColor">
   <label htmlFor="productsCovered" className="form-label"> *Products Covered</label> 
   <textarea className="form-control custom_txtbox" id="productsCovered" rows="2"  {...register("products_covered",{ required: true})} ></textarea>
+  {errors.products_covered && <span style={{color:"red"}}>This field is required</span>}
 </div>
 <div className="mb-3 customColor">
   <label htmlFor="models" className="form-label">Models</label>
@@ -487,7 +494,7 @@ return(
     />
     </div>
     <p>{errors.status?.message || errors.status?.label.message}</p>
-      <input className='choose_file'  type="file" {...register("report",{required: true})} />
+      <input className='choose_file'  type="file" {...register("report",{required: true})} placeholder="Drag and Drop"/>
         <i className="fas fa-cloud-upload-alt"/>
         <p className="drag_text">Max File Size: 25MB: Max Files: 1/Type: .doc,.docx,.xls,.xlsx,.xlsm,.xlsb</p>
     </label>

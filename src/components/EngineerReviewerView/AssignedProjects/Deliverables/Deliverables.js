@@ -2,11 +2,12 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { DeliverablesDetails } from "./DeliverablesReducer/Deliverables";
+import { DeliverablesDetails } from "../AssignedProjectsReducer/Deliverables";
 import { LoaderStatus } from "../../../Common/LoaderReducer/LoaderSlice";
 import Cookies from "universal-cookie";
 import { LoginDetails } from "../../../Login/LoginReducer/LoginSlice";
-import { AllProjectsDetails } from "./DeliverablesReducer/AllProjects";
+import { AllProjectsDetails } from "../AssignedProjectsReducer/AllProjects";
+import  { Reports } from "../AssignedProjectsReducer/ReportDetails";
 
 export const Deliverables = () => {
   let navigate = useNavigate();
@@ -36,7 +37,7 @@ export const Deliverables = () => {
  
     useEffect(()=>{
       let prevProjectNumber = JSON.parse(localStorage.getItem("PrevProjectNumber"))
-      if(prevProjectNumber != ProjectNumberRedux){
+      if(prevProjectNumber != ProjectNumberRedux ||  !DeliverableMain?.project){
 
         getDeliverables()
         setProjectNumberState(ProjectNumberRedux)
@@ -94,9 +95,9 @@ export const Deliverables = () => {
       getDeliverables() 
     }
   }, []);
-  // useEffect(()=>{
-  //   console.log("Del main", DeliverableMain)
-  // },[DeliverableMain])
+  useEffect(()=>{
+    console.log("Del main", DeliverableMain)
+  },[DeliverableMain])
 
   return (
     <div>
@@ -105,6 +106,7 @@ export const Deliverables = () => {
       <div className="Adddocument">
         <div className="Adddocument">
           <button
+          style={{cursor:"pointer"}}
             onClick={() => {
               navigate("/view/assignedProjects/newReport");
             }}
@@ -177,6 +179,11 @@ export const Deliverables = () => {
                           viewBox="0 0 20 20"
                           fill="none"
                           xmlns="http://www.w3.org/2000/svg"
+                          style={{ cursor: "pointer" }}
+                          onClick={() => 
+                            {
+                              dispatch(Reports({"report":report,"project":DeliverableMain.project}))
+                              navigate("/view/editReport")}}
                         >
                           <g clipPath="url(#clip0_106_9042)">
                             <path
@@ -285,7 +292,10 @@ export const Deliverables = () => {
 
                         <svg
                           style={{ cursor: "pointer" }}
-                          onClick={() => navigate("/view/viewReport")}
+                          onClick={() => 
+                            {
+                              dispatch(Reports({"report":report,"project":DeliverableMain.project}))
+                              navigate("/view/viewReport")}}
                           className="m-1"
                           width="21"
                           height="21"

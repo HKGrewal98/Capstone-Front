@@ -6,7 +6,7 @@ import { LoginDetails } from '../../../Login/LoginReducer/LoginSlice';
 import "./ViewReportScreen.css"
 import Cookies from "universal-cookie";
 
-const ViewReportsScreen = () => {
+const EditReportScreen = () => {
   const ReportsDetailsRedux = useSelector((state) => state.ReportDetails.value);
   const dispatch = useDispatch()
   const cookies = new Cookies()
@@ -93,19 +93,19 @@ const ViewReportsScreen = () => {
 
 <div className='ProjectNumber'>
 <section>Project Number</section>
-<input type="text"  disabled placeholder={ReportsDetailsRedux?.project?.project_number}></input></div>
+<input type="text"   placeholder={ReportsDetailsRedux?.project?.project_number}></input></div>
 
 <div className='ReviewType'>
     <section>Review Type</section>
-   <input type="text"  disabled></input></div>
+   <input type="text"  ></input></div>
 
     <div className='ReportType'>
         <section>Report Type</section>
-        <input type="text" disabled placeholder={ReportsDetailsRedux?.report?.file_sub_type}></input></div>
+        <input type="text"  placeholder={ReportsDetailsRedux?.report?.file_sub_type}></input></div>
 
         <div className='RecievingContact'>
         <section>Recieving Contact</section>
-        <input type="text" disabled placeholder={ReportsDetailsRedux?.project?.receiving_customer}></input></div>
+        <input type="text"  placeholder={ReportsDetailsRedux?.project?.receiving_customer}></input></div>
 
         <div className='ResponsiblePerson'>
         <section>Responsible Person /Date Created</section>
@@ -113,37 +113,37 @@ const ViewReportsScreen = () => {
 
         <div className='ReviewerDate'>
         <section>Reviewer /Review Date</section>
-        <input type="text" disabled></input></div>
+        <input type="text" ></input></div>
 
 </div>
 <div className='reportsreceivingcontainer'>
 
         <div className='ReportRecieving'>
         <section>Report Recieving Customer</section>
-        <input type="text" disabled placeholder={ReportsDetailsRedux?.report?.receiving_customer}></input></div>
+        <input type="text"  placeholder={ReportsDetailsRedux?.report?.receiving_customer}></input></div>
 
 
         <div className='ReportReview'>
         <section>Report Review Status:</section>
-        <input type="text" disabled placeholder={ReportsDetailsRedux?.report?.report_status}></input></div>
+        <input type="text"  placeholder={ReportsDetailsRedux?.report?.report_status}></input></div>
 
 
 
         <div className='ProductsCovered'>
         <section>Products Covered</section>
-        <input type="text" disabled placeholder={ReportsDetailsRedux?.project?.product_covered}></input></div>
+        <input type="text"  placeholder={ReportsDetailsRedux?.project?.product_covered}></input></div>
 
         <div className='Models'>
         <section>Models</section>
-        <input type="text" disabled placeholder={ReportsDetailsRedux?.project?.modals}></input></div>
+        <input type="text"  placeholder={ReportsDetailsRedux?.project?.modals}></input></div>
 
         <div className='Project'>
         <section>Project</section>
-        <input type="text" disabled placeholder={ReportsDetailsRedux?.project?.project_name}></input></div>
+        <input type="text"  placeholder={ReportsDetailsRedux?.project?.project_name}></input></div>
 
         <div className='Comments'>
         <section>Comments:</section>
-        <input type="text" disabled placeholder={ReportsDetailsRedux?.report?.report_comments}></input></div>
+        <input type="text"  placeholder={ReportsDetailsRedux?.report?.report_comments}></input></div>
 
 
         </div>
@@ -282,4 +282,4 @@ onClick={() => {
   )
 }
 
-export default ViewReportsScreen
+export default EditReportScreen

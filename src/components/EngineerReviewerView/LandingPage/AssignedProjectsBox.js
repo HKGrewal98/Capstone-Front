@@ -6,7 +6,7 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import {ProjectNumber} from "../AssignedProjects/Deliverables/DeliverablesReducer/ProjectNumber";
+import {ProjectNumber} from "../AssignedProjects/AssignedProjectsReducer/ProjectNumber";
 
 export const AssignedProjectsBox = () => {
   const [show, setShow] = useState(false);

@@ -9,7 +9,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Cookies from 'universal-cookie'
 import { useDispatch } from "react-redux";
 import { LoginDetails } from "../../Login/LoginReducer/LoginSlice";
-import {ProjectNumber} from "../AssignedProjects/Deliverables/DeliverablesReducer/ProjectNumber";
+import {ProjectNumber} from "../AssignedProjects/AssignedProjectsReducer/ProjectNumber";
 
 export const MainSearchBox = () => {
   const [show, setShow] = useState(false);

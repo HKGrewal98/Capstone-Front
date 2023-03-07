@@ -8,6 +8,9 @@ import debounce from 'debounce'
 
 const CreateProjectFolder = () => {
   const { register, handleSubmit,getValues , trigger, formState: { errors }} = useForm();
+  const [showModalGreen, setShowModalGreen] = useState(false)
+  const [showModalRed, setShowModalRed] = useState(false)
+  const [modalRedMessage, setModalRedMessage] = useState()
   const navigate = useNavigate()
   const[searchResults, setSearchResults] = useState([])
   const[searchResults1, setSearchResults1] = useState([])
@@ -35,18 +38,20 @@ const CreateProjectFolder = () => {
     .then(function (response) {
       console.log(JSON.stringify(response.data));
       if(response.data.statusCode===200){
-        alert("success")
-        navigate('/view/assignedProjects')
+        setShowModalGreen(true)
+       
       }
       else if (response.data.isLoggedIn==="false"){
-        alert(response.data.message)
+        setShowModalRed(true)
+        setModalRedMessage(response.data?.message)
         navigate('/')
       }
      
     })
     .catch(function (error) {
       console.log(error);
-      alert(error.response.data.message)
+      setShowModalRed(true)
+      setModalRedMessage(error.response.data.message)
     });
     
   });
@@ -61,6 +66,54 @@ const CreateProjectFolder = () => {
   return (
 
     <>
+    {showModalGreen===true ? <>
+      <div id="myCustomModal" class="customModal">
+<div class="custom-modal-content">
+  <div class="custom-modal-header">
+   
+    <h4 className='text-center'>Your Project is ready</h4>
+  </div>
+  <div class="custom-modal-body">
+    <div className='customContent d-flex align-items-center'>
+    <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M28.6802 -0.000244141C35.4602 -0.000244141 40.0002 4.75976 40.0002 11.8398V28.1818C40.0002 35.2398 35.4602 39.9998 28.6802 39.9998H11.3402C4.56021 39.9998 0.000213623 35.2398 0.000213623 28.1818V11.8398C0.000213623 4.75976 4.56021 -0.000244141 11.3402 -0.000244141H28.6802ZM28.3602 13.9998C27.6802 13.3198 26.5602 13.3198 25.8802 13.9998L17.6202 22.2598L14.1202 18.7598C13.4402 18.0798 12.3202 18.0798 11.6402 18.7598C10.9602 19.4398 10.9602 20.5398 11.6402 21.2398L16.4002 25.9798C16.7402 26.3198 17.1802 26.4798 17.6202 26.4798C18.0802 26.4798 18.5202 26.3198 18.8602 25.9798L28.3602 16.4798C29.0402 15.7998 29.0402 14.6998 28.3602 13.9998Z" fill="#008000"/>
+</svg>
+<div className='ml-2'>Depending on your project type, additional tabs will be displayed that will require you to fill out additional information</div>
+</div>
+   
+  </div>
+  <div class="custom-modal-footer d-flex justify-content-end ">
+    <button className='btn m-2' style={{backgroundColor:"#60CD8A", color:"white"}} onClick={()=>{
+       navigate('/view/assignedProjects')
+      setShowModalGreen(false)}}>Proceed to your project</button>
+  </div>
+</div>
+</div>
+
+
+    </>:""}
+    {showModalRed === true ? <>
+      <div id="myCustomModal" class="customModal">
+<div class="custom-modal-content" >
+  <div class="custom-modal-header"  style={{backgroundColor:"#ff4646"}}>
+   
+    <h4 className='text-center'>Error</h4>
+  </div>
+  <div class="custom-modal-body">
+    <div className='customContent d-flex align-items-center'  style={{backgroundColor:"#ff4646" , border:"0", color:"white"}}>
+  
+<div className='ml-2'>{modalRedMessage}</div>
+</div>
+   
+  </div>
+  <div class="custom-modal-footer d-flex justify-content-end ">
+    <button className='btn m-2' style={{backgroundColor:"#ff4646", color:"white"}} onClick={()=>{
+       
+      setShowModalRed(false)}}>Close</button>
+  </div>
+</div>
+</div>
+    </>:""}
      <div className="homeBar">
        
        <NavLink className="leftHBar" to="">
@@ -94,7 +147,8 @@ const CreateProjectFolder = () => {
           <div className="lefttb1">
             <section>*The Lab Performing the work</section>
             <div className="w1">
-            <input className='createProjectFolderBoxBorder' type="Text" placeholder="Lab Name " {...register("lab_name",{ minLength:2, maxLength: 20 }) }></input>
+            <input className='createProjectFolderBoxBorder' type="Text" placeholder="Lab Name " {...register("lab_name",{ minLength:2, maxLength: 20, required:true })} />
+            {errors.lab_name && <span  style={{color:"red"}}>This field is required</span>}
           </div></div>
 
 
@@ -105,8 +159,9 @@ const CreateProjectFolder = () => {
           </div></div>
           
           <div className="w3">
-          <input className='createProjectFolderBoxBorder'  type="Text" placeholder="Enter Project Type" {...register("project_type")}></input>
+          <input className='createProjectFolderBoxBorder'  type="Text" placeholder="Enter Project Type" {...register("project_type",{required:true})}></input>
          </div>
+          {errors.project_type && <span  style={{color:"red"}}>This field is required</span>}
           
         
          
@@ -115,7 +170,7 @@ const CreateProjectFolder = () => {
             <section>*Transacting Customer</section>
             <div className="w5 custom-debounce-container">
               <div className='parentSearchResult'>
-            <input  className='createProjectFolderBoxBorder' type="Text" placeholder="Transacting Customer" autoComplete='off' id="transacting_customer"  {...register("transacting_customer",{ minLength:2, maxLength: 20 })}
+            <input  className='createProjectFolderBoxBorder' type="Text" placeholder="Transacting Customer" autoComplete='off' id="transacting_customer"  {...register("transacting_customer",{ minLength:2, maxLength: 20, required:true })}
             onChange={debounce(async (e) => {
               let str = e.target.value
               console.log("str check", str)
@@ -148,6 +203,7 @@ const CreateProjectFolder = () => {
               });
             }, 800)}
             ></input>
+             {errors.transacting_customer && <span style={{color:"red"}}>This field is required</span>}
             <div className='searchResultsContainer'>
             {searchResults?.length>0? 
               <div className='searchResults'>
@@ -175,7 +231,7 @@ const CreateProjectFolder = () => {
             <section>*Report Recieving Customer</section>
             <div className="w6 custom-debounce-container">
               <div className='parentSearchResult'>
-            <input type="Text" className='createProjectFolderBoxBorder' placeholder="Report Receiving Customer" id='receiving_customer'  {...register("receiving_customer",{ minLength:2, maxLength: 20 })}
+            <input type="Text" className='createProjectFolderBoxBorder' placeholder="Report Receiving Customer" id='receiving_customer'  {...register("receiving_customer",{ minLength:2, maxLength: 20, required:true })}
              onChange={debounce(async (e) => {
               let str = e.target.value
               console.log("str check", str)
@@ -208,6 +264,7 @@ const CreateProjectFolder = () => {
               });
             }, 800)}
             ></input>
+             {errors.receiving_customer && <span style={{color:"red"}}>This field is required</span>}
             <div className='searchResultsContainer'>
             {searchResults1?.length>0? 
               <div className='searchResults'>
@@ -235,20 +292,23 @@ const CreateProjectFolder = () => {
           <div className="lefttb5">
             <section>*Project Name</section>
             <div className="w1">
-            <input className='createProjectFolderBoxBorder' type="Text" placeholder="Enter Project Name"  {...register("project_name",{ minLength:2, maxLength: 20 })}></input>
+            <input className='createProjectFolderBoxBorder' type="Text" placeholder="Enter Project Name"  {...register("project_name",{ minLength:2, maxLength: 20, required:true })}></input>
           </div></div>
+          {errors.project_name && <span style={{color:"red"}}>This field is required</span>}
 
           <div classsname="lefttb6">
             <section> *Description</section>
            <div >
-            <textarea className='w-100' type= "text"  {...register("description",{ minLength:2 })}/> 
+            <textarea className='w-100' type= "text"  {...register("description",{ minLength:2, required:true })}/> 
           </div></div>
+          {errors.description && <span style={{color:"red"}}>This field is required</span>}
 
 
           <div classanme="lefttb7">
             <section>*Purchase Order Number</section>
             <div className='w1'>
             <input className='createProjectFolderBoxBorder' type="Text" placeholder="Enter Purchase order number"  {...register("purchase_order_number",{ minLength:2 })}></input>
+            {errors.purchase_order_number && <span style={{color:"red"}}>This field is required</span>}
           </div></div>
 
         
@@ -261,13 +321,15 @@ const CreateProjectFolder = () => {
           <div className="righttb1">
             <section>*Product Covered</section> </div>
             <div className='productcovered'>
-            <textarea className='createProjectFolderBoxBorder' type="Text"  {...register("product_covered",{ minLength:2 })}  ></textarea>
+            <textarea className='createProjectFolderBoxBorder' type="Text"  {...register("product_covered",{ minLength:2, required:true })}  ></textarea>
+            {errors.product_covered && <span style={{color:"red"}}>This field is required</span>}
           </div>
 
           <div className="righttb2">
             <section>*Models</section></div>
             <div className='models'>
             <textarea className='createProjectFolderBoxBorder' type="Text"  {...register("modals",)}></textarea>
+            {errors.modals && <span style={{color:"red"}}>This field is required</span>}
           </div>
 
 
@@ -289,23 +351,29 @@ const CreateProjectFolder = () => {
 
           <div className="w3">
             <input className='createProjectFolderBoxBorder' type="date" {...register("client_ready",)} ></input>
+            {errors.client_ready && <span style={{color:"red"}}>This field is required</span>}
             <div className="w4">
             <input className='createProjectFolderBoxBorder' type="date" {...register("completion",)}  ></input>
+            {errors.completion && <span style={{color:"red"}}>This field is required</span>}
           </div></div>
 
 
           
           <div className="righttb5"> 
             <section>*Date Project Starts</section>
+            
             <div className='moveright3'>
             <section>*Date Project Ends</section></div></div>
 
             
           <div className="w3">
-          <input className='createProjectFolderBoxBorder' type="Date" {...register("start_date",)} ></input>
+          <input className='createProjectFolderBoxBorder' type="Date" {...register("start_date",{required:true})} ></input>
+          
             <div className="w4">
-            <input className='createProjectFolderBoxBorder' type="Date" {...register("end_date",)} ></input>
+            <input className='createProjectFolderBoxBorder' type="Date" {...register("end_date",{required:true})} ></input>
           </div></div>
+            {errors.start_date && <span style={{color:"red"}}>This field is required</span>}
+            {errors.end_date && <span style={{color:"red",marginLeft:"7rem"}}>This field is required</span>}
 
 
 

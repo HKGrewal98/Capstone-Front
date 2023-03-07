@@ -55,6 +55,7 @@ export const Login = () => {
         // let cookieCheck = cookie?.accessToken
         // console.log(res.headers)
         // console.log(res.config)
+        localStorage.clear()
       console.log("res check:",res)
       if(res?.data?.data?.isLoggedIn){
 

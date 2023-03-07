@@ -24,6 +24,7 @@ import {Sample } from "./components/EngineerReviewerView/AssignedProjects/Sample
 import Reviewworks from "./components/ReviewerView/Reviewreports/Reviewworks";
 import ViewReportsScreen from "./components/EngineerReviewerView/AssignedProjects/Reports/ViewReportsScreen";
 import { useSelector } from "react-redux";
+import EditReportScreen from "./components/EngineerReviewerView/AssignedProjects/Reports/EditReportScreen";
 
 
 
@@ -64,6 +65,7 @@ function App() {
         </Route>
         <Route path="view/assignedProjects/newReport" element={<NewReport />} />
         <Route path="view/viewReport" element={<ViewReportsScreen />} />
+        <Route path="view/editReport" element={<EditReportScreen />} />
 
 
         {/* Reviewer Eroutes */}

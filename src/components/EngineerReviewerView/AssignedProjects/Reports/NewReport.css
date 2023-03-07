@@ -70,18 +70,28 @@
     text-align: center;
 }
 
-.choose_file{
-    width: auto;
-    height: 40px;
+.choose_file::-webkit-file-upload-button {
+    display: none;
+  }
+  .choose_file{
+    margin: 0.5rem;
+    /* border-radius: 1rem; */
+  }
+.choose_file::before{
+    content: "Drag 'n Drop or Browse";
+ 
     font-size: 0.75rem;
+    padding: 1rem;
     font: bold;
     border: none;
     background-color: #7393B3;
     color: #fff;
-    border-radius: 3px;
     margin: 10px auto;
+    border-radius: 133px;
 }
-
+.choose_file::after{
+    content: '';
+}
 .btn_custom{
     /* top: 20px; */
     margin-left: 20px;
