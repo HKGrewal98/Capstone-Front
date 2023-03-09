@@ -11,6 +11,7 @@ import { LoginDetails } from "../../../Login/LoginReducer/LoginSlice";
 import Cookies from 'universal-cookie'
 import { useState } from "react";
 import { Reports } from "../AssignedProjectsReducer/ReportDetails";
+import { ProjectNumber } from "../AssignedProjectsReducer/ProjectNumber";
 export const EquipmentLog = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -85,13 +86,21 @@ export const EquipmentLog = () => {
   }
   useEffect(()=>{
     let prevProjectNumber = JSON.parse(localStorage.getItem("PrevProjectNumber"))
+    
     if(prevProjectNumber != ProjectNumberRedux ||  !EquipmentLogData?.project){
     getEquipmentlog()
     }
   },[ProjectNumberRedux])
   useEffect(() => {
+    let SelectedProject = JSON.parse(localStorage.getItem("SelectedProject"))
+
     if(!EquipmentLogData?.project){
       getEquipmentlog()
+    }
+    if(!EquipmentLogData?.project?.project_name && SelectedProject != undefined){
+      dispatch(ProjectNumber(SelectedProject))
+      getEquipmentlog() 
+
     }
   }, []);
 

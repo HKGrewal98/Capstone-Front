@@ -7,6 +7,7 @@ import { LoginDetails } from "../../../Login/LoginReducer/LoginSlice";
 import { DeliverablesDetails } from "../AssignedProjectsReducer/Deliverables";
 import Cookies from "universal-cookie";
 import { Reports } from "../AssignedProjectsReducer/ReportDetails";
+import { ProjectNumber } from "../AssignedProjectsReducer/ProjectNumber";
 
 export const Financials = () => {
   const cookies = new Cookies();
@@ -92,8 +93,15 @@ export const Financials = () => {
   },[ProjectNumberRedux])
 
   useEffect(() => {
+    let SelectedProject = JSON.parse(localStorage.getItem("SelectedProject"))
+
     if (!FinancialsData?.project) {
       getFinancialsData()
+    }
+    if(!FinancialsData?.project?.project_name && SelectedProject != undefined){
+      dispatch(ProjectNumber(SelectedProject))
+      getFinancialsData() 
+
     }
   }, []);
   return (

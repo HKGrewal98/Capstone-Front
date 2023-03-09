@@ -78,6 +78,7 @@ export const MainSearchBox = () => {
  const showProject=(data)=>{
   console.log("Project number check main search box" , data)
   dispatch(ProjectNumber(data))
+  localStorage.setItem("SelectedProject", JSON.stringify(data))
   navigate('/view/assignedProjects')
  }
   return (

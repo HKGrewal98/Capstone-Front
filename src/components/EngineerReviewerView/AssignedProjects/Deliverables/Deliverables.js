@@ -8,6 +8,7 @@ import Cookies from "universal-cookie";
 import { LoginDetails } from "../../../Login/LoginReducer/LoginSlice";
 import { AllProjectsDetails } from "../AssignedProjectsReducer/AllProjects";
 import  { Reports } from "../AssignedProjectsReducer/ReportDetails";
+import { ProjectNumber } from "../AssignedProjectsReducer/ProjectNumber";
 
 export const Deliverables = () => {
   let navigate = useNavigate();
@@ -45,8 +46,8 @@ export const Deliverables = () => {
     },[ProjectNumberRedux])
   const getDeliverables = ()=>{
    
-    if(ProjectNumberRedux !== undefined){
-      
+    if(ProjectNumberRedux !== undefined ){
+  
       dispatch(LoaderStatus(true));
       axios({
         method: "get",
@@ -85,19 +86,27 @@ export const Deliverables = () => {
           }
         });
     }
+    
    
   }
   useEffect(() => {
-    // let project_name = JSON.parse(localStorage.getItem("ProjectName"))
+    let SelectedProject = JSON.parse(localStorage.getItem("SelectedProject"))
 
     if (!DeliverableMain?.project) {
       
       getDeliverables() 
     }
+
+    // if(!DeliverableMain?.project?.project_name && SelectedProject != undefined){
+    //   dispatch(ProjectNumber(SelectedProject))
+    //   getDeliverables() 
+
+    // }
+
   }, []);
-  useEffect(()=>{
-    console.log("Del main", DeliverableMain)
-  },[DeliverableMain])
+  // useEffect(()=>{
+  //   console.log("Del main", DeliverableMain)
+  // },[DeliverableMain])
 
   return (
     <div>

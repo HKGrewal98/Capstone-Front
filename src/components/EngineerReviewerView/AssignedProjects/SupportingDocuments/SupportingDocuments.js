@@ -10,6 +10,7 @@ import { LoginDetails } from "../../../Login/LoginReducer/LoginSlice";
 import Cookies from "universal-cookie";
 import { useState } from "react";
 import { Reports } from "../AssignedProjectsReducer/ReportDetails";
+import { ProjectNumber } from "../AssignedProjectsReducer/ProjectNumber";
 
 export const SupportingDocuments = () => {
   const cookies = new Cookies();
@@ -88,8 +89,15 @@ export const SupportingDocuments = () => {
     },[ProjectNumberRedux])
   
   useEffect(() => {
+    let SelectedProject = JSON.parse(localStorage.getItem("SelectedProject"))
+
     if (!SupportingDocumentsData?.project) {
     getSupportingDocuments()
+    }
+    if(!SupportingDocumentsData?.project?.project_name && SelectedProject != undefined){
+      dispatch(ProjectNumber(SelectedProject))
+      getSupportingDocuments() 
+
     }
   }, []);
 

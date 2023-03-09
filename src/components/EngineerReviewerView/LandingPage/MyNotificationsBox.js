@@ -2,10 +2,12 @@ import axios from 'axios'
 import React from 'react'
 import { useEffect } from 'react'
 import { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 export const MyNotificationsBox = () => {
   const [notificationData, setNotificationData] = useState()
+  const ULogged = useSelector((state)=>state.Login.value)
+
   const dispatch = useDispatch()
 
   useEffect(()=>{
@@ -41,7 +43,7 @@ export const MyNotificationsBox = () => {
         </div>
         <div className="customBody">
           <div className="customItems flex-column">
-            {notificationData?.length>0 ? <>
+            {ULogged?.is_engineer===true && notificationData?.length>0 ?  <>
             {notificationData.map((data)=>{
               return(<div className='d-flex justify-content-between align-items-center' key={data?.report_number}>
                 <div>Review <b>{data?.report_status}</b> - {data?.report_name}</div>

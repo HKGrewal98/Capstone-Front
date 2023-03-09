@@ -10,7 +10,7 @@ import { Footer } from "./components/Common/Footer/Footer";
 import { ComplianceCentralUsers } from "./components/ComplianceCentralUsers/ComplianceCentralUsers";
 import { LandingPage } from "./components/EngineerReviewerView/LandingPage/LandingPage";
 import CreateProjectFolder from "./components/EngineerReviewerView/AssignedProjects/CreateProjectFolder";
-import Reviewreports from "./components/ReviewerView/Reviewreports/Reviewreports";
+
 import { NewReport } from "./components//EngineerReviewerView/AssignedProjects/Reports/NewReport";
 
 import { AssignedProjectMain } from "./components/EngineerReviewerView/AssignedProjects/AssignedProjectMain";
@@ -21,7 +21,7 @@ import {SupportingDocuments } from "./components/EngineerReviewerView/AssignedPr
 import {Correspondence } from "./components/EngineerReviewerView/AssignedProjects/Correspondence/Correspondence";
 import {EquipmentLog } from "./components/EngineerReviewerView/AssignedProjects/EquipmentLog/EquipmentLog";
 import {Sample } from "./components/EngineerReviewerView/AssignedProjects/Sample/Sample";
-import Reviewworks from "./components/ReviewerView/Reviewreports/Reviewworks";
+import ReviewMainPage from "./components/EngineerReviewerView/ReviewerMain/ReviewMainPage";
 import ViewReportsScreen from "./components/EngineerReviewerView/AssignedProjects/Reports/ViewReportsScreen";
 import { useSelector } from "react-redux";
 import EditReportScreen from "./components/EngineerReviewerView/AssignedProjects/Reports/EditReportScreen";
@@ -68,9 +68,7 @@ function App() {
         <Route path="view/editReport" element={<EditReportScreen />} />
 
 
-        {/* Reviewer Eroutes */}
-        <Route path="reviewerView/reviewReports" element={<Reviewreports />} />
-        <Route path="reviewerView/reviewWorks" element={<Reviewworks />} />
+        <Route path="view/reviewMainPage" element={<ReviewMainPage />} />
       </Routes>
       <Footer />
     </>

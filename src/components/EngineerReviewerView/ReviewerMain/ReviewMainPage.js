@@ -1,7 +1,40 @@
-import React from 'react'
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { Reports } from "../AssignedProjects/AssignedProjectsReducer/ReportDetails";
 import  "./Reviewworks.css"
 
-const Reviewworks = () => {
+const ReviewMainPage = () => {
+  const [reviewData, setReviewData] = useState()
+  const ULogged = useSelector((state)=>state.Login.value)
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+
+  useEffect(()=>{
+    // dispatch(LoaderStatus(true))
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append('Access-Control-Allow-Origin', 'http://localhost:8081')
+    myHeaders.append('Access-Control-Allow-Credentials', true)
+    axios({
+     method:'get',
+     maxBodyLength: Infinity,
+     url: 'http://localhost:8081/project/notifications',
+     credentials: "include", 
+     withCredentials:true,
+     headers:myHeaders
+    }).then(res=>{
+    //  dispatch(LoaderStatus(false))
+     console.log("response form ReviewMainPage ", res.data)
+    if(res?.data?.data?.length>0){
+       setReviewData(res?.data?.data)
+    }
+   })
+    .catch(err=>{
+     console.log("error mynotification box  ",err)
+    })
+  },[])
   return (
     <div>
       
@@ -143,26 +176,44 @@ REJECTED BY CERTIFICATION
     </tr>
   </thead>
   <tbody>
-    <tr>
-      <th scope="row"></th>
-      <td>Report 01</td>
-      <td>ELT Certification</td>
+   
+      {ULogged?.is_reviewer===true && reviewData?.length>0 ? <>
+      {reviewData?.map((data)=>{
+        return(
+          <tr>
+      <th >{data?.report_created_at}</th>
+      <td>{data?.report_number}</td>
+      <td>{data?.report_name}</td>
       <td>12345</td>
       <td>Project 1</td>
       <td>DC [214117]</td>
-      <td>Engineer Name</td>
+      <td>{data?.report_created_by}</td>
       <td>DC</td>
-      <td><a href="#" class="badge badge-secondary">Sent to Reviewer</a></td>
-      <td><a href="#" className="stretched-link">View</a>
+      {data?.report_status==="SENT TO REVIEWER" ? <>  <td><span class="badge badge-secondary">Sent to Reviewer</span></td></>:"No badge made"}
+     
+      <td><span className=" stretched-link"
+        style={{ cursor: "pointer", color:"#007bff" }}
+        onClick={() => 
+          {
+            dispatch(Reports({"report":data}))
+            navigate("/view/editReport")}}
+      >View</span>
         <svg  width="15" height="15" viewBox="-2 -3 20 22" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M15.25 10.9583V15.9583C15.25 16.4004 15.0744 16.8243 14.7618 17.1368C14.4493 17.4494 14.0254 17.625 13.5833 17.625H4.41667C3.97464 17.625 3.55072 17.4494 3.23816 17.1368C2.92559 16.8243 2.75 16.4004 2.75 15.9583V6.79167C2.75 6.34964 2.92559 5.92572 3.23816 5.61316C3.55072 5.30059 3.97464 5.125 4.41667 5.125H9.41667" stroke="#007D99" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
         <path d="M12.75 2.625H17.75V7.625" stroke="#007D99" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
         <path d="M8.58301 11.7917L17.7497 2.625" stroke="#007D99" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
       </td>
+          </tr>
+        )
+      })}
+    
 
-    </tr>
-    <tr>
+      
+      </>:""}
+  
+    
+    {/* <tr>
     <th scope="row"></th>
       <td>Report 02</td>
       <td>ELT Certification</td>
@@ -197,7 +248,7 @@ REJECTED BY CERTIFICATION
         <path d="M8.58301 11.7917L17.7497 2.625" stroke="#007D99" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
       </td>
-    </tr>
+    </tr> */}
   </tbody>
 </table>
  
@@ -219,4 +270,4 @@ REJECTED BY CERTIFICATION
   )
 }
 
-export default Reviewworks
+export default ReviewMainPage

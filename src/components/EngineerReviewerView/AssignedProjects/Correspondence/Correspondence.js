@@ -9,6 +9,7 @@ import Cookies from 'universal-cookie'
 import LoginDetails from "../../../Login/LoginReducer/LoginSlice"
 import { useState } from "react";
 import { Reports } from "../AssignedProjectsReducer/ReportDetails";
+import { ProjectNumber } from "../AssignedProjectsReducer/ProjectNumber";
 
 export const Correspondence = () => {
   const dispatch = useDispatch();
@@ -40,13 +41,24 @@ export const Correspondence = () => {
   myHeaders.append("Access-Control-Allow-Credentials", true);
 
 const getCorrespondence = ()=>{
-  if(ProjectNumberRedux !== undefined){
+  let SelectedProject = JSON.parse(localStorage.getItem("SelectedProject"))
+
+  if(ProjectNumberRedux !== undefined || SelectedProject != undefined){
+    // console.log("ProjectNumberRedux",ProjectNumberRedux," SelectedProject",SelectedProject)
+    let url
+    if(ProjectNumberRedux=== undefined){
+      console.log("Inside projenumberedux undefine")
+      url= `http://localhost:8081/project/${SelectedProject?.project_number}`
+    }
+    else{
+      url= `http://localhost:8081/project/${ProjectNumberRedux}`
+    }
     
   dispatch(LoaderStatus(true));
   axios({
     method: "get",
     maxBodyLength: Infinity,
-    url: `http://localhost:8081/project/${ProjectNumberRedux}`,
+    url: url,
     headers: myHeaders,
     credentials: "include",
     withCredentials: true,
@@ -90,11 +102,17 @@ useEffect(()=>{
 
 
   useEffect(() => {
+    let SelectedProject = JSON.parse(localStorage.getItem("SelectedProject"))
 
     // let project_name = JSON.parse(localStorage.getItem("ProjectName"))
     if(!CorrespondentsData?.project){
    
       getCorrespondence()
+    }
+    if(!CorrespondentsData?.project?.project_name && SelectedProject != undefined){
+      dispatch(ProjectNumber(SelectedProject))
+      getCorrespondence() 
+
     }
   
   }, []);

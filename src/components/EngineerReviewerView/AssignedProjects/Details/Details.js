@@ -6,6 +6,7 @@ import { LoaderStatus } from '../../../Common/LoaderReducer/LoaderSlice';
 import { LoginDetails } from '../../../Login/LoginReducer/LoginSlice';
 import { DeliverablesDetails } from '../AssignedProjectsReducer/Deliverables';
 import Cookies from 'universal-cookie'
+import { ProjectNumber } from '../AssignedProjectsReducer/ProjectNumber';
 
 export const Details = () => {
   
@@ -24,8 +25,10 @@ export const Details = () => {
     },[ProjectNumberRedux])
 
     const getDetails = ()=>{
-      if(ProjectNumberRedux !== undefined){
-        
+  
+
+      if(ProjectNumberRedux !== undefined ){
+       
         dispatch(LoaderStatus(true))
         // let project_name = JSON.parse(localStorage.getItem("ProjectName"))
         var myHeaders = new Headers();
@@ -76,9 +79,16 @@ export const Details = () => {
     }
 
     useEffect(()=>{
+    let SelectedProject = JSON.parse(localStorage.getItem("SelectedProject"))
+
       if(!DetailsMain?.project){
 
        getDetails()
+      }
+      if(!DetailsMain?.project?.project_name && SelectedProject != undefined){
+        dispatch(ProjectNumber(SelectedProject))
+        getDetails() 
+  
       }
     },[])
   

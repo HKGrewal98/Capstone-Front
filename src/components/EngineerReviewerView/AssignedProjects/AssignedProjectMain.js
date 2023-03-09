@@ -41,7 +41,7 @@ export const AssignedProjectMain = () => {
       myHeaders.append('Access-Control-Allow-Origin', 'http://localhost:8081')
       myHeaders.append('Access-Control-Allow-Credentials', true)
       userLoginCheck().then(res=>{
-      //  console.log(res)
+       console.log(res)
        if(res?.userId?.user?.is_engineer===true || res?.userId?.user?.is_reviewer===true){
          dispatch(LoginDetails(res.userId.user))
        }
@@ -67,7 +67,10 @@ export const AssignedProjectMain = () => {
         dispatch(AllProjectsDetails(response?.data?.data))
        
       }
-     
+     let SelectedProject =JSON.parse(localStorage.getItem("SelectedProject"))
+     if(SelectedProject != undefined){
+      setActive(SelectedProject)
+     }
       
     
     })
@@ -84,7 +87,7 @@ export const AssignedProjectMain = () => {
     });
 
      },[])
-    //  useEffect(()=>{console.log("active statys", active)},[active])
+     useEffect(()=>{console.log("active statys", active)},[active])
 
   return (
     <>
@@ -153,15 +156,23 @@ export const AssignedProjectMain = () => {
                   {AllProjects?.length>0 ? 
                   AllProjects.map((data,index)=>{
                     return( <>
-                    {DeliverableMain?.project?.project_number === data?.project_number ? <></>:""}
-                    <div key={data?.project_number} 
+                  
+                    {active ? <>
+                      <div key={data?.project_number} 
                       onClick={() => { 
                         setActive(data)
+                        console.log("Data in all projects", data)
                        dispatch(ProjectNumber(data))
+                       localStorage.setItem("SelectedProject", JSON.stringify(data))
                       }
                     }
-                      className={`projectListItems ${active == data && 'activeProjectItem'}`}
-                    >{data?.project_number}</div></>)
+                    
+                      className={`projectListItems ${active?.project_number == data?.project_number && 'activeProjectItem'} `}
+                    >{data?.project_number}</div>
+                    </>:""}
+                   
+                   
+                   </>)
                   })
                   :""}
                 

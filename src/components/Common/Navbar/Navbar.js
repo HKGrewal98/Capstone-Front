@@ -317,9 +317,14 @@ export const Navbar = () => {
                         aria-labelledby="dropdownMenuButton1"
                       >
                         <li>
-                          <a className="dropdown-item" href="#">
+                        <button
+                            className="dropdown-item"
+                            onClick={() => {
+                              Logout();
+                            }}
+                          >
                             Logout
-                          </a>
+                          </button>
                         </li>
                         <li>
                           <a className="dropdown-item" href="#">

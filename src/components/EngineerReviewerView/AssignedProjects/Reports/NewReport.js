@@ -194,7 +194,7 @@ return(
 
 <div className="mb-3 customColor">
   <label htmlFor="reportNumber" className="form-label"> *Report Name</label>
-  <input type="reportNumber" className="form-control custom_txtbox" id="reportNumber" {...register("name",{ required: true})}/>
+  <input type="reportNumber" className="form-control custom_txtbox" id="reportNumber" {...register("report_name",{ required: true})}/>
   {errors.name && <span style={{color:"red"}}>This field is required</span>}
 </div>
 <div className="mb-3 customColor">
