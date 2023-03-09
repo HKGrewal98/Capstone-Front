@@ -27,7 +27,7 @@ export const LandingPage = () => {
   const handleShow = () => setShow(true);
   const [searchResult, setSearchResult] = useState()
   const showProject=(data)=>{
-    localStorage.setItem("ProjectName",JSON.stringify(data?.project_name))
+  //   localStorage.setItem("ProjectName",JSON.stringify(data?.project_name))
   localStorage.setItem("SelectedProject", JSON.stringify(data))
 
     navigate('/view/assignedProjects')

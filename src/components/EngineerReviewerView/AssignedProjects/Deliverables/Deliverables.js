@@ -47,7 +47,7 @@ export const Deliverables = () => {
   const getDeliverables = ()=>{
    
     if(ProjectNumberRedux !== undefined ){
-  
+      console.log("check projectnumbe redux", ProjectNumberRedux)
       dispatch(LoaderStatus(true));
       axios({
         method: "get",
@@ -90,18 +90,18 @@ export const Deliverables = () => {
    
   }
   useEffect(() => {
-    let SelectedProject = JSON.parse(localStorage.getItem("SelectedProject"))
-
+    
     if (!DeliverableMain?.project) {
       
       getDeliverables() 
     }
+    let SelectedProject = JSON.parse(localStorage.getItem("SelectedProject"))
 
-    // if(!DeliverableMain?.project?.project_name && SelectedProject != undefined){
-    //   dispatch(ProjectNumber(SelectedProject))
-    //   getDeliverables() 
+    if(!DeliverableMain?.project?.project_name && SelectedProject != undefined){
+      dispatch(ProjectNumber(SelectedProject))
+      getDeliverables() 
 
-    // }
+    }
 
   }, []);
   // useEffect(()=>{

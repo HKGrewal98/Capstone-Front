@@ -23,6 +23,7 @@ export const AssignedProjectMain = () => {
     const [recentProjectsOpen, setRecentProjectsOpen] = useState(true)
     const [assignedProjectsOpen, setAssignedProjectsOpen] = useState(false)
     const [active, setActive] = useState(false)
+    const [SelectedProjectState, setSelectedProjectState] = useState()
   const DeliverableMain = useSelector((state) => state.Deliverables.value);
 
   const AllProjects = useSelector((state) => state.AllProjectsDetails.value);
@@ -36,12 +37,18 @@ export const AssignedProjectMain = () => {
     let navigate = useNavigate()
     let dispatch = useDispatch()
     useEffect(()=>{
+
+       let SelectedProject = JSON.parse(localStorage.getItem("SelectedProject"))
+      if(SelectedProject !== undefined){
+        setSelectedProjectState(SelectedProject)
+      }
+
       var myHeaders = new Headers();
       myHeaders.append("Content-Type", "application/json");
       myHeaders.append('Access-Control-Allow-Origin', 'http://localhost:8081')
       myHeaders.append('Access-Control-Allow-Credentials', true)
       userLoginCheck().then(res=>{
-       console.log(res)
+      //  console.log(res)
        if(res?.userId?.user?.is_engineer===true || res?.userId?.user?.is_reviewer===true){
          dispatch(LoginDetails(res.userId.user))
        }
@@ -62,15 +69,12 @@ export const AssignedProjectMain = () => {
       
     })
     .then(function (response) {
-      console.log("Response all projects api",response.data);
+      // console.log("Response all projects api",response.data);
       if(response?.data?.data?.length>0){
         dispatch(AllProjectsDetails(response?.data?.data))
        
       }
-     let SelectedProject =JSON.parse(localStorage.getItem("SelectedProject"))
-     if(SelectedProject != undefined){
-      setActive(SelectedProject)
-     }
+     
       
     
     })
@@ -82,12 +86,12 @@ export const AssignedProjectMain = () => {
             localStorage.setItem("AlertMessage", JSON.stringify("Session Expired...Please Login Again"))
           navigate('/')
       }
-      
+     
      
     });
 
      },[])
-     useEffect(()=>{console.log("active statys", active)},[active])
+    //  useEffect(()=>{console.log("active statys", active, "SelectedProjectState", SelectedProjectState)},[active,SelectedProjectState])
 
   return (
     <>
@@ -156,23 +160,20 @@ export const AssignedProjectMain = () => {
                   {AllProjects?.length>0 ? 
                   AllProjects.map((data,index)=>{
                     return( <>
-                  
-                    {active ? <>
+                   
                       <div key={data?.project_number} 
                       onClick={() => { 
-                        setActive(data)
-                        console.log("Data in all projects", data)
+                        setSelectedProjectState(data)
+                       localStorage.setItem("SelectedProject", JSON.stringify(data)) 
                        dispatch(ProjectNumber(data))
-                       localStorage.setItem("SelectedProject", JSON.stringify(data))
                       }
                     }
-                    
-                      className={`projectListItems ${active?.project_number == data?.project_number && 'activeProjectItem'} `}
+                      className= {SelectedProjectState?.project_number === data.project_number ? "projectListItems activeProjectItem":"projectListItems"}
                     >{data?.project_number}</div>
-                    </>:""}
-                   
-                   
-                   </>)
+                    </>
+                    
+                    
+                  )
                   })
                   :""}
                 

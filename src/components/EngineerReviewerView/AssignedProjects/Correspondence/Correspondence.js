@@ -84,6 +84,7 @@ const getCorrespondence = ()=>{
       if(error?.response?.status===401){
         console.log("inside 401 correspondence")
         cookies.remove('connect.sid');
+        
         localStorage.setItem("AlertMessage", JSON.stringify("Session Expired...Please Login Again"))
         // dispatch(LoginDetails({}));
           navigate('/')

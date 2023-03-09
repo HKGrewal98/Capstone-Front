@@ -78,6 +78,7 @@ export const EquipmentLog = () => {
         if(error?.response?.status===401){
           dispatch(LoginDetails({}));
               cookies.remove('connect.sid');
+              
               localStorage.setItem("AlertMessage", JSON.stringify("Session Expired...Please Login Again"))
             navigate('/')
         }

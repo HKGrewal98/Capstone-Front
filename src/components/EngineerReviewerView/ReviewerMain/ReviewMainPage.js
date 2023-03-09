@@ -2,17 +2,35 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { LoaderStatus } from "../../Common/LoaderReducer/LoaderSlice";
 import { Reports } from "../AssignedProjects/AssignedProjectsReducer/ReportDetails";
+import { ReviewerAllReports } from "./ReviewerReducers/ReviewerAllReportsSlice";
 import  "./Reviewworks.css"
 
 const ReviewMainPage = () => {
-  const [reviewData, setReviewData] = useState()
+  // const [reviewData, setReviewData] = useState()
   const ULogged = useSelector((state)=>state.Login.value)
+  const reviewData = useSelector((state)=>state.ReviewerData.value)
+  const [arrayPageState, setArrayPageState] = useState(1);
+
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
+  const nextPage = () => {
+    let max = Math.ceil(reviewData?.length / 4);
+    // console.log("Next page clicked Max", max)
+    if (arrayPageState < max) {
+      setArrayPageState(arrayPageState + 1);
+    }
+  };
+  const prevPage = () => {
+    if (arrayPageState > 1) {
+      setArrayPageState(arrayPageState - 1);
+    }
+  };
+
   useEffect(()=>{
-    // dispatch(LoaderStatus(true))
+    dispatch(LoaderStatus(true))
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
     myHeaders.append('Access-Control-Allow-Origin', 'http://localhost:8081')
@@ -25,10 +43,11 @@ const ReviewMainPage = () => {
      withCredentials:true,
      headers:myHeaders
     }).then(res=>{
-    //  dispatch(LoaderStatus(false))
-     console.log("response form ReviewMainPage ", res.data)
+     dispatch(LoaderStatus(false))
+    //  console.log("response form ReviewMainPage ", res.data)
     if(res?.data?.data?.length>0){
-       setReviewData(res?.data?.data)
+      dispatch(ReviewerAllReports(res?.data?.data))
+      //  setReviewData(res?.data?.data)
     }
    })
     .catch(err=>{
@@ -40,16 +59,16 @@ const ReviewMainPage = () => {
       
    
 
-      <div class="pendingbox">
+      <div className="pendingbox">
 
 
   <section>PENDING
     <svg width="12" height="12"    viewBox="-5 -3 20 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g clip-path="url(#clip0_73_16003)">
+<g clipPath="url(#clip0_73_16003)">
     
-<path d="M7.5 13.75C10.9518 13.75 13.75 10.9518 13.75 7.5C13.75 4.04822 10.9518 1.25 7.5 1.25C4.04822 1.25 1.25 4.04822 1.25 7.5C1.25 10.9518 4.04822 13.75 7.5 13.75Z" stroke="black" stroke-opacity="0.5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M7.5 5V7.5" stroke="black" stroke-opacity="0.5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M7.5 10H7.50625" stroke="black" stroke-opacity="0.5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M7.5 13.75C10.9518 13.75 13.75 10.9518 13.75 7.5C13.75 4.04822 10.9518 1.25 7.5 1.25C4.04822 1.25 1.25 4.04822 1.25 7.5C1.25 10.9518 4.04822 13.75 7.5 13.75Z" stroke="black" strokeOpacity="0.5" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+<path d="M7.5 5V7.5" stroke="black" strokeOpacity="0.5" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+<path d="M7.5 10H7.50625" stroke="black" strokeOpacity="0.5" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
 </g>
 </svg></section>
 <section></section>
@@ -59,10 +78,10 @@ const ReviewMainPage = () => {
 
   <section>PENDING W/ERRORS 
   <svg width="12" height="12" viewBox="-5 -3 20 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g clip-path="url(#clip0_73_16003)">
-<path d="M7.5 13.75C10.9518 13.75 13.75 10.9518 13.75 7.5C13.75 4.04822 10.9518 1.25 7.5 1.25C4.04822 1.25 1.25 4.04822 1.25 7.5C1.25 10.9518 4.04822 13.75 7.5 13.75Z" stroke="black" stroke-opacity="0.5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M7.5 5V7.5" stroke="black" stroke-opacity="0.5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M7.5 10H7.50625" stroke="black" stroke-opacity="0.5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<g clipPath="url(#clip0_73_16003)">
+<path d="M7.5 13.75C10.9518 13.75 13.75 10.9518 13.75 7.5C13.75 4.04822 10.9518 1.25 7.5 1.25C4.04822 1.25 1.25 4.04822 1.25 7.5C1.25 10.9518 4.04822 13.75 7.5 13.75Z" stroke="black" strokeOpacity="0.5" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+<path d="M7.5 5V7.5" stroke="black" strokeOpacity="0.5" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+<path d="M7.5 10H7.50625" stroke="black" strokeOpacity="0.5" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
 </g>
 </svg>
   </section>
@@ -72,10 +91,10 @@ const ReviewMainPage = () => {
 
 <section>DECLINED 
 <svg width="12" height="12" viewBox="-5 -3 20 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g clip-path="url(#clip0_73_16003)">
-<path d="M7.5 13.75C10.9518 13.75 13.75 10.9518 13.75 7.5C13.75 4.04822 10.9518 1.25 7.5 1.25C4.04822 1.25 1.25 4.04822 1.25 7.5C1.25 10.9518 4.04822 13.75 7.5 13.75Z" stroke="black" stroke-opacity="0.5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M7.5 5V7.5" stroke="black" stroke-opacity="0.5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M7.5 10H7.50625" stroke="black" stroke-opacity="0.5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<g clipPath="url(#clip0_73_16003)">
+<path d="M7.5 13.75C10.9518 13.75 13.75 10.9518 13.75 7.5C13.75 4.04822 10.9518 1.25 7.5 1.25C4.04822 1.25 1.25 4.04822 1.25 7.5C1.25 10.9518 4.04822 13.75 7.5 13.75Z" stroke="black" strokeOpacity="0.5" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+<path d="M7.5 5V7.5" stroke="black" strokeOpacity="0.5" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+<path d="M7.5 10H7.50625" stroke="black" strokeOpacity="0.5" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
 </g>
 </svg>
 </section>
@@ -84,12 +103,12 @@ const ReviewMainPage = () => {
 <section></section>
 
 
-<section><a href="#" class="link-primary">SENT TO REVIEWER</a>
+<section><a href="#" className="link-primary">SENT TO REVIEWER</a>
 <svg width="12" height="12" viewBox="-5 -3 20 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g clip-path="url(#clip0_73_16003)">
-<path d="M7.5 13.75C10.9518 13.75 13.75 10.9518 13.75 7.5C13.75 4.04822 10.9518 1.25 7.5 1.25C4.04822 1.25 1.25 4.04822 1.25 7.5C1.25 10.9518 4.04822 13.75 7.5 13.75Z" stroke="black" stroke-opacity="0.5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M7.5 5V7.5" stroke="black" stroke-opacity="0.5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M7.5 10H7.50625" stroke="black" stroke-opacity="0.5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<g clipPath="url(#clip0_73_16003)">
+<path d="M7.5 13.75C10.9518 13.75 13.75 10.9518 13.75 7.5C13.75 4.04822 10.9518 1.25 7.5 1.25C4.04822 1.25 1.25 4.04822 1.25 7.5C1.25 10.9518 4.04822 13.75 7.5 13.75Z" stroke="black" strokeOpacity="0.5" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+<path d="M7.5 5V7.5" stroke="black" strokeOpacity="0.5" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+<path d="M7.5 10H7.50625" stroke="black" strokeOpacity="0.5" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
 </g>
 </svg>
 
@@ -99,10 +118,10 @@ const ReviewMainPage = () => {
 <section>
 REJECTED BY CERTIFICATION
 <svg width="12" height="12" viewBox="-5 -3 20 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g clip-path="url(#clip0_73_16003)">
-<path d="M7.5 13.75C10.9518 13.75 13.75 10.9518 13.75 7.5C13.75 4.04822 10.9518 1.25 7.5 1.25C4.04822 1.25 1.25 4.04822 1.25 7.5C1.25 10.9518 4.04822 13.75 7.5 13.75Z" stroke="black" stroke-opacity="0.5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M7.5 5V7.5" stroke="black" stroke-opacity="0.5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M7.5 10H7.50625" stroke="black" stroke-opacity="0.5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<g clipPath="url(#clip0_73_16003)">
+<path d="M7.5 13.75C10.9518 13.75 13.75 10.9518 13.75 7.5C13.75 4.04822 10.9518 1.25 7.5 1.25C4.04822 1.25 1.25 4.04822 1.25 7.5C1.25 10.9518 4.04822 13.75 7.5 13.75Z" stroke="black" strokeOpacity="0.5" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+<path d="M7.5 5V7.5" stroke="black" strokeOpacity="0.5" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+<path d="M7.5 10H7.50625" stroke="black" strokeOpacity="0.5" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
 </g>
 </svg>
 </section>
@@ -111,10 +130,10 @@ REJECTED BY CERTIFICATION
 
 <section>APPROVED 
 <svg width="12" height="12" viewBox="-5 -3 20 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g clip-path="url(#clip0_73_16003)">
-<path d="M7.5 13.75C10.9518 13.75 13.75 10.9518 13.75 7.5C13.75 4.04822 10.9518 1.25 7.5 1.25C4.04822 1.25 1.25 4.04822 1.25 7.5C1.25 10.9518 4.04822 13.75 7.5 13.75Z" stroke="black" stroke-opacity="0.5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M7.5 5V7.5" stroke="black" stroke-opacity="0.5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M7.5 10H7.50625" stroke="black" stroke-opacity="0.5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<g clipPath="url(#clip0_73_16003)">
+<path d="M7.5 13.75C10.9518 13.75 13.75 10.9518 13.75 7.5C13.75 4.04822 10.9518 1.25 7.5 1.25C4.04822 1.25 1.25 4.04822 1.25 7.5C1.25 10.9518 4.04822 13.75 7.5 13.75Z" stroke="black" strokeOpacity="0.5" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+<path d="M7.5 5V7.5" stroke="black" strokeOpacity="0.5" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+<path d="M7.5 10H7.50625" stroke="black" strokeOpacity="0.5" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
 </g>
 </svg>
 </section>
@@ -122,10 +141,10 @@ REJECTED BY CERTIFICATION
 
 <section>PENDING CERTIFICATION
 <svg width="12" height="12" viewBox="-5 -3 20 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g clip-path="url(#clip0_73_16003)">
-<path d="M7.5 13.75C10.9518 13.75 13.75 10.9518 13.75 7.5C13.75 4.04822 10.9518 1.25 7.5 1.25C4.04822 1.25 1.25 4.04822 1.25 7.5C1.25 10.9518 4.04822 13.75 7.5 13.75Z" stroke="black" stroke-opacity="0.5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M7.5 5V7.5" stroke="black" stroke-opacity="0.5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M7.5 10H7.50625" stroke="black" stroke-opacity="0.5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<g clipPath="url(#clip0_73_16003)">
+<path d="M7.5 13.75C10.9518 13.75 13.75 10.9518 13.75 7.5C13.75 4.04822 10.9518 1.25 7.5 1.25C4.04822 1.25 1.25 4.04822 1.25 7.5C1.25 10.9518 4.04822 13.75 7.5 13.75Z" stroke="black" strokeOpacity="0.5" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+<path d="M7.5 5V7.5" stroke="black" strokeOpacity="0.5" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+<path d="M7.5 10H7.50625" stroke="black" strokeOpacity="0.5" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
 </g>
 </svg>
 </section>
@@ -133,20 +152,20 @@ REJECTED BY CERTIFICATION
 
 <section>HOLD
 <svg width="12" height="12" viewBox="-5 -3 20 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g clip-path="url(#clip0_73_16003)">
-<path d="M7.5 13.75C10.9518 13.75 13.75 10.9518 13.75 7.5C13.75 4.04822 10.9518 1.25 7.5 1.25C4.04822 1.25 1.25 4.04822 1.25 7.5C1.25 10.9518 4.04822 13.75 7.5 13.75Z" stroke="black" stroke-opacity="0.5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M7.5 5V7.5" stroke="black" stroke-opacity="0.5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M7.5 10H7.50625" stroke="black" stroke-opacity="0.5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<g clipPath="url(#clip0_73_16003)">
+<path d="M7.5 13.75C10.9518 13.75 13.75 10.9518 13.75 7.5C13.75 4.04822 10.9518 1.25 7.5 1.25C4.04822 1.25 1.25 4.04822 1.25 7.5C1.25 10.9518 4.04822 13.75 7.5 13.75Z" stroke="black" strokeOpacity="0.5" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+<path d="M7.5 5V7.5" stroke="black" strokeOpacity="0.5" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+<path d="M7.5 10H7.50625" stroke="black" strokeOpacity="0.5" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
 </g>
 </svg>
 </section>
 <section></section><section></section><section></section>
 <section>CANCELED 
 <svg width="12" height="12" viewBox="-5 -3 20 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g clip-path="url(#clip0_73_16003)">
-<path d="M7.5 13.75C10.9518 13.75 13.75 10.9518 13.75 7.5C13.75 4.04822 10.9518 1.25 7.5 1.25C4.04822 1.25 1.25 4.04822 1.25 7.5C1.25 10.9518 4.04822 13.75 7.5 13.75Z" stroke="black" stroke-opacity="0.5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M7.5 5V7.5" stroke="black" stroke-opacity="0.5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M7.5 10H7.50625" stroke="black" stroke-opacity="0.5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<g clipPath="url(#clip0_73_16003)">
+<path d="M7.5 13.75C10.9518 13.75 13.75 10.9518 13.75 7.5C13.75 4.04822 10.9518 1.25 7.5 1.25C4.04822 1.25 1.25 4.04822 1.25 7.5C1.25 10.9518 4.04822 13.75 7.5 13.75Z" stroke="black" strokeOpacity="0.5" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+<path d="M7.5 5V7.5" stroke="black" strokeOpacity="0.5" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+<path d="M7.5 10H7.50625" stroke="black" strokeOpacity="0.5" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
 </g>
 
 </svg>
@@ -158,7 +177,7 @@ REJECTED BY CERTIFICATION
 
 
 
-     <table class="table">
+     <table className="table">
  <thead>
     
     <tr>
@@ -178,7 +197,7 @@ REJECTED BY CERTIFICATION
   <tbody>
    
       {ULogged?.is_reviewer===true && reviewData?.length>0 ? <>
-      {reviewData?.map((data)=>{
+      {reviewData?.slice((arrayPageState - 1) * 4, arrayPageState * 4)?.map((data)=>{
         return(
           <tr>
       <th >{data?.report_created_at}</th>
@@ -189,7 +208,7 @@ REJECTED BY CERTIFICATION
       <td>DC [214117]</td>
       <td>{data?.report_created_by}</td>
       <td>DC</td>
-      {data?.report_status==="SENT TO REVIEWER" ? <>  <td><span class="badge badge-secondary">Sent to Reviewer</span></td></>:"No badge made"}
+      {data?.report_status==="SENT TO REVIEWER" ? <>  <td><span className="badge badge-secondary">Sent to Reviewer</span></td></>:"No badge made"}
      
       <td><span className=" stretched-link"
         style={{ cursor: "pointer", color:"#007bff" }}
@@ -199,9 +218,9 @@ REJECTED BY CERTIFICATION
             navigate("/view/editReport")}}
       >View</span>
         <svg  width="15" height="15" viewBox="-2 -3 20 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M15.25 10.9583V15.9583C15.25 16.4004 15.0744 16.8243 14.7618 17.1368C14.4493 17.4494 14.0254 17.625 13.5833 17.625H4.41667C3.97464 17.625 3.55072 17.4494 3.23816 17.1368C2.92559 16.8243 2.75 16.4004 2.75 15.9583V6.79167C2.75 6.34964 2.92559 5.92572 3.23816 5.61316C3.55072 5.30059 3.97464 5.125 4.41667 5.125H9.41667" stroke="#007D99" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M12.75 2.625H17.75V7.625" stroke="#007D99" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M8.58301 11.7917L17.7497 2.625" stroke="#007D99" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M15.25 10.9583V15.9583C15.25 16.4004 15.0744 16.8243 14.7618 17.1368C14.4493 17.4494 14.0254 17.625 13.5833 17.625H4.41667C3.97464 17.625 3.55072 17.4494 3.23816 17.1368C2.92559 16.8243 2.75 16.4004 2.75 15.9583V6.79167C2.75 6.34964 2.92559 5.92572 3.23816 5.61316C3.55072 5.30059 3.97464 5.125 4.41667 5.125H9.41667" stroke="#007D99" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+        <path d="M12.75 2.625H17.75V7.625" stroke="#007D99" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+        <path d="M8.58301 11.7917L17.7497 2.625" stroke="#007D99" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"/>
         </svg>
       </td>
           </tr>
@@ -222,12 +241,12 @@ REJECTED BY CERTIFICATION
       <td>DC [214117]</td>
       <td>Engineer Name</td>
       <td>DC</td>
-      <td><a href="#" class="badge badge-secondary">Sent to Reviewer</a></td>
+      <td><a href="#" className="badge badge-secondary">Sent to Reviewer</a></td>
       <td><a href="#" className="stretched-link">View</a>
         <svg  width="15" height="15" viewBox="-2 -3 20 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M15.25 10.9583V15.9583C15.25 16.4004 15.0744 16.8243 14.7618 17.1368C14.4493 17.4494 14.0254 17.625 13.5833 17.625H4.41667C3.97464 17.625 3.55072 17.4494 3.23816 17.1368C2.92559 16.8243 2.75 16.4004 2.75 15.9583V6.79167C2.75 6.34964 2.92559 5.92572 3.23816 5.61316C3.55072 5.30059 3.97464 5.125 4.41667 5.125H9.41667" stroke="#007D99" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M12.75 2.625H17.75V7.625" stroke="#007D99" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M8.58301 11.7917L17.7497 2.625" stroke="#007D99" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M15.25 10.9583V15.9583C15.25 16.4004 15.0744 16.8243 14.7618 17.1368C14.4493 17.4494 14.0254 17.625 13.5833 17.625H4.41667C3.97464 17.625 3.55072 17.4494 3.23816 17.1368C2.92559 16.8243 2.75 16.4004 2.75 15.9583V6.79167C2.75 6.34964 2.92559 5.92572 3.23816 5.61316C3.55072 5.30059 3.97464 5.125 4.41667 5.125H9.41667" stroke="#007D99" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+        <path d="M12.75 2.625H17.75V7.625" stroke="#007D99" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+        <path d="M8.58301 11.7917L17.7497 2.625" stroke="#007D99" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"/>
         </svg>
       </td>
     </tr>
@@ -240,27 +259,38 @@ REJECTED BY CERTIFICATION
       <td>DC [214117]</td>
       <td>Engineer Name</td>
       <td>DC</td>
-      <td><a href="#" class="badge badge-secondary">Sent to Reviewer</a></td>
+      <td><a href="#" className="badge badge-secondary">Sent to Reviewer</a></td>
       <td><a href="#" className="stretched-link">View</a>
         <svg  width="15" height="15" viewBox="-2 -3 20 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M15.25 10.9583V15.9583C15.25 16.4004 15.0744 16.8243 14.7618 17.1368C14.4493 17.4494 14.0254 17.625 13.5833 17.625H4.41667C3.97464 17.625 3.55072 17.4494 3.23816 17.1368C2.92559 16.8243 2.75 16.4004 2.75 15.9583V6.79167C2.75 6.34964 2.92559 5.92572 3.23816 5.61316C3.55072 5.30059 3.97464 5.125 4.41667 5.125H9.41667" stroke="#007D99" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M12.75 2.625H17.75V7.625" stroke="#007D99" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M8.58301 11.7917L17.7497 2.625" stroke="#007D99" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M15.25 10.9583V15.9583C15.25 16.4004 15.0744 16.8243 14.7618 17.1368C14.4493 17.4494 14.0254 17.625 13.5833 17.625H4.41667C3.97464 17.625 3.55072 17.4494 3.23816 17.1368C2.92559 16.8243 2.75 16.4004 2.75 15.9583V6.79167C2.75 6.34964 2.92559 5.92572 3.23816 5.61316C3.55072 5.30059 3.97464 5.125 4.41667 5.125H9.41667" stroke="#007D99" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+        <path d="M12.75 2.625H17.75V7.625" stroke="#007D99" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+        <path d="M8.58301 11.7917L17.7497 2.625" stroke="#007D99" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"/>
         </svg>
       </td>
     </tr> */}
   </tbody>
 </table>
- 
+{reviewData?.length > 4 ? (
+        <div className="d-flex justify-content-center">
+          <button className="btn customDC-color m-2" onClick={prevPage}>
+            Previous Page
+          </button>
+          <button className="btn customDC-color m-2" onClick={nextPage}>
+            Next Page
+          </button>
+        </div>
+      ) : (
+        ""
+      )}
 
- <div className='sam'>
+ {/* <div className='sam'>
     <p>Showing 1 of 6 results</p>
     </div>  
 
 
   <div className='sahil'>
- <button type="button" class="btn btn-primary">LOAD MORE</button>
- </div>
+ <button type="button" className="btn btn-primary">LOAD MORE</button>
+ </div> */}
 
 
 
