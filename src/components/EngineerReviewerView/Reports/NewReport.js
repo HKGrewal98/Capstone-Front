@@ -8,9 +8,9 @@ import Alert from 'react-bootstrap/Alert';
 import Button from 'react-bootstrap/Button';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { LoaderStatus } from '../../../Common/LoaderReducer/LoaderSlice';
+import { LoaderStatus } from '../../Common/LoaderReducer/LoaderSlice';
 import { useEffect } from 'react';
-import { LoginDetails } from '../../../Login/LoginReducer/LoginSlice';
+import { LoginDetails } from '../../Login/LoginReducer/LoginSlice';
 import Cookies from "universal-cookie"
 import debounce from 'debounce'
 

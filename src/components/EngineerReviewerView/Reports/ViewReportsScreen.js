@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, useNavigate } from 'react-router-dom'
-import { LoginDetails } from '../../../Login/LoginReducer/LoginSlice';
+import { LoginDetails } from '../../Login/LoginReducer/LoginSlice';
 import "./ViewReportScreen.css"
 import Cookies from "universal-cookie";
 

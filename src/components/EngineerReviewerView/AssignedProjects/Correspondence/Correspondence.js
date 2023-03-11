@@ -15,6 +15,12 @@ export const Correspondence = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [arrayPageState, setArrayPageState] = useState(1)
+  var myHeaders = new Headers();
+  myHeaders.append("Content-Type", "application/json");
+  myHeaders.append("Access-Control-Allow-Origin", "http://localhost:8081");
+  myHeaders.append("Access-Control-Allow-Credentials", true);
+  const [showModalDeleteDoc, setShowModalDeleteDoc] = useState(false)
+  const [tempReport, setTempReport] = useState()
 
   const cookies = new Cookies()
   const CorrespondentsData = useSelector((state) => state.Deliverables.value);
@@ -119,6 +125,59 @@ useEffect(()=>{
   }, []);
   return (
     <div>
+       {showModalDeleteDoc === true ? <>
+      <div id="myCustomModal" class="customModal">
+<div class="custom-modal-content" >
+  <div class="custom-modal-header customDC-color pt-2" >
+   
+    <h4 className='text-center '>Are you sure you want to delete the document?</h4>
+  </div>
+  
+ 
+  <div class="custom-modal-footer d-flex justify-content-end ">
+  <button className="btn customDC-color m-2"  onClick={()=>{
+         axios({
+          method: 'put',
+          maxBodyLength: Infinity,
+          url: 'http://localhost:8081/report/delete',
+          headers:myHeaders,
+          credentials: "include", 
+          withCredentials:true,
+            data : {
+              doc_id:tempReport?.doc_id,
+              report_id: tempReport?.report_id
+            },
+          
+        })
+        .then(function (response) {
+          console.log("Response From Delete in correspondence",response.data)  
+          if(response?.data?.statusCode === 200){
+          setShowModalDeleteDoc(false)
+          getCorrespondence()  
+          }
+        
+        })
+        .catch(function (error) {
+          console.log("Error block delete teport", error);
+          if(error?.response?.status===401){
+            dispatch(LoginDetails({}));
+                cookies.remove('connect.sid');
+                localStorage.setItem("AlertMessage", JSON.stringify("Session Expired...Please Login Again"))
+              navigate('/')
+          }
+          
+         
+        });
+  }}>
+            Confirm
+          </button>
+    <button className='btn customDC-color m-2' onClick={()=>{
+       
+      setShowModalDeleteDoc(false)}}>Cancel</button>
+  </div>
+</div>
+</div>
+    </>:""}
       <div className="Adddocument">
         <button>ADD DOCUMENT</button>
       </div>
@@ -126,15 +185,15 @@ useEffect(()=>{
       <table className="table customTableMArgin">
         <thead>
           <tr>
-            <th scope="col" style={{width:"125px"}}>Date created</th>
-            <th scope="col" style={{width:"125px"}}>Record Name</th>
-            <th scope="col" style={{width:"125px"}}>Record Type</th>
-            <th scope="col" style={{width:"125px"}}>Project Number</th>
-            <th scope="col" style={{width:"125px"}}>Project Name</th>
-            <th scope="col" style={{width:"125px"}}>Description</th>
-            <th scope="col" style={{width:"125px"}}>Responsibility</th>
-            <th scope="col" style={{width:"125px"}}>Work Order</th>
-            <th scope="col"></th>
+            <th scope="col" style={{minWidth:"110px"}}>Date created</th>
+            <th scope="col" style={{minWidth:"110px"}}>Record Name</th>
+            <th scope="col" style={{minWidth:"110px"}}>Record Type</th>
+            <th scope="col" style={{minWidth:"110px"}}>Project Number</th>
+            <th scope="col" style={{minWidth:"110px"}}>Project Name</th>
+            <th scope="col" style={{minWidth:"110px"}}>Description</th>
+            <th scope="col" style={{minWidth:"110px"}}>Responsibility</th>
+            <th scope="col" style={{minWidth:"110px"}}>Work Order</th>
+            <th scope="col"style={{minWidth:"140px"}}></th>
           </tr>
         </thead>
 
@@ -237,40 +296,11 @@ useEffect(()=>{
                         xmlns="http://www.w3.org/2000/svg"
                         style={{ cursor: "pointer" }}
                         onClick={() => {
-                          var myHeaders = new Headers();
-                          myHeaders.append("Content-Type", "application/json");
-                          myHeaders.append("Access-Control-Allow-Origin", "http://localhost:8081");
-                          myHeaders.append("Access-Control-Allow-Credentials", true);
+                          setShowModalDeleteDoc(true)
+                         setTempReport({"doc_id":data?.file_id,
+                          "report_id": data?.report_number, "original_file_name": data?.original_file_name})
                         
-                          axios({
-                            method: 'put',
-                            maxBodyLength: Infinity,
-                            url: 'http://localhost:8081/report/delete',
-                            headers:myHeaders,
-                            credentials: "include", 
-                            withCredentials:true,
-                              data : {
-                                doc_id:data?.file_id,
-                                report_id: data?.report_number
-                              },
-                            
-                          })
-                          .then(function (response) {
-                            // console.log("Response From Delete in correspondence",response.data)  
-                            getCorrespondence()  
-                          
-                          })
-                          .catch(function (error) {
-                            console.log("Error block delete teport", error);
-                            if(error?.response?.status===401){
-                              dispatch(LoginDetails({}));
-                                  cookies.remove('connect.sid');
-                                  localStorage.setItem("AlertMessage", JSON.stringify("Session Expired...Please Login Again"))
-                                navigate('/')
-                            }
-                            
-                           
-                          });
+                         
                         }}
                       >
                         <path

@@ -11,6 +11,12 @@ import  { Reports } from "../AssignedProjectsReducer/ReportDetails";
 import { ProjectNumber } from "../AssignedProjectsReducer/ProjectNumber";
 
 export const Deliverables = () => {
+  var myHeaders = new Headers();
+  myHeaders.append("Content-Type", "application/json");
+  myHeaders.append("Access-Control-Allow-Origin", "http://localhost:8081");
+  myHeaders.append("Access-Control-Allow-Credentials", true);
+  const [showModalDeleteDoc, setShowModalDeleteDoc] = useState(false)
+  const [tempReport, setTempReport] = useState()
   let navigate = useNavigate();
   const dispatch = useDispatch();
   const cookies = new Cookies();
@@ -31,10 +37,7 @@ export const Deliverables = () => {
       setArrayPageState(arrayPageState - 1);
     }
   };
-  var myHeaders = new Headers();
-  myHeaders.append("Content-Type", "application/json");
-  myHeaders.append("Access-Control-Allow-Origin", "http://localhost:8081");
-  myHeaders.append("Access-Control-Allow-Credentials", true);
+ 
  
     useEffect(()=>{
       let prevProjectNumber = JSON.parse(localStorage.getItem("PrevProjectNumber"))
@@ -105,11 +108,65 @@ export const Deliverables = () => {
 
   }, []);
   // useEffect(()=>{
-  //   console.log("Del main", DeliverableMain)
-  // },[DeliverableMain])
+  //   console.log("Temp repot", tempReport)
+  // },[tempReport])
 
   return (
+
     <div>
+       {showModalDeleteDoc === true ? <>
+      <div id="myCustomModal" class="customModal">
+<div class="custom-modal-content" >
+  <div class="custom-modal-header customDC-color pt-2" >
+   
+    <h4 className='text-center '>Are you sure you want to delete the document?</h4>
+  </div>
+ 
+ 
+  <div class="custom-modal-footer d-flex justify-content-end ">
+  <button className="btn customDC-color m-2"  onClick={()=>{
+         axios({
+          method: 'put',
+          maxBodyLength: Infinity,
+          url: 'http://localhost:8081/report/delete',
+          headers:myHeaders,
+          credentials: "include", 
+          withCredentials:true,
+            data : {
+              doc_id:tempReport?.doc_id,
+              report_id: tempReport?.report_id
+            },
+          
+        })
+        .then(function (response) {
+          console.log("Response From Delete in deliverables",response.data)  
+          if(response?.data?.statusCode === 200){
+          setShowModalDeleteDoc(false)
+          getDeliverables()  
+          }
+        
+        })
+        .catch(function (error) {
+          console.log("Error block delete teport", error);
+          if(error?.response?.status===401){
+            dispatch(LoginDetails({}));
+                cookies.remove('connect.sid');
+                localStorage.setItem("AlertMessage", JSON.stringify("Session Expired...Please Login Again"))
+              navigate('/')
+          }
+          
+         
+        });
+  }}>
+            Confirm
+          </button>
+    <button className='btn customDC-color m-2' onClick={()=>{
+       
+      setShowModalDeleteDoc(false)}}>Cancel</button>
+  </div>
+</div>
+</div>
+    </>:""}
        {DeliverableMain?.project && DeliverableMain?.reports.length > 0 ? (
           <>
       <div className="Adddocument">
@@ -129,16 +186,16 @@ export const Deliverables = () => {
       <table className="table customTableMArgin" style={{ fontSize: "85%" }}>
         <thead>
           <tr>
-            <th scope="col">Date created</th>
-            <th scope="col">Report</th>
-            <th scope="col">Type</th>
-            <th scope="col">Project Number</th>
-            <th scope="col">Project Name</th>
-            <th scope="col">Report Receiving Customer</th>
-            <th scope="col">Engineer</th>
-            <th scope="col">Reviewer</th>
-            <th scope="col">Status</th>
-            <th scope="col"></th>
+            <th scope="col" width="100px">Date created</th>
+            <th scope="col" width="100px">Report</th>
+            <th scope="col" width="100px">Type</th>
+            <th scope="col" width="100px">Project Number</th>
+            <th scope="col" width="100px">Project Name</th>
+            <th scope="col" width="100px">Report Receiving Customer</th>
+            <th scope="col" width="100px">Engineer</th>
+            <th scope="col" width="100px">Reviewer</th>
+            <th scope="col" width="100px">Status</th>
+            <th scope="col" width="130px"></th>
           </tr>
         </thead>
 
@@ -226,40 +283,11 @@ export const Deliverables = () => {
                           xmlns="http://www.w3.org/2000/svg"
                           style={{ cursor: "pointer" }}
                           onClick={() => {
-                            var myHeaders = new Headers();
-                            myHeaders.append("Content-Type", "application/json");
-                            myHeaders.append("Access-Control-Allow-Origin", "http://localhost:8081");
-                            myHeaders.append("Access-Control-Allow-Credentials", true);
+                            setShowModalDeleteDoc(true)
+                           setTempReport({"doc_id":report?.file_id,
+                            "report_id": report?.report_number, "original_file_name": report?.original_file_name})
                           
-                            axios({
-                              method: 'put',
-                              maxBodyLength: Infinity,
-                              url: 'http://localhost:8081/report/delete',
-                              headers:myHeaders,
-                              credentials: "include", 
-                              withCredentials:true,
-                                data : {
-                                  doc_id:report?.file_id,
-                                  report_id: report?.report_number
-                                },
-                              
-                            })
-                            .then(function (response) {
-                              // console.log("Response From Delete in deliverables",response.data)  
-                              getDeliverables()  
-                            
-                            })
-                            .catch(function (error) {
-                              console.log("Error block delete teport", error);
-                              if(error?.response?.status===401){
-                                dispatch(LoginDetails({}));
-                                    cookies.remove('connect.sid');
-                                    localStorage.setItem("AlertMessage", JSON.stringify("Session Expired...Please Login Again"))
-                                  navigate('/')
-                              }
-                              
-                             
-                            });
+                           
                           }}
                         >
                           <path

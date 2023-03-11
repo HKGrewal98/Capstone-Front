@@ -11,7 +11,7 @@ import { ComplianceCentralUsers } from "./components/ComplianceCentralUsers/Comp
 import { LandingPage } from "./components/EngineerReviewerView/LandingPage/LandingPage";
 import CreateProjectFolder from "./components/EngineerReviewerView/AssignedProjects/CreateProjectFolder";
 
-import { NewReport } from "./components//EngineerReviewerView/AssignedProjects/Reports/NewReport";
+import { NewReport } from "./components//EngineerReviewerView/Reports/NewReport";
 
 import { AssignedProjectMain } from "./components/EngineerReviewerView/AssignedProjects/AssignedProjectMain";
 import { Deliverables } from "./components/EngineerReviewerView/AssignedProjects/Deliverables/Deliverables";
@@ -22,9 +22,9 @@ import {Correspondence } from "./components/EngineerReviewerView/AssignedProject
 import {EquipmentLog } from "./components/EngineerReviewerView/AssignedProjects/EquipmentLog/EquipmentLog";
 import {Sample } from "./components/EngineerReviewerView/AssignedProjects/Sample/Sample";
 import ReviewMainPage from "./components/EngineerReviewerView/ReviewerMain/ReviewMainPage";
-import ViewReportsScreen from "./components/EngineerReviewerView/AssignedProjects/Reports/ViewReportsScreen";
+import ViewReportsScreen from "./components/EngineerReviewerView/Reports/ViewReportsScreen";
 import { useSelector } from "react-redux";
-import EditReportScreen from "./components/EngineerReviewerView/AssignedProjects/Reports/EditReportScreen";
+import EditReportScreen from "./components/EngineerReviewerView/Reports/EditReportScreen";
 
 
 
