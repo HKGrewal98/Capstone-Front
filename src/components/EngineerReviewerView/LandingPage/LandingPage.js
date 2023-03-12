@@ -18,6 +18,7 @@ import Modal from 'react-bootstrap/Modal';
 
 
 import Cookies from "universal-cookie";
+import BACKEND_URL from "../../../backendUrl";
 
 export const LandingPage = () => {
   const ULogged = useSelector((state)=>state.Login.value)
@@ -53,7 +54,7 @@ export const LandingPage = () => {
     axios({
       method: 'get',
       maxBodyLength: Infinity,
-        url: 'http://localhost:8081/project/search',
+        url: `${BACKEND_URL}/project/search`,
         params : data,
         headers:myHeaders,
         credentials: "include", 

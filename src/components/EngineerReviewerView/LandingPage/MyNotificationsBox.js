@@ -3,6 +3,7 @@ import React from 'react'
 import { useEffect } from 'react'
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import BACKEND_URL from '../../../backendUrl'
 
 export const MyNotificationsBox = () => {
   const [notificationData, setNotificationData] = useState()
@@ -19,7 +20,7 @@ export const MyNotificationsBox = () => {
     axios({
      method:'get',
      maxBodyLength: Infinity,
-     url: 'http://localhost:8081/project/notifications',
+     url: `${BACKEND_URL}/project/notifications`,
      credentials: "include", 
      withCredentials:true,
      headers:myHeaders

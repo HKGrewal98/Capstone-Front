@@ -7,6 +7,7 @@ import Modal from 'react-bootstrap/Modal';
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {ProjectNumber} from "../AssignedProjects/AssignedProjectsReducer/ProjectNumber";
+import BACKEND_URL from "../../../backendUrl";
 
 export const AssignedProjectsBox = () => {
   const [show, setShow] = useState(false);
@@ -30,7 +31,7 @@ export const AssignedProjectsBox = () => {
     axios({
      method:'get',
      maxBodyLength: Infinity,
-     url: `http://localhost:8081/project`,
+     url: `${BACKEND_URL}/project`,
      credentials: "include", 
      withCredentials:true,
      params:{

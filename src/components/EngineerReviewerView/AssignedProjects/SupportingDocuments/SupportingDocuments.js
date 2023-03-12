@@ -11,6 +11,7 @@ import Cookies from "universal-cookie";
 import { useState } from "react";
 import { Reports } from "../AssignedProjectsReducer/ReportDetails";
 import { ProjectNumber } from "../AssignedProjectsReducer/ProjectNumber";
+import BACKEND_URL from "../../../../backendUrl";
 
 export const SupportingDocuments = () => {
   const cookies = new Cookies();
@@ -55,7 +56,7 @@ export const SupportingDocuments = () => {
       axios({
         method: "get",
         maxBodyLength: Infinity,
-        url: `http://localhost:8081/project/${ProjectNumberRedux}`,
+        url: `${BACKEND_URL}/project/${ProjectNumberRedux}`,
         headers: myHeaders,
         credentials: "include",
         withCredentials: true,
@@ -124,7 +125,7 @@ export const SupportingDocuments = () => {
          axios({
           method: 'put',
           maxBodyLength: Infinity,
-          url: 'http://localhost:8081/report/delete',
+          url: `${BACKEND_URL}/report/delete`,
           headers:myHeaders,
           credentials: "include", 
           withCredentials:true,

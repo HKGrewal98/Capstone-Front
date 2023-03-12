@@ -7,6 +7,7 @@ import { LoginDetails } from '../../../Login/LoginReducer/LoginSlice';
 import { DeliverablesDetails } from '../AssignedProjectsReducer/Deliverables';
 import Cookies from 'universal-cookie'
 import { ProjectNumber } from '../AssignedProjectsReducer/ProjectNumber';
+import BACKEND_URL from '../../../../backendUrl';
 
 export const Details = () => {
   
@@ -39,7 +40,7 @@ export const Details = () => {
           axios({
             method: 'get',
             maxBodyLength: Infinity,
-            url: `http://localhost:8081/project/${ProjectNumberRedux}`,
+            url: `${BACKEND_URL}/project/${ProjectNumberRedux}`,
             headers:myHeaders,
             credentials: "include", 
             withCredentials:true,

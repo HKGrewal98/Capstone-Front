@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
+import BACKEND_URL from "../../../backendUrl";
 import { LoaderStatus } from "../../Common/LoaderReducer/LoaderSlice";
 import { Reports } from "../AssignedProjects/AssignedProjectsReducer/ReportDetails";
 import { ReviewerAllReports } from "./ReviewerReducers/ReviewerAllReportsSlice";
@@ -39,7 +40,7 @@ const ReviewMainPage = () => {
     axios({
       method: "get",
       maxBodyLength: Infinity,
-      url: "http://localhost:8081/project/notifications",
+      url: `${BACKEND_URL}/project/notifications`,
       credentials: "include",
       withCredentials: true,
       headers: myHeaders,

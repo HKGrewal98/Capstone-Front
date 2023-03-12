@@ -7,6 +7,12 @@ import { NavLink, useFetcher, useNavigate } from "react-router-dom";
 import { LoginDetails } from "../../Login/LoginReducer/LoginSlice";
 import "./ViewReportScreen.css";
 import Cookies from "universal-cookie";
+import { DeliverablesDetails } from "../AssignedProjects/AssignedProjectsReducer/Deliverables";
+import BACKEND_URL from "../../../backendUrl";
+import Alert from 'react-bootstrap/Alert';
+import Button from 'react-bootstrap/Button';
+import { LoaderStatus } from "../../Common/LoaderReducer/LoaderSlice";
+import { ProjectNumber } from "../AssignedProjects/AssignedProjectsReducer/ProjectNumber";
 
 const EditReportScreen = () => {
   const { register, handleSubmit, control , formState: { errors }} = useForm();
@@ -15,6 +21,10 @@ const EditReportScreen = () => {
   const [showModalReject, setShowModalReject] = useState(false)
   const [showModalUpdateDoc, setShowModalUpdateDoc] = useState(false)
   const [showModalDeleteDoc, setShowModalDeleteDoc] = useState(false)
+  const [showGreen, setShowGreen] = useState(false);
+  const [alertValue, setAlertValue] = useState()
+
+
   const ReportsDetailsRedux = useSelector((state) => state.ReportDetails.value);
   const ULogged = useSelector((state) => state.Login.value);
   var myHeaders = new Headers();
@@ -57,7 +67,7 @@ const EditReportScreen = () => {
        axios({
                        method: 'put',
                        maxBodyLength: Infinity,
-                       url: 'http://localhost:8081/report/upload',
+                       url: `${BACKEND_URL}/report/upload`,
                        headers:myHeaders,
                        credentials: "include",
                        withCredentials:true,
@@ -67,8 +77,36 @@ const EditReportScreen = () => {
                      .then(function (response) {
                       //  console.log("Response From update doc",response.data)
                        if(response?.data?.statusCode === 200){
-                        // alert("Success")
-                        setShowModalUpdateDoc(false)
+                         setShowModalUpdateDoc(false)
+                         dispatch(LoaderStatus(true))
+                         axios({
+                          method: 'get',
+                          maxBodyLength: Infinity,
+                          url:`${BACKEND_URL}/report/${ReportsDetailsRedux?.report?.report_number}`,
+                          headers:myHeaders,
+                          credentials: "include",
+                          withCredentials:true,
+   
+                        }).
+                       then(
+                          res=>{
+                            if(res.data?.statusCode===200){
+                              dispatch(LoaderStatus(false))
+                              dispatch(ProjectNumber(res.data?.data))
+                              setShowGreen(true)
+                        setAlertValue("Update Success")
+                            }
+                          }
+                         )  .catch(function (error) {
+                          console.log("Error block update report", error);
+                          if(error?.response?.status===401){
+                            dispatch(LoginDetails({}));
+                                cookies.remove('connect.sid');
+                                localStorage.setItem("AlertMessage", JSON.stringify("Session Expired...Please Login Again"))
+                              navigate('/')
+                          }
+   
+                        });
                        }
                       //  getFinancialsData()
 
@@ -86,6 +124,16 @@ const EditReportScreen = () => {
   }
   return (
     <>
+     {showGreen?<div className="d-flex justify-content-center" style={{position:"sticky",top:"0",zIndex:"9"}}>
+      <Alert className="col-12 col-md-8 col-lg-6 p-1 d-flex align-items-center justify-content-between" show={showGreen} variant="success" >
+        <p style={{marginBottom:"0"}}>{alertValue}</p>
+        <Button style={{fontSize:"80%"}} onClick={() => 
+          setShowGreen(false)
+          } variant="outline-success">
+            Close
+            </Button>
+      </Alert>
+    </div>:""}
        {showModalApprove===true ? <>
       <div id="myCustomModal" class="customModal">
 <div class="custom-modal-content">
@@ -172,7 +220,7 @@ const EditReportScreen = () => {
           axios({
                        method: 'put',
                        maxBodyLength: Infinity,
-                       url: 'http://localhost:8081/report/delete',
+                       url: `${BACKEND_URL}/report/delete`,
                        headers:myHeaders,
                        credentials: "include",
                        withCredentials:true,
@@ -183,10 +231,13 @@ const EditReportScreen = () => {
 
                      })
                      .then(function (response) {
-                      //  console.log("Response From Delete in report screen",response.data)
+                       console.log("Response From Delete in report screen",response.data)
                        if(response?.data?.statusCode === 200){
                         // alert("Success")
                         setShowModalDeleteDoc(false)
+                        dispatch(DeliverablesDetails({}));
+
+                        navigate(-1)
                        }
                       //  getFinancialsData()
 

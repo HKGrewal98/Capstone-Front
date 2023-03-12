@@ -10,6 +10,7 @@ import LoginDetails from "../../../Login/LoginReducer/LoginSlice"
 import { useState } from "react";
 import { Reports } from "../AssignedProjectsReducer/ReportDetails";
 import { ProjectNumber } from "../AssignedProjectsReducer/ProjectNumber";
+import BACKEND_URL from "../../../../backendUrl";
 
 export const Correspondence = () => {
   const dispatch = useDispatch();
@@ -54,10 +55,10 @@ const getCorrespondence = ()=>{
     let url
     if(ProjectNumberRedux=== undefined){
       console.log("Inside projenumberedux undefine")
-      url= `http://localhost:8081/project/${SelectedProject?.project_number}`
+      url= `${BACKEND_URL}/project/${SelectedProject?.project_number}`
     }
     else{
-      url= `http://localhost:8081/project/${ProjectNumberRedux}`
+      url= `${BACKEND_URL}/project/${ProjectNumberRedux}`
     }
     
   dispatch(LoaderStatus(true));
@@ -139,7 +140,7 @@ useEffect(()=>{
          axios({
           method: 'put',
           maxBodyLength: Infinity,
-          url: 'http://localhost:8081/report/delete',
+          url: `${BACKEND_URL}/report/delete`,
           headers:myHeaders,
           credentials: "include", 
           withCredentials:true,

@@ -12,6 +12,7 @@ import { AllProjectsDetails } from './AssignedProjectsReducer/AllProjects'
 import {ProjectNumber} from '../AssignedProjects/AssignedProjectsReducer/ProjectNumber'
 import axios from 'axios'
 import Cookies from 'universal-cookie'
+import BACKEND_URL from '../../../backendUrl'
 
 
 
@@ -61,7 +62,7 @@ export const AssignedProjectMain = () => {
      axios({
       method: 'get',
       maxBodyLength: Infinity,
-      url: 'http://localhost:8081/project/all',
+      url: `${BACKEND_URL}/project/all`,
       headers:myHeaders,
       credentials: "include", 
       withCredentials:true,

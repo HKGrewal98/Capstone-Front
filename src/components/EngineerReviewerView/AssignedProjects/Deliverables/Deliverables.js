@@ -9,6 +9,7 @@ import { LoginDetails } from "../../../Login/LoginReducer/LoginSlice";
 import { AllProjectsDetails } from "../AssignedProjectsReducer/AllProjects";
 import  { Reports } from "../AssignedProjectsReducer/ReportDetails";
 import { ProjectNumber } from "../AssignedProjectsReducer/ProjectNumber";
+import BACKEND_URL from "../../../../backendUrl";
 
 export const Deliverables = () => {
   var myHeaders = new Headers();
@@ -55,7 +56,7 @@ export const Deliverables = () => {
       axios({
         method: "get",
         maxBodyLength: Infinity,
-        url: `http://localhost:8081/project/${ProjectNumberRedux}`,
+        url: `${BACKEND_URL}/project/${ProjectNumberRedux}`,
         headers: myHeaders,
         credentials: "include",
         withCredentials: true,
@@ -128,7 +129,7 @@ export const Deliverables = () => {
          axios({
           method: 'put',
           maxBodyLength: Infinity,
-          url: 'http://localhost:8081/report/delete',
+          url: `${BACKEND_URL}/report/delete`,
           headers:myHeaders,
           credentials: "include", 
           withCredentials:true,
