@@ -392,7 +392,7 @@ const EditReportScreen = () => {
                   placeholder={
                     ReportsDetailsRedux?.report?.reviewer_id +
                     "/" +
-                    ReportsDetailsRedux?.report?.report_created_at.slice(0, 10)
+                    ReportsDetailsRedux?.report?.report_created_at?.slice(0, 10)
                   }
                   disabled
                 ></input>
