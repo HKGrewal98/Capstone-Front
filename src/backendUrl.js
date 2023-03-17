@@ -1,4 +1,5 @@
 let mode = "Develpment"
+// let mode = "Production"
 let BACKEND_URL
 if(mode === "Production"){
     BACKEND_URL = ""
