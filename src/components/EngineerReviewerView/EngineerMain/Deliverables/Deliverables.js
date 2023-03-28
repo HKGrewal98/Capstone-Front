@@ -260,6 +260,39 @@ export const Deliverables = () => {
                       ) : (
                         ""
                       )}
+                        {report?.report_status === "REJECTED" ? (
+                        <>
+                          <td>
+                            <span className="badge badge-pill badge-danger">
+                              REJECTED
+                            </span>
+                          </td>
+                        </>
+                      ) : (
+                        ""
+                      )}
+                       {report?.report_status === "PENDING" ? (
+                        <>
+                          <td>
+                            <span className="badge badge-pill badge-warning">
+                              PENDING
+                            </span>
+                          </td>
+                        </>
+                      ) : (
+                        ""
+                      )}
+                       {report?.report_status === "APPROVED" ? (
+                        <>
+                          <td>
+                            <span className="badge badge-pill badge-success">
+                              APPROVED
+                            </span>
+                          </td>
+                        </>
+                      ) : (
+                        ""
+                      )}
                       {report?.report_status === "VALIDATION FAILED" ? (
                         <>
                           <td>
