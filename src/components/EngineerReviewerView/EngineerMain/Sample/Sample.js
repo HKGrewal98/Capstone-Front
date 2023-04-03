@@ -146,15 +146,15 @@ export const Sample = () => {
   return (
     <div>
          {showModalDeleteDoc === true ? <>
-      <div id="myCustomModal" class="customModal">
-<div class="custom-modal-content" >
-  <div class="custom-modal-header customDC-color pt-2" >
+      <div id="myCustomModal" className="customModal">
+<div className="custom-modal-content" >
+  <div className="custom-modal-header customDC-color pt-2" >
    
     <h4 className='text-center '>Are you sure you want to delete the document?</h4>
   </div>
   
  
-  <div class="custom-modal-footer d-flex justify-content-end ">
+  <div className="custom-modal-footer d-flex justify-content-end ">
   <button className="btn customDC-color m-2"  onClick={()=>{
          axios({
           method: 'put',

@@ -72,13 +72,13 @@ const CreateProjectFolder = () => {
 
     <>
     {showModalGreen===true ? <>
-      <div id="myCustomModal" class="customModal">
-<div class="custom-modal-content">
-  <div class="custom-modal-header">
+      <div id="myCustomModal" className="customModal">
+<div className="custom-modal-content">
+  <div className="custom-modal-header">
    
     <h4 className='text-center'>Your Project is ready</h4>
   </div>
-  <div class="custom-modal-body">
+  <div className="custom-modal-body">
     <div className='customContent d-flex align-items-center'>
     <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M28.6802 -0.000244141C35.4602 -0.000244141 40.0002 4.75976 40.0002 11.8398V28.1818C40.0002 35.2398 35.4602 39.9998 28.6802 39.9998H11.3402C4.56021 39.9998 0.000213623 35.2398 0.000213623 28.1818V11.8398C0.000213623 4.75976 4.56021 -0.000244141 11.3402 -0.000244141H28.6802ZM28.3602 13.9998C27.6802 13.3198 26.5602 13.3198 25.8802 13.9998L17.6202 22.2598L14.1202 18.7598C13.4402 18.0798 12.3202 18.0798 11.6402 18.7598C10.9602 19.4398 10.9602 20.5398 11.6402 21.2398L16.4002 25.9798C16.7402 26.3198 17.1802 26.4798 17.6202 26.4798C18.0802 26.4798 18.5202 26.3198 18.8602 25.9798L28.3602 16.4798C29.0402 15.7998 29.0402 14.6998 28.3602 13.9998Z" fill="#008000"/>
@@ -87,7 +87,7 @@ const CreateProjectFolder = () => {
 </div>
    
   </div>
-  <div class="custom-modal-footer d-flex justify-content-end ">
+  <div className="custom-modal-footer d-flex justify-content-end ">
     <button className='btn m-2' style={{backgroundColor:"#60CD8A", color:"white"}} onClick={()=>{
       localStorage.setItem("SelectedProject", JSON.stringify(ProjectCreatedData)) 
       dispatch(ProjectNumber(ProjectCreatedData))
@@ -100,20 +100,20 @@ const CreateProjectFolder = () => {
 
     </>:""}
     {showModalRed === true ? <>
-      <div id="myCustomModal" class="customModal">
-<div class="custom-modal-content" >
-  <div class="custom-modal-header"  style={{backgroundColor:"#ff4646"}}>
+      <div id="myCustomModal" className="customModal">
+<div className="custom-modal-content" >
+  <div className="custom-modal-header"  style={{backgroundColor:"#ff4646"}}>
    
     <h4 className='text-center'>Error</h4>
   </div>
-  <div class="custom-modal-body">
+  <div className="custom-modal-body">
     <div className='customContent d-flex align-items-center'  style={{backgroundColor:"#ff4646" , border:"0", color:"white"}}>
   
 <div className='ml-2'>{modalRedMessage}</div>
 </div>
    
   </div>
-  <div class="custom-modal-footer d-flex justify-content-end ">
+  <div className="custom-modal-footer d-flex justify-content-end ">
     <button className='btn m-2' style={{backgroundColor:"#ff4646", color:"white"}} onClick={()=>{
        
       setShowModalRed(false)}}>Close</button>

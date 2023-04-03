@@ -83,10 +83,28 @@
     border: 0;
 }
 .resultCs:hover{
-    text-decoration: underline;
-    cursor: pointer;
-    color: rgb(50, 50, 249);
+    cursor:pointer;
+    background-color: #f0f0f0;
+    background-color: #21B6D7; 
+    color: white;
+    border-radius: 1.3rem;
 }
 .customItems{
     font-size: 0.7rem;
+}
+.searchModal > .modal-header{
+    background-color: #21B6D7;
+    color: white;
+    border-top-left-radius: 1.3rem;
+    border-top-right-radius: 1.3rem;
+}
+/* .searchModal > .modal-body{
+    background-color: #f0f0f0;
+} */
+.modal-content:has(.searchModal){
+    border-radius: 1.3rem;
+}
+.searchModal> .modal-footer > button{
+    background-color: #21B6D7 !important;
+    color: white !important;
 }

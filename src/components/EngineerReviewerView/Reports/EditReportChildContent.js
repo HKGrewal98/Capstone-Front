@@ -486,7 +486,7 @@ export const EditReportChildContent = (props) => {
    </>:""} */}
 
       </section>
-      <table class="table" style={{margin:"0", backgroundColor:"white", borderBottom:"0",width:"600px",marginTop: "0"}}>
+      <table className="table" style={{margin:"0", backgroundColor:"white", borderBottom:"0",width:"600px",marginTop: "0"}}>
   <thead>
     <tr>
       <th scope="col" >Type</th>
