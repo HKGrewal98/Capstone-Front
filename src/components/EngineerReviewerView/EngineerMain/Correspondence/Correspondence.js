@@ -59,7 +59,11 @@ export const Correspondence = () => {
 const getCorrespondence = (newOffset)=>{
   // console.log("newoffset check before sending", newOffset)
 
-  let SelectedProject = JSON.parse(localStorage.getItem("SelectedProject"))
+  let SelectedProject
+   if (localStorage.getItem("SelectedProject")) {
+    SelectedProject = JSON.parse(localStorage.getItem("SelectedProject"));
+   
+  }
 
   if(ProjectNumberRedux !== undefined || SelectedProject != undefined){
     // console.log("ProjectNumberRedux",ProjectNumberRedux," SelectedProject",SelectedProject)
@@ -139,7 +143,11 @@ useEffect(()=>{
 
   useEffect(() => {
     setOffset(0)
-    let SelectedProject = JSON.parse(localStorage.getItem("SelectedProject"))
+    let SelectedProject
+   if (localStorage.getItem("SelectedProject")) {
+    SelectedProject = JSON.parse(localStorage.getItem("SelectedProject"));
+   
+  }
 
    
     if(SelectedProject != undefined){

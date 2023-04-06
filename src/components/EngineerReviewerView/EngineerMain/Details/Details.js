@@ -82,7 +82,12 @@ export const Details = () => {
     }
 
     useEffect(()=>{
-    let SelectedProject = JSON.parse(localStorage.getItem("SelectedProject"))
+
+      let SelectedProject
+      if (localStorage.getItem("SelectedProject")) {
+       SelectedProject = JSON.parse(localStorage.getItem("SelectedProject"));
+      
+     }
 
       if(!DetailsMain?.project){
 

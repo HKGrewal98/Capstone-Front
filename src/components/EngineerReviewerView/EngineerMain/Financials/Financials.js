@@ -134,7 +134,11 @@ export const Financials = () => {
 
   useEffect(() => {
     setOffset(0)
-    let SelectedProject = JSON.parse(localStorage.getItem("SelectedProject"))
+    let SelectedProject
+   if (localStorage.getItem("SelectedProject")) {
+    SelectedProject = JSON.parse(localStorage.getItem("SelectedProject"));
+   
+  }
 
     if(SelectedProject != undefined){
       dispatch(ProjectNumber(SelectedProject))
