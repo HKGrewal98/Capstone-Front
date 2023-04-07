@@ -15,7 +15,7 @@ export const Details = () => {
     const dispatch = useDispatch()
     const cookies = new Cookies()
     const DetailsMain = useSelector((state) => state.Deliverables.value);
-  const ProjectNumberRedux = useSelector((state) => state.ProjectNumberDetails.value.project_number);
+  const ProjectNumberRedux = useSelector((state) => state.ProjectNumberDetails.value?.project_number);
 
     
     useEffect(()=>{

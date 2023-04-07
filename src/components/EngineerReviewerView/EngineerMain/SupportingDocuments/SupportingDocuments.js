@@ -31,7 +31,7 @@ export const SupportingDocuments = () => {
   const SupportingDocumentsData = useSelector(
     (state) => state.Deliverables.value
   );
-  const ProjectNumberRedux = useSelector((state) => state.ProjectNumberDetails.value.project_number);
+  const ProjectNumberRedux = useSelector((state) => state.ProjectNumberDetails.value?.project_number);
 
   const [offset, setOffset] = useState(0)
 
