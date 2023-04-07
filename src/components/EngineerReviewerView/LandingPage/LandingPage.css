@@ -99,9 +99,10 @@
     border-top-left-radius: 1.3rem;
     border-top-right-radius: 1.3rem;
 }
-/* .searchModal > .modal-body{
-    background-color: #f0f0f0;
-} */
+.searchModal > .modal-body{
+    max-height: 70vh;
+    overflow: auto;
+}
 .modal-content:has(.searchModal){
     border-radius: 1.3rem;
 }
