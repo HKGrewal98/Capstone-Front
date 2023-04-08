@@ -25,7 +25,8 @@ export const Correspondence = () => {
 
   const cookies = new Cookies()
   const CorrespondentsData = useSelector((state) => state.Deliverables.value);
-  const ProjectNumberRedux = useSelector((state) => state.ProjectNumberDetails.value?.project_number);
+  // const ProjectNumberRedux = useSelector((state) => state.ProjectNumberDetails.value?.project_number);
+  const ProjectNumberRedux = useSelector((state) => state.ProjectNumberDetails && state.ProjectNumberDetails.value && state.ProjectNumberDetails.value.project_number);
   const [showNextButton, setShowNextButton] = useState(true)
   const [showPrevButton, setShowPrevButton] = useState(true)
   const [offset, setOffset] = useState(0)

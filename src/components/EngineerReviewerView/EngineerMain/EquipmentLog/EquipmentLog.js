@@ -17,7 +17,8 @@ export const EquipmentLog = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const EquipmentLogData = useSelector((state) => state.Deliverables.value);
-  const ProjectNumberRedux = useSelector((state) => state.ProjectNumberDetails.value?.project_number);
+  // const ProjectNumberRedux = useSelector((state) => state.ProjectNumberDetails.value?.project_number);
+  const ProjectNumberRedux = useSelector((state) => state.ProjectNumberDetails && state.ProjectNumberDetails.value && state.ProjectNumberDetails.value.project_number);
   var myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
   myHeaders.append("Access-Control-Allow-Origin", "http://localhost:8081");

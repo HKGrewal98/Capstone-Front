@@ -25,7 +25,9 @@ export const Deliverables = () => {
   const [arrayPageState, setArrayPageState] = useState(1);
   const [projectNumberState, setProjectNumberState]= useState()
   const DeliverableMain = useSelector((state) => state.Deliverables.value);
-  const ProjectNumberRedux = useSelector((state) => state.ProjectNumberDetails.value?.project_number);
+  // const ProjectNumberRedux = useSelector((state) => state.ProjectNumberDetails.value?.project_number);
+  const ProjectNumberRedux = useSelector((state) => state.ProjectNumberDetails && state.ProjectNumberDetails.value && state.ProjectNumberDetails.value.project_number);
+
   const ULogged = useSelector((state) => state.Login.value);
   const [showNextButton, setShowNextButton] = useState(true)
   const [showPrevButton, setShowPrevButton] = useState(true)
