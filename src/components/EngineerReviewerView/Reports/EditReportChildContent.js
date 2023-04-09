@@ -71,7 +71,7 @@ export const EditReportChildContent = (props) => {
     
   });
   const updateData = async (data)=>{
-    console.log("sending data", data)
+    // console.log("sending data", data)
     dispatch(LoaderStatus(true))
    await axios({
       method: 'post',

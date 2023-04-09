@@ -82,7 +82,7 @@ export const NewReport=()=>{
   const onSubmit = ((data) => {
   
     let stID = filteredIds(data)
-    console.log("Date", data)
+    // console.log("Date", data)
   
     let standardString = stID.toString()
     // console.log(standardString)
@@ -143,7 +143,7 @@ export const NewReport=()=>{
 
     }
  
-  
+    // console.log("data check pn", data)
     let formData = new FormData()
     formData.append('issued_at', data.issued_at);
     formData.append('tags', data.tags);
@@ -192,8 +192,9 @@ export const NewReport=()=>{
         reset(defaultValues)
         setShowGreen(true)
         setAlertValue(res?.data?.message)
-       
-        localStorage.setItem("SelectedProject", JSON.stringify(ProjectCreatedData))
+        setProjectCreatedData({"project_name":data.project_name, "project_number":data.project_number})
+        let errorFixSP = {"project_name":data.project_name, "project_number":data.project_number}
+        localStorage.setItem("SelectedProject", JSON.stringify(errorFixSP))
       dispatch(ProjectNumber(ProjectCreatedData))
         
 
