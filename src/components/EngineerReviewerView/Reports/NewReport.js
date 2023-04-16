@@ -319,7 +319,8 @@ return(
     let str = e.target.value
     // console.log("str check", str)
     let data={
-      name: str
+      name: str,
+      indentityType:3
     }
     axios({
       method: 'get',
@@ -451,7 +452,8 @@ return(
     let str = e.target.value
     // console.log("str check", str)
     let data={
-      name: str
+      name: str,
+      indentityType:2
     }
     axios({
       method: 'get',

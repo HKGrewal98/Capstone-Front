@@ -263,7 +263,8 @@ const CreateProjectFolder = () => {
               let str = e.target.value
               // console.log("str check", str)
               let data={
-                name: str
+                name: str,
+                indentityType: 3
               }
               axios({
                 method: 'get',
